@@ -1,20 +1,23 @@
 import {
-  FiMenu,
   FiExternalLink,
-  FiBell,
+  FiMenu,
 } from "react-icons/fi";
 
+import { getStoredAdmin } from "../services/authService";
 import "./AdminHeader.css";
 
-function AdminHeader({
-  onMenuClick,
-}) {
-  const openPortfolio = () => {
-    window.open(
-      "/",
-      "_blank"
-    );
-  };
+function AdminHeader({ onMenuClick }) {
+  const admin = getStoredAdmin();
+
+  const name = admin?.name || "Administrator";
+  const role = String(admin?.role || "ADMIN").replaceAll("_", " ");
+  const initials = name
+    .split(" ")
+    .filter(Boolean)
+    .slice(0, 2)
+    .map((part) => part[0])
+    .join("")
+    .toUpperCase() || "SP";
 
   return (
     <header className="admin-header">
@@ -22,63 +25,33 @@ function AdminHeader({
         <button
           type="button"
           className="admin-header-menu"
-          onClick={
-            onMenuClick
-          }
-          aria-label="Open menu"
+          onClick={onMenuClick}
+          aria-label="Open navigation"
         >
           <FiMenu />
         </button>
 
         <div className="admin-header-heading">
-          <span>
-            PORTFOLIO CMS
-          </span>
-
-          <strong>
-            Management Console
-          </strong>
+          <span>PORTFOLIO CMS</span>
+          <strong>Management Console</strong>
         </div>
       </div>
 
       <div className="admin-header-actions">
         <button
           type="button"
-          className="admin-header-notification"
-          aria-label="Notifications"
-        >
-          <FiBell />
-
-          <span />
-        </button>
-
-        <button
-          type="button"
           className="admin-header-portfolio"
-          onClick={
-            openPortfolio
-          }
+          onClick={() => window.open("/", "_blank")}
         >
-          <span>
-            View Portfolio
-          </span>
-
+          <span>View Portfolio</span>
           <FiExternalLink />
         </button>
 
         <div className="admin-header-user">
-          <div>
-            SP
-          </div>
-
+          <div>{initials}</div>
           <section>
-            <strong>
-              Admin
-            </strong>
-
-            <span>
-              Administrator
-            </span>
+            <strong>{name}</strong>
+            <span>{role}</span>
           </section>
         </div>
       </div>
