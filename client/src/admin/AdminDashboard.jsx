@@ -1,239 +1,213 @@
-import { motion } from "framer-motion";
-
+import { useEffect, useState } from "react";
 import {
-  FiUser,
-  FiCode,
-  FiFolder,
-  FiBriefcase,
-  FiBookOpen,
   FiActivity,
   FiArrowUpRight,
+  FiBookOpen,
+  FiBriefcase,
+  FiCode,
   FiEye,
+  FiFolder,
+  FiSettings,
 } from "react-icons/fi";
+import { useNavigate } from "react-router-dom";
 
+import api from "../services/api";
 import {
-  useNavigate,
-} from "react-router-dom";
+  AdminAlert,
+  AdminLoader,
+  AdminPageHeader,
+} from "./AdminUI";
 
 import "./AdminDashboard.css";
 
 function AdminDashboard() {
-  const navigate =
-    useNavigate();
+  const navigate = useNavigate();
+  const [dashboard, setDashboard] = useState(null);
+  const [error, setError] = useState("");
+  const [loading, setLoading] = useState(true);
 
-  const stats = [
-    {
-      label: "Profile",
-      value: "01",
-      text: "Personal information",
-      icon: <FiUser />,
-      path: "/admin/profile",
-    },
+  const loadDashboard = async () => {
+    try {
+      setLoading(true);
+      setError("");
+      const response = await api.get("/dashboard");
+      setDashboard(response?.data?.dashboard || null);
+    } catch (err) {
+      console.error("Dashboard load error:", err);
+      setError(err?.response?.data?.message || "Unable to load dashboard.");
+    } finally {
+      setLoading(false);
+    }
+  };
 
+  useEffect(() => {
+    loadDashboard();
+  }, []);
+
+  if (loading) {
+    return <AdminLoader label="Loading dashboard..." />;
+  }
+
+  const counts = dashboard?.counts || {};
+  const profile = dashboard?.profile || {};
+
+  const modules = [
     {
       label: "Skills",
-      value: "Manage",
-      text: "Technologies & categories",
+      value: counts.skills ?? 0,
+      text: `${counts.skillCategories ?? 0} categories`,
       icon: <FiCode />,
       path: "/admin/skills",
     },
-
     {
       label: "Projects",
-      value: "Manage",
-      text: "Portfolio case studies",
+      value: counts.projects ?? 0,
+      text: `${counts.publishedProjects ?? 0} published`,
       icon: <FiFolder />,
       path: "/admin/projects",
     },
-
     {
       label: "Experience",
-      value: "Manage",
-      text: "Professional history",
+      value: counts.experiences ?? 0,
+      text: "Professional records",
       icon: <FiBriefcase />,
       path: "/admin/experience",
     },
-
     {
       label: "Career",
-      value: "Manage",
-      text: "Career journey",
+      value: counts.careerEvents ?? 0,
+      text: "Journey milestones",
       icon: <FiActivity />,
       path: "/admin/career",
     },
-
     {
       label: "Education",
-      value: "Manage",
+      value: counts.education ?? 0,
       text: "Academic records",
       icon: <FiBookOpen />,
       path: "/admin/education",
     },
+    {
+      label: "Settings",
+      value: counts.settings ?? 0,
+      text: "Site configuration",
+      icon: <FiSettings />,
+      path: "/admin/settings",
+    },
   ];
 
   return (
-    <div className="admin-dashboard">
-      {/* ===============================================
-          HEADER
-      =============================================== */}
-
-      <div className="admin-dashboard-header">
-        <div>
-          <span>
-            OVERVIEW
-          </span>
-
-          <h1>
-            Dashboard
-          </h1>
-
-          <p>
-            Manage your portfolio
-            content from one place.
-          </p>
-        </div>
-
-        <button
-          type="button"
-          onClick={() =>
-            window.open(
-              "/",
-              "_blank"
-            )
-          }
-        >
-          <FiEye />
-
-          <span>
+    <div className="admin-ui-page admin-dashboard">
+      <AdminPageHeader
+        eyebrow="OVERVIEW"
+        title="Dashboard"
+        description="Manage your portfolio content from one consistent workspace."
+        actions={
+          <button
+            type="button"
+            className="admin-ui-button"
+            onClick={() => window.open("/", "_blank")}
+          >
+            <FiEye />
             View Portfolio
-          </span>
+            <FiArrowUpRight />
+          </button>
+        }
+      />
 
-          <FiArrowUpRight />
-        </button>
-      </div>
+      <AdminAlert type="error">{error}</AdminAlert>
 
-      {/* ===============================================
-          WELCOME
-      =============================================== */}
-
-      <motion.section
-        className="admin-dashboard-welcome"
-        initial={{
-          opacity: 0,
-          y: 15,
-        }}
-        animate={{
-          opacity: 1,
-          y: 0,
-        }}
-      >
+      <section className="admin-dashboard-welcome admin-ui-card">
         <div>
           <span className="admin-dashboard-online">
             <i />
-
             SYSTEM ONLINE
           </span>
 
           <h2>
             Welcome back,
-            <span>
-              {" "}
-              Suriyaprakash.
-            </span>
+            <span> {profile?.fullName || "Suriyaprakash"}.</span>
           </h2>
 
           <p>
-            Update your projects,
-            technologies, experience
-            and portfolio details
-            directly from this
-            dashboard.
+            Your admin dashboard is connected to the portfolio API. Changes made
+            here can be reflected in the public portfolio after saving.
           </p>
         </div>
 
-        <div className="admin-dashboard-code">
-          <span>
-            &lt;/&gt;
-          </span>
-        </div>
-      </motion.section>
+        <div className="admin-dashboard-code">&lt;/&gt;</div>
+      </section>
 
-      {/* ===============================================
-          MANAGEMENT GRID
-      =============================================== */}
-
-      <div className="admin-dashboard-section-heading">
+      <div className="admin-ui-section-title admin-dashboard-section-heading">
         <div>
-          <span>
-            CONTENT
-          </span>
-
-          <h3>
-            Portfolio Management
-          </h3>
+          <span>CONTENT</span>
+          <h2>Portfolio Management</h2>
         </div>
-
-        <span>
-          06 MODULES
-        </span>
+        <span>{modules.length.toString().padStart(2, "0")} MODULES</span>
       </div>
 
       <div className="admin-dashboard-grid">
-        {stats.map(
-          (
-            item,
-            index
-          ) => (
-            <motion.button
-              type="button"
-              key={item.label}
-              className="admin-dashboard-card"
-              onClick={() =>
-                navigate(
-                  item.path
-                )
-              }
-              initial={{
-                opacity: 0,
-                y: 18,
-              }}
-              animate={{
-                opacity: 1,
-                y: 0,
-              }}
-              transition={{
-                delay:
-                  index * 0.05,
-              }}
-              whileHover={{
-                y: -4,
-              }}
-            >
-              <div className="admin-dashboard-card-top">
-                <div className="admin-dashboard-card-icon">
-                  {item.icon}
+        {modules.map((item) => (
+          <button
+            type="button"
+            className="admin-dashboard-card admin-ui-card"
+            key={item.path}
+            onClick={() => navigate(item.path)}
+          >
+            <div className="admin-dashboard-card-top">
+              <div className="admin-dashboard-card-icon">{item.icon}</div>
+              <FiArrowUpRight className="admin-dashboard-card-arrow" />
+            </div>
+
+            <div className="admin-dashboard-card-content">
+              <span>{item.value}</span>
+              <h4>{item.label}</h4>
+              <p>{item.text}</p>
+            </div>
+          </button>
+        ))}
+      </div>
+
+      {dashboard?.recentProjects?.length > 0 && (
+        <section className="admin-ui-panel admin-ui-section">
+          <div className="admin-ui-section-title">
+            <div>
+              <span>RECENT</span>
+              <h2>Recently updated projects</h2>
+            </div>
+          </div>
+
+          <div className="admin-ui-list">
+            {dashboard.recentProjects.map((project) => (
+              <div className="admin-ui-list-card admin-ui-card" key={project.id}>
+                <div className="admin-ui-list-icon">
+                  <FiFolder />
                 </div>
 
-                <FiArrowUpRight className="admin-dashboard-card-arrow" />
+                <div className="admin-ui-list-content">
+                  <span>{project.status}</span>
+                  <h3>{project.title}</h3>
+                  <div className="admin-ui-meta">
+                    <span>{project.isFeatured ? "Featured" : "Standard"}</span>
+                    <span>{project.isCurrent ? "Current" : "Completed"}</span>
+                  </div>
+                </div>
+
+                <div className="admin-ui-actions">
+                  <button
+                    type="button"
+                    className="admin-ui-button"
+                    onClick={() => navigate("/admin/projects")}
+                  >
+                    Manage
+                    <FiArrowUpRight />
+                  </button>
+                </div>
               </div>
-
-              <div className="admin-dashboard-card-content">
-                <span>
-                  {item.value}
-                </span>
-
-                <h4>
-                  {item.label}
-                </h4>
-
-                <p>
-                  {item.text}
-                </p>
-              </div>
-            </motion.button>
-          )
-        )}
-      </div>
+            ))}
+          </div>
+        </section>
+      )}
     </div>
   );
 }
