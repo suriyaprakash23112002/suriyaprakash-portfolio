@@ -158,7 +158,7 @@ function AdminProjects() {
         isCurrent: form.isCurrent,
         displayOrder: Number(form.displayOrder || 0),
         startedAt: form.startedAt || null,
-        completedAt: form.completedAt || null,
+        completedAt: form.isCurrent ? null : form.completedAt || null,
         technologyIds: form.technologyIds,
         images: form.coverImageUrl.trim()
           ? [
