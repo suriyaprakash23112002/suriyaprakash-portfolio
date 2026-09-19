@@ -12,10 +12,9 @@ const api = axios.create({
 
 api.interceptors.request.use(
   (config) => {
-    const token =
-      localStorage.getItem(
-        "portfolio_admin_token"
-      );
+    const token = localStorage.getItem(
+      "portfolio_admin_token"
+    );
 
     if (token) {
       config.headers.Authorization =
@@ -24,19 +23,13 @@ api.interceptors.request.use(
 
     return config;
   },
-
-  (error) => {
-    return Promise.reject(error);
-  }
+  (error) => Promise.reject(error)
 );
 
 api.interceptors.response.use(
   (response) => response,
-
   (error) => {
-    if (
-      error.response?.status === 401
-    ) {
+    if (error.response?.status === 401) {
       localStorage.removeItem(
         "portfolio_admin_token"
       );
@@ -44,6 +37,21 @@ api.interceptors.response.use(
       localStorage.removeItem(
         "portfolio_admin"
       );
+
+      const isAdminPage =
+        window.location.pathname.startsWith(
+          "/admin"
+        );
+
+      const isLoginPage =
+        window.location.pathname ===
+        "/admin/login";
+
+      if (isAdminPage && !isLoginPage) {
+        window.location.replace(
+          "/admin/login"
+        );
+      }
     }
 
     return Promise.reject(error);
