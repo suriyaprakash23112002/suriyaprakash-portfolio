@@ -10,35 +10,43 @@ import {
   FiSearch,
   FiStar,
   FiTrash2,
-  FiX,
 } from "react-icons/fi";
 
 import api from "../services/api";
-import "./AdminProjects.css";
+import {
+  AdminAlert,
+  AdminEmptyState,
+  AdminLoader,
+  AdminModal,
+  AdminPageHeader,
+  AdminSaving,
+} from "./AdminUI";
 
 const emptyForm = {
   title: "",
   shortDescription: "",
   description: "",
-  thumbnailUrl: "",
-  liveUrl: "",
   githubUrl: "",
-  status: "PUBLISHED",
+  liveUrl: "",
+  status: "DRAFT",
   isFeatured: false,
-  order: 0,
+  isCurrent: false,
+  displayOrder: 0,
+  startedAt: "",
+  completedAt: "",
+  coverImageUrl: "",
+  technologyIds: [],
 };
 
-const getProjects = (response) => {
-  const data = response?.data;
-  if (Array.isArray(data)) return data;
-  if (Array.isArray(data?.projects)) return data.projects;
-  if (Array.isArray(data?.data?.projects)) return data.data.projects;
-  if (Array.isArray(data?.data)) return data.data;
-  return [];
+const dateInput = (value) => {
+  if (!value) return "";
+  const date = new Date(value);
+  return Number.isNaN(date.getTime()) ? "" : date.toISOString().slice(0, 10);
 };
 
 function AdminProjects() {
   const [projects, setProjects] = useState([]);
+  const [skills, setSkills] = useState([]);
   const [form, setForm] = useState(emptyForm);
   const [editingId, setEditingId] = useState(null);
   const [modalOpen, setModalOpen] = useState(false);
@@ -48,14 +56,20 @@ function AdminProjects() {
   const [message, setMessage] = useState("");
   const [error, setError] = useState("");
 
-  const loadProjects = async () => {
+  const loadData = async () => {
     try {
       setLoading(true);
       setError("");
-      const response = await api.get("/projects");
-      setProjects(getProjects(response));
+
+      const [projectResponse, skillResponse] = await Promise.all([
+        api.get("/projects/admin/all"),
+        api.get("/skills/admin/all"),
+      ]);
+
+      setProjects(projectResponse?.data?.projects || []);
+      setSkills(skillResponse?.data?.skills || []);
     } catch (err) {
-      console.error("Projects loading error:", err);
+      console.error("Projects load error:", err);
       setError(err?.response?.data?.message || "Unable to load projects.");
     } finally {
       setLoading(false);
@@ -63,7 +77,7 @@ function AdminProjects() {
   };
 
   useEffect(() => {
-    loadProjects();
+    loadData();
   }, []);
 
   const filteredProjects = useMemo(() => {
@@ -71,9 +85,7 @@ function AdminProjects() {
     if (!value) return projects;
 
     return projects.filter((project) =>
-      `${project?.title || ""} ${project?.shortDescription || ""} ${
-        project?.status || ""
-      }`
+      `${project.title} ${project.shortDescription || ""} ${project.status}`
         .toLowerCase()
         .includes(value)
     );
@@ -86,26 +98,31 @@ function AdminProjects() {
   };
 
   const openEdit = (project) => {
+    const cover =
+      project?.images?.find((image) => image.isCover) ||
+      project?.images?.[0];
+
     setEditingId(project.id);
     setForm({
-      title: project?.title || project?.name || "",
-      shortDescription: project?.shortDescription || project?.summary || "",
-      description: project?.description || "",
-      thumbnailUrl:
-        project?.thumbnailUrl ||
-        project?.imageUrl ||
-        project?.coverImage ||
-        "",
-      liveUrl: project?.liveUrl || project?.demoUrl || "",
-      githubUrl: project?.githubUrl || project?.repositoryUrl || "",
-      status: project?.status || "PUBLISHED",
-      isFeatured: project?.isFeatured === true || project?.featured === true,
-      order: project?.order ?? 0,
+      title: project.title || "",
+      shortDescription: project.shortDescription || "",
+      description: project.description || "",
+      githubUrl: project.githubUrl || "",
+      liveUrl: project.liveUrl || "",
+      status: project.status || "DRAFT",
+      isFeatured: Boolean(project.isFeatured),
+      isCurrent: Boolean(project.isCurrent),
+      displayOrder: project.displayOrder ?? 0,
+      startedAt: dateInput(project.startedAt),
+      completedAt: dateInput(project.completedAt),
+      coverImageUrl: cover?.url || "",
+      technologyIds:
+        project?.technologies?.map((item) => item?.skill?.id || item?.skillId).filter(Boolean) || [],
     });
     setModalOpen(true);
   };
 
-  const handleChange = (event) => {
+  const change = (event) => {
     const { name, value, type, checked } = event.target;
     setForm((previous) => ({
       ...previous,
@@ -113,7 +130,16 @@ function AdminProjects() {
     }));
   };
 
-  const saveProject = async (event) => {
+  const toggleTechnology = (skillId) => {
+    setForm((previous) => ({
+      ...previous,
+      technologyIds: previous.technologyIds.includes(skillId)
+        ? previous.technologyIds.filter((id) => id !== skillId)
+        : [...previous.technologyIds, skillId],
+    }));
+  };
+
+  const save = async (event) => {
     event.preventDefault();
 
     try {
@@ -122,23 +148,36 @@ function AdminProjects() {
       setMessage("");
 
       const payload = {
-        ...form,
-        order: Number(form.order || 0),
+        title: form.title,
+        shortDescription: form.shortDescription,
+        description: form.description,
+        githubUrl: form.githubUrl,
+        liveUrl: form.liveUrl,
+        status: form.status,
+        isFeatured: form.isFeatured,
+        isCurrent: form.isCurrent,
+        displayOrder: Number(form.displayOrder || 0),
+        startedAt: form.startedAt || null,
+        completedAt: form.completedAt || null,
+        technologyIds: form.technologyIds,
+        images: form.coverImageUrl.trim()
+          ? [
+              {
+                url: form.coverImageUrl.trim(),
+                altText: form.title,
+                isCover: true,
+                displayOrder: 0,
+              },
+            ]
+          : [],
       };
 
-      if (editingId) {
-        await api.put(`/projects/${editingId}`, payload);
-      } else {
-        await api.post("/projects", payload);
-      }
+      if (editingId) await api.put(`/projects/${editingId}`, payload);
+      else await api.post("/projects", payload);
 
-      setMessage(
-        editingId
-          ? "Project updated successfully."
-          : "Project created successfully."
-      );
+      setMessage(editingId ? "Project updated." : "Project created.");
       setModalOpen(false);
-      await loadProjects();
+      await loadData();
     } catch (err) {
       console.error("Project save error:", err);
       setError(err?.response?.data?.message || "Unable to save project.");
@@ -147,280 +186,201 @@ function AdminProjects() {
     }
   };
 
-  const removeProject = async (project) => {
-    if (!window.confirm(`Delete "${project.title || project.name}"?`)) return;
+  const remove = async (project) => {
+    if (!window.confirm(`Delete "${project.title}"?`)) return;
 
     try {
       await api.delete(`/projects/${project.id}`);
-      setMessage("Project deleted successfully.");
-      await loadProjects();
+      setMessage("Project deleted.");
+      await loadData();
     } catch (err) {
-      console.error("Project delete error:", err);
       setError(err?.response?.data?.message || "Unable to delete project.");
     }
   };
 
+  if (loading) return <AdminLoader label="Loading projects..." />;
+
   return (
-    <div className="admin-projects">
-      <div className="admin-projects-header">
-        <div>
-          <span>PORTFOLIO CONTENT</span>
-          <h1>Projects</h1>
-          <p>Manage portfolio case studies, project links and featured work.</p>
-        </div>
+    <div className="admin-ui-page">
+      <AdminPageHeader
+        eyebrow="PORTFOLIO CONTENT"
+        title="Projects"
+        description="Manage project case studies, links, technologies and visibility."
+        actions={
+          <>
+            <button className="admin-ui-button" type="button" onClick={loadData}>
+              <FiRefreshCw />Refresh
+            </button>
+            <button className="admin-ui-button admin-ui-button-primary" type="button" onClick={openCreate}>
+              <FiPlus />New Project
+            </button>
+          </>
+        }
+      />
 
-        <div className="admin-projects-actions">
-          <button type="button" onClick={loadProjects}>
-            <FiRefreshCw />
-            Refresh
-          </button>
+      <AdminAlert type="error">{error}</AdminAlert>
+      <AdminAlert type="success">{message}</AdminAlert>
 
-          <button type="button" className="primary" onClick={openCreate}>
-            <FiPlus />
-            New Project
-          </button>
-        </div>
-      </div>
-
-      {error && <div className="admin-projects-alert error">{error}</div>}
-      {message && <div className="admin-projects-alert success">{message}</div>}
-
-      <div className="admin-projects-toolbar">
-        <div>
+      <div className="admin-ui-stats">
+        <div className="admin-ui-stat">
+          <span>TOTAL</span>
           <strong>{projects.length}</strong>
-          <span>Total projects</span>
+          <small>All projects</small>
         </div>
-
-        <div>
-          <strong>{projects.filter((project) => project?.isFeatured).length}</strong>
-          <span>Featured</span>
+        <div className="admin-ui-stat">
+          <span>PUBLISHED</span>
+          <strong>{projects.filter((project) => project.status === "PUBLISHED").length}</strong>
+          <small>Visible publicly</small>
         </div>
-
-        <label>
-          <FiSearch />
-          <input
-            type="search"
-            value={search}
-            onChange={(event) => setSearch(event.target.value)}
-            placeholder="Search projects..."
-          />
-        </label>
+        <div className="admin-ui-stat">
+          <span>DRAFTS</span>
+          <strong>{projects.filter((project) => project.status === "DRAFT").length}</strong>
+          <small>Work in progress</small>
+        </div>
+        <div className="admin-ui-stat">
+          <span>FEATURED</span>
+          <strong>{projects.filter((project) => project.isFeatured).length}</strong>
+          <small>Highlighted work</small>
+        </div>
       </div>
 
-      {loading ? (
-        <div className="admin-projects-loading">
-          <FiRefreshCw />
-          Loading projects...
-        </div>
-      ) : (
-        <div className="admin-projects-grid">
-          {filteredProjects.map((project) => {
-            const image =
-              project?.thumbnailUrl ||
-              project?.imageUrl ||
-              project?.coverImage ||
-              "";
+      <section className="admin-ui-panel">
+        <div className="admin-ui-section-title">
+          <div>
+            <span>PROJECT LIBRARY</span>
+            <h2>All projects</h2>
+          </div>
 
-            return (
-              <article className="admin-projects-card" key={project.id}>
-                <div className="admin-projects-media">
-                  {image ? (
-                    <img src={image} alt={project?.title || "Project"} />
-                  ) : (
-                    <div className="admin-projects-fallback">
+          <label className="admin-ui-search">
+            <FiSearch />
+            <input
+              type="search"
+              value={search}
+              onChange={(event) => setSearch(event.target.value)}
+              placeholder="Search projects..."
+            />
+          </label>
+        </div>
+
+        {filteredProjects.length === 0 ? (
+          <AdminEmptyState
+            icon={<FiFolder />}
+            title="No projects found"
+            description="Create your first portfolio project."
+          />
+        ) : (
+          <div className="admin-projects-refactor-grid">
+            {filteredProjects.map((project) => {
+              const cover =
+                project?.images?.find((image) => image.isCover) ||
+                project?.images?.[0];
+
+              return (
+                <article className="admin-projects-refactor-card admin-ui-card" key={project.id}>
+                  <div className="admin-projects-refactor-media">
+                    {cover?.url ? (
+                      <img src={cover.url} alt={cover.altText || project.title} />
+                    ) : (
                       <FiFolder />
-                    </div>
-                  )}
-
-                  {project?.isFeatured && (
-                    <span className="admin-projects-featured">
-                      <FiStar />
-                      Featured
-                    </span>
-                  )}
-                </div>
-
-                <div className="admin-projects-card-body">
-                  <div className="admin-projects-card-title">
-                    <div>
-                      <span>{project?.status || "PUBLISHED"}</span>
-                      <h2>{project?.title || project?.name || "Project"}</h2>
-                    </div>
-
-                    <div className="admin-projects-card-actions">
-                      <button type="button" onClick={() => openEdit(project)}>
-                        <FiEdit2 />
-                      </button>
-                      <button type="button" onClick={() => removeProject(project)}>
-                        <FiTrash2 />
-                      </button>
-                    </div>
-                  </div>
-
-                  <p>
-                    {project?.shortDescription ||
-                      project?.summary ||
-                      project?.description ||
-                      "No project description added."}
-                  </p>
-
-                  <div className="admin-projects-links">
-                    {(project?.liveUrl || project?.demoUrl) && (
-                      <a
-                        href={project?.liveUrl || project?.demoUrl}
-                        target="_blank"
-                        rel="noreferrer"
-                      >
-                        <FiExternalLink />
-                        Live
-                      </a>
                     )}
-
-                    {(project?.githubUrl || project?.repositoryUrl) && (
-                      <a
-                        href={project?.githubUrl || project?.repositoryUrl}
-                        target="_blank"
-                        rel="noreferrer"
-                      >
-                        <FiGithub />
-                        GitHub
-                      </a>
+                    {project.isFeatured && (
+                      <span className="admin-ui-badge">
+                        <FiStar />Featured
+                      </span>
                     )}
                   </div>
-                </div>
-              </article>
-            );
-          })}
 
-          {filteredProjects.length === 0 && (
-            <div className="admin-projects-empty">
-              <FiFolder />
-              <h3>No projects found</h3>
-              <p>Create your first portfolio project.</p>
-            </div>
-          )}
-        </div>
-      )}
+                  <div className="admin-projects-refactor-body">
+                    <span>{project.status}</span>
+                    <h3>{project.title}</h3>
+                    <p>{project.shortDescription || "No short description."}</p>
 
-      {modalOpen && (
-        <div className="admin-projects-modal-backdrop">
-          <form className="admin-projects-modal" onSubmit={saveProject}>
-            <div className="admin-projects-modal-header">
-              <div>
-                <span>PROJECT EDITOR</span>
-                <h2>{editingId ? "Edit Project" : "New Project"}</h2>
+                    {project?.technologies?.length > 0 && (
+                      <div className="admin-projects-refactor-tech">
+                        {project.technologies.slice(0, 5).map((item) => (
+                          <span key={item?.skill?.id || item.skillId}>
+                            {item?.skill?.name || "Technology"}
+                          </span>
+                        ))}
+                      </div>
+                    )}
+
+                    <div className="admin-projects-refactor-footer">
+                      <div className="admin-ui-actions">
+                        {project.liveUrl && (
+                          <a className="admin-ui-icon-button" href={project.liveUrl} target="_blank" rel="noreferrer" aria-label="Live project"><FiExternalLink /></a>
+                        )}
+                        {project.githubUrl && (
+                          <a className="admin-ui-icon-button" href={project.githubUrl} target="_blank" rel="noreferrer" aria-label="GitHub project"><FiGithub /></a>
+                        )}
+                      </div>
+
+                      <div className="admin-ui-actions">
+                        <button className="admin-ui-icon-button" type="button" onClick={() => openEdit(project)}><FiEdit2 /></button>
+                        <button className="admin-ui-icon-button admin-ui-button-danger" type="button" onClick={() => remove(project)}><FiTrash2 /></button>
+                      </div>
+                    </div>
+                  </div>
+                </article>
+              );
+            })}
+          </div>
+        )}
+      </section>
+
+      <AdminModal
+        open={modalOpen}
+        onClose={() => setModalOpen(false)}
+        eyebrow="PROJECT EDITOR"
+        title={editingId ? "Edit Project" : "New Project"}
+        size="lg"
+        footer={
+          <>
+            <button className="admin-ui-button" type="button" onClick={() => setModalOpen(false)}>Cancel</button>
+            <button className="admin-ui-button admin-ui-button-primary" type="submit" form="project-form" disabled={saving}>{saving ? <AdminSaving /> : <><FiSave />Save Project</>}</button>
+          </>
+        }
+      >
+        <form id="project-form" onSubmit={save}>
+          <div className="admin-ui-form-grid">
+            <label className="admin-ui-field admin-ui-field-full"><span>Project title</span><input name="title" value={form.title} onChange={change} required /></label>
+            <label className="admin-ui-field admin-ui-field-full"><span>Short description</span><input name="shortDescription" value={form.shortDescription} onChange={change} /></label>
+            <label className="admin-ui-field admin-ui-field-full"><span>Description</span><textarea name="description" value={form.description} onChange={change} /></label>
+            <label className="admin-ui-field admin-ui-field-full"><span>Cover image URL</span><input name="coverImageUrl" type="url" value={form.coverImageUrl} onChange={change} /></label>
+            <label className="admin-ui-field"><span>Live URL</span><input name="liveUrl" type="url" value={form.liveUrl} onChange={change} /></label>
+            <label className="admin-ui-field"><span>GitHub URL</span><input name="githubUrl" type="url" value={form.githubUrl} onChange={change} /></label>
+            <label className="admin-ui-field">
+              <span>Status</span>
+              <select name="status" value={form.status} onChange={change}>
+                <option value="DRAFT">Draft</option>
+                <option value="PUBLISHED">Published</option>
+                <option value="ARCHIVED">Archived</option>
+              </select>
+            </label>
+            <label className="admin-ui-field"><span>Display order</span><input name="displayOrder" type="number" value={form.displayOrder} onChange={change} /></label>
+            <label className="admin-ui-field"><span>Started at</span><input name="startedAt" type="date" value={form.startedAt} onChange={change} /></label>
+            <label className="admin-ui-field"><span>Completed at</span><input name="completedAt" type="date" value={form.completedAt} onChange={change} disabled={form.isCurrent} /></label>
+            <label className="admin-ui-check"><input name="isFeatured" type="checkbox" checked={form.isFeatured} onChange={change} />Featured project</label>
+            <label className="admin-ui-check"><input name="isCurrent" type="checkbox" checked={form.isCurrent} onChange={change} />Current project</label>
+
+            <div className="admin-ui-field admin-ui-field-full">
+              <span>Technologies</span>
+              <div className="admin-projects-refactor-skill-grid">
+                {skills.map((skill) => (
+                  <label className="admin-projects-refactor-skill" key={skill.id}>
+                    <input
+                      type="checkbox"
+                      checked={form.technologyIds.includes(skill.id)}
+                      onChange={() => toggleTechnology(skill.id)}
+                    />
+                    <span>{skill.name}</span>
+                  </label>
+                ))}
               </div>
-
-              <button type="button" onClick={() => setModalOpen(false)}>
-                <FiX />
-              </button>
             </div>
-
-            <div className="admin-projects-form-grid">
-              <label className="full">
-                Project title
-                <input
-                  name="title"
-                  type="text"
-                  value={form.title}
-                  onChange={handleChange}
-                  required
-                />
-              </label>
-
-              <label className="full">
-                Short description
-                <input
-                  name="shortDescription"
-                  type="text"
-                  value={form.shortDescription}
-                  onChange={handleChange}
-                />
-              </label>
-
-              <label className="full">
-                Description
-                <textarea
-                  name="description"
-                  rows="5"
-                  value={form.description}
-                  onChange={handleChange}
-                />
-              </label>
-
-              <label className="full">
-                Thumbnail URL
-                <input
-                  name="thumbnailUrl"
-                  type="url"
-                  value={form.thumbnailUrl}
-                  onChange={handleChange}
-                />
-              </label>
-
-              <label>
-                Live URL
-                <input
-                  name="liveUrl"
-                  type="url"
-                  value={form.liveUrl}
-                  onChange={handleChange}
-                />
-              </label>
-
-              <label>
-                GitHub URL
-                <input
-                  name="githubUrl"
-                  type="url"
-                  value={form.githubUrl}
-                  onChange={handleChange}
-                />
-              </label>
-
-              <label>
-                Status
-                <select name="status" value={form.status} onChange={handleChange}>
-                  <option value="PUBLISHED">Published</option>
-                  <option value="DRAFT">Draft</option>
-                  <option value="ARCHIVED">Archived</option>
-                </select>
-              </label>
-
-              <label>
-                Order
-                <input
-                  name="order"
-                  type="number"
-                  value={form.order}
-                  onChange={handleChange}
-                />
-              </label>
-
-              <label className="admin-projects-check full">
-                <input
-                  name="isFeatured"
-                  type="checkbox"
-                  checked={form.isFeatured}
-                  onChange={handleChange}
-                />
-                Feature this project
-              </label>
-            </div>
-
-            <div className="admin-projects-modal-actions">
-              <button type="button" onClick={() => setModalOpen(false)}>
-                Cancel
-              </button>
-
-              <button type="submit" className="primary" disabled={saving}>
-                <FiSave />
-                {saving ? "Saving..." : "Save Project"}
-              </button>
-            </div>
-          </form>
-        </div>
-      )}
+          </div>
+        </form>
+      </AdminModal>
     </div>
   );
 }
