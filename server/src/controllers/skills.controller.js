@@ -470,3 +470,39 @@ export const deleteSkill = async (req, res) => {
     });
   }
 };
+
+/* =========================================================
+   GET ADMIN SKILLS
+========================================================= */
+
+export const getAdminSkills = async (req, res) => {
+  try {
+    const skills = await prisma.skill.findMany({
+      orderBy: [
+        { displayOrder: "asc" },
+        { createdAt: "asc" },
+      ],
+      include: {
+        category: {
+          select: {
+            id: true,
+            name: true,
+            slug: true,
+          },
+        },
+      },
+    });
+
+    return res.status(200).json({
+      success: true,
+      skills,
+    });
+  } catch (error) {
+    console.error("Get admin skills error:", error);
+
+    return res.status(500).json({
+      success: false,
+      message: "Unable to retrieve skills.",
+    });
+  }
+};
