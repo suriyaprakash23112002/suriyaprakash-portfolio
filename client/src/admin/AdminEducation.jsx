@@ -2,43 +2,35 @@ import { useEffect, useState } from "react";
 import {
   FiBookOpen,
   FiEdit2,
+  FiMapPin,
   FiPlus,
   FiRefreshCw,
   FiSave,
   FiTrash2,
-  FiX,
 } from "react-icons/fi";
 
 import api from "../services/api";
-import "./AdminEducation.css";
+import {
+  AdminAlert,
+  AdminEmptyState,
+  AdminLoader,
+  AdminModal,
+  AdminPageHeader,
+  AdminSaving,
+} from "./AdminUI";
 
 const emptyForm = {
-  institution: "",
   degree: "",
   fieldOfStudy: "",
+  institution: "",
   location: "",
-  startDate: "",
-  endDate: "",
+  startYear: "",
+  endYear: "",
+  isCurrent: false,
   grade: "",
   description: "",
-  isActive: true,
-  order: 0,
-};
-
-const getList = (response) => {
-  const data = response?.data;
-  if (Array.isArray(data)) return data;
-  if (Array.isArray(data?.education)) return data.education;
-  if (Array.isArray(data?.data?.education)) return data.data.education;
-  if (Array.isArray(data?.data)) return data.data;
-  return [];
-};
-
-const dateInput = (value) => {
-  if (!value) return "";
-  const date = new Date(value);
-  if (Number.isNaN(date.getTime())) return value;
-  return date.toISOString().slice(0, 10);
+  displayOrder: 0,
+  isVisible: true,
 };
 
 function AdminEducation() {
@@ -55,10 +47,9 @@ function AdminEducation() {
     try {
       setLoading(true);
       setError("");
-      const response = await api.get("/education");
-      setItems(getList(response));
+      const response = await api.get("/education/admin/all");
+      setItems(response?.data?.education || []);
     } catch (err) {
-      console.error("Education load error:", err);
       setError(err?.response?.data?.message || "Unable to load education.");
     } finally {
       setLoading(false);
@@ -78,263 +69,147 @@ function AdminEducation() {
   const openEdit = (item) => {
     setEditingId(item.id);
     setForm({
-      institution:
-        item?.institution ||
-        item?.institutionName ||
-        item?.college ||
-        item?.university ||
-        "",
-      degree: item?.degree || item?.qualification || item?.course || "",
-      fieldOfStudy: item?.fieldOfStudy || item?.specialization || "",
-      location: item?.location || "",
-      startDate: dateInput(item?.startDate),
-      endDate: dateInput(item?.endDate),
-      grade: item?.grade || item?.cgpa || item?.percentage || "",
-      description: item?.description || "",
-      isActive: item?.isActive !== false,
-      order: item?.order ?? 0,
+      degree: item.degree || "",
+      fieldOfStudy: item.fieldOfStudy || "",
+      institution: item.institution || "",
+      location: item.location || "",
+      startYear: item.startYear ?? "",
+      endYear: item.endYear ?? "",
+      isCurrent: Boolean(item.isCurrent),
+      grade: item.grade || "",
+      description: item.description || "",
+      displayOrder: item.displayOrder ?? 0,
+      isVisible: item.isVisible !== false,
     });
     setModalOpen(true);
   };
 
-  const handleChange = (event) => {
+  const change = (event) => {
     const { name, value, type, checked } = event.target;
     setForm((previous) => ({
       ...previous,
       [name]: type === "checkbox" ? checked : value,
+      ...(name === "isCurrent" && checked ? { endYear: "" } : {}),
     }));
   };
 
-  const saveItem = async (event) => {
+  const save = async (event) => {
     event.preventDefault();
 
     try {
       setSaving(true);
       setError("");
-      setMessage("");
 
       const payload = {
         ...form,
-        order: Number(form.order || 0),
-        endDate: form.endDate || null,
+        startYear: form.startYear === "" ? null : Number(form.startYear),
+        endYear: form.isCurrent || form.endYear === "" ? null : Number(form.endYear),
+        displayOrder: Number(form.displayOrder || 0),
       };
 
-      if (editingId) {
-        await api.put(`/education/${editingId}`, payload);
-      } else {
-        await api.post("/education", payload);
-      }
+      if (editingId) await api.put(`/education/${editingId}`, payload);
+      else await api.post("/education", payload);
 
-      setMessage(
-        editingId
-          ? "Education updated successfully."
-          : "Education created successfully."
-      );
+      setMessage(editingId ? "Education updated." : "Education created.");
       setModalOpen(false);
       await loadItems();
     } catch (err) {
-      console.error("Education save error:", err);
       setError(err?.response?.data?.message || "Unable to save education.");
     } finally {
       setSaving(false);
     }
   };
 
-  const removeItem = async (item) => {
-    if (!window.confirm(`Delete "${item.degree || item.qualification}"?`)) return;
-
+  const remove = async (item) => {
+    if (!window.confirm(`Delete "${item.degree}"?`)) return;
     try {
       await api.delete(`/education/${item.id}`);
-      setMessage("Education deleted successfully.");
+      setMessage("Education deleted.");
       await loadItems();
     } catch (err) {
-      console.error("Education delete error:", err);
       setError(err?.response?.data?.message || "Unable to delete education.");
     }
   };
 
+  if (loading) return <AdminLoader label="Loading education..." />;
+
   return (
-    <div className="admin-education">
-      <div className="admin-education-header">
-        <div>
-          <span>PORTFOLIO CONTENT</span>
-          <h1>Education</h1>
-          <p>Manage qualifications, institutions and academic records.</p>
-        </div>
+    <div className="admin-ui-page">
+      <AdminPageHeader
+        eyebrow="PORTFOLIO CONTENT"
+        title="Education"
+        description="Manage qualifications, institutions and academic results."
+        actions={
+          <>
+            <button className="admin-ui-button" type="button" onClick={loadItems}><FiRefreshCw />Refresh</button>
+            <button className="admin-ui-button admin-ui-button-primary" type="button" onClick={openCreate}><FiPlus />Add Education</button>
+          </>
+        }
+      />
 
-        <div className="admin-education-actions">
-          <button type="button" onClick={loadItems}>
-            <FiRefreshCw />
-            Refresh
-          </button>
-          <button type="button" className="primary" onClick={openCreate}>
-            <FiPlus />
-            Add Education
-          </button>
-        </div>
-      </div>
+      <AdminAlert type="error">{error}</AdminAlert>
+      <AdminAlert type="success">{message}</AdminAlert>
 
-      {error && <div className="admin-education-alert error">{error}</div>}
-      {message && <div className="admin-education-alert success">{message}</div>}
-
-      {loading ? (
-        <div className="admin-education-loading">Loading education...</div>
+      {items.length === 0 ? (
+        <AdminEmptyState
+          icon={<FiBookOpen />}
+          title="No education records"
+          description="Add your academic qualifications."
+        />
       ) : (
-        <div className="admin-education-grid">
-          {items.map((item, index) => (
-            <article className="admin-education-card" key={item.id}>
-              <div className="admin-education-card-top">
-                <span>{String(index + 1).padStart(2, "0")}</span>
-                <div className="admin-education-icon">
-                  <FiBookOpen />
+        <div className="admin-ui-list">
+          {items.map((item) => (
+            <article className="admin-ui-list-card admin-ui-card" key={item.id}>
+              <div className="admin-ui-list-icon"><FiBookOpen /></div>
+              <div className="admin-ui-list-content">
+                <span>QUALIFICATION</span>
+                <h3>{item.degree}</h3>
+                <h4>{item.institution}</h4>
+                <div className="admin-ui-meta">
+                  {item.location && <span><FiMapPin />{item.location}</span>}
+                  <span>{item.startYear || "—"} — {item.isCurrent ? "Present" : item.endYear || "—"}</span>
+                  {item.grade && <span>{item.grade}</span>}
+                  <span className={`admin-ui-badge ${item.isVisible ? "admin-ui-badge-success" : "admin-ui-badge-muted"}`}>{item.isVisible ? "Visible" : "Hidden"}</span>
                 </div>
-                <div className="admin-education-card-actions">
-                  <button type="button" onClick={() => openEdit(item)}>
-                    <FiEdit2 />
-                  </button>
-                  <button type="button" onClick={() => removeItem(item)}>
-                    <FiTrash2 />
-                  </button>
-                </div>
+                {item.description && <p>{item.description}</p>}
               </div>
-
-              <span className="admin-education-label">QUALIFICATION</span>
-              <h2>{item?.degree || item?.qualification || item?.course}</h2>
-              <h3>
-                {item?.institution ||
-                  item?.institutionName ||
-                  item?.college ||
-                  item?.university}
-              </h3>
-
-              {item?.fieldOfStudy && <p className="field">{item.fieldOfStudy}</p>}
-
-              <p>{item?.description || "No description added."}</p>
-
-              <div className="admin-education-meta">
-                <span>
-                  {dateInput(item?.startDate) || "Start"} —{" "}
-                  {dateInput(item?.endDate) || "End"}
-                </span>
-                {(item?.grade || item?.cgpa || item?.percentage) && (
-                  <span>{item?.grade || item?.cgpa || item?.percentage}</span>
-                )}
+              <div className="admin-ui-actions">
+                <button className="admin-ui-icon-button" type="button" onClick={() => openEdit(item)}><FiEdit2 /></button>
+                <button className="admin-ui-icon-button admin-ui-button-danger" type="button" onClick={() => remove(item)}><FiTrash2 /></button>
               </div>
             </article>
           ))}
-
-          {items.length === 0 && (
-            <div className="admin-education-empty">No education records yet.</div>
-          )}
         </div>
       )}
 
-      {modalOpen && (
-        <div className="admin-education-modal-backdrop">
-          <form className="admin-education-modal" onSubmit={saveItem}>
-            <div className="admin-education-modal-header">
-              <div>
-                <span>EDUCATION EDITOR</span>
-                <h2>{editingId ? "Edit Education" : "Add Education"}</h2>
-              </div>
-              <button type="button" onClick={() => setModalOpen(false)}>
-                <FiX />
-              </button>
-            </div>
-
-            <div className="admin-education-form-grid">
-              <label className="full">
-                Institution
-                <input
-                  name="institution"
-                  value={form.institution}
-                  onChange={handleChange}
-                  required
-                />
-              </label>
-
-              <label>
-                Degree
-                <input name="degree" value={form.degree} onChange={handleChange} required />
-              </label>
-
-              <label>
-                Field of study
-                <input
-                  name="fieldOfStudy"
-                  value={form.fieldOfStudy}
-                  onChange={handleChange}
-                />
-              </label>
-
-              <label>
-                Location
-                <input name="location" value={form.location} onChange={handleChange} />
-              </label>
-
-              <label>
-                Grade / CGPA / %
-                <input name="grade" value={form.grade} onChange={handleChange} />
-              </label>
-
-              <label>
-                Start date
-                <input
-                  name="startDate"
-                  type="date"
-                  value={form.startDate}
-                  onChange={handleChange}
-                />
-              </label>
-
-              <label>
-                End date
-                <input
-                  name="endDate"
-                  type="date"
-                  value={form.endDate}
-                  onChange={handleChange}
-                />
-              </label>
-
-              <label>
-                Order
-                <input name="order" type="number" value={form.order} onChange={handleChange} />
-              </label>
-
-              <label className="admin-education-check">
-                <input
-                  name="isActive"
-                  type="checkbox"
-                  checked={form.isActive}
-                  onChange={handleChange}
-                />
-                Active
-              </label>
-
-              <label className="full">
-                Description
-                <textarea
-                  name="description"
-                  rows="6"
-                  value={form.description}
-                  onChange={handleChange}
-                />
-              </label>
-            </div>
-
-            <div className="admin-education-modal-actions">
-              <button type="button" onClick={() => setModalOpen(false)}>
-                Cancel
-              </button>
-              <button type="submit" className="primary" disabled={saving}>
-                <FiSave />
-                {saving ? "Saving..." : "Save Education"}
-              </button>
-            </div>
-          </form>
-        </div>
-      )}
+      <AdminModal
+        open={modalOpen}
+        onClose={() => setModalOpen(false)}
+        eyebrow="EDUCATION EDITOR"
+        title={editingId ? "Edit Education" : "Add Education"}
+        footer={
+          <>
+            <button className="admin-ui-button" type="button" onClick={() => setModalOpen(false)}>Cancel</button>
+            <button className="admin-ui-button admin-ui-button-primary" type="submit" form="education-form" disabled={saving}>{saving ? <AdminSaving /> : <><FiSave />Save Education</>}</button>
+          </>
+        }
+      >
+        <form id="education-form" onSubmit={save}>
+          <div className="admin-ui-form-grid">
+            <label className="admin-ui-field"><span>Degree</span><input name="degree" value={form.degree} onChange={change} required /></label>
+            <label className="admin-ui-field"><span>Field of study</span><input name="fieldOfStudy" value={form.fieldOfStudy} onChange={change} /></label>
+            <label className="admin-ui-field admin-ui-field-full"><span>Institution</span><input name="institution" value={form.institution} onChange={change} required /></label>
+            <label className="admin-ui-field"><span>Location</span><input name="location" value={form.location} onChange={change} /></label>
+            <label className="admin-ui-field"><span>Grade / CGPA</span><input name="grade" value={form.grade} onChange={change} /></label>
+            <label className="admin-ui-field"><span>Start year</span><input name="startYear" type="number" value={form.startYear} onChange={change} /></label>
+            <label className="admin-ui-field"><span>End year</span><input name="endYear" type="number" value={form.endYear} onChange={change} disabled={form.isCurrent} /></label>
+            <label className="admin-ui-field"><span>Display order</span><input name="displayOrder" type="number" value={form.displayOrder} onChange={change} /></label>
+            <label className="admin-ui-check"><input name="isCurrent" type="checkbox" checked={form.isCurrent} onChange={change} />Currently studying</label>
+            <label className="admin-ui-field admin-ui-field-full"><span>Description</span><textarea name="description" value={form.description} onChange={change} /></label>
+            <label className="admin-ui-check admin-ui-field-full"><input name="isVisible" type="checkbox" checked={form.isVisible} onChange={change} />Visible on portfolio</label>
+          </div>
+        </form>
+      </AdminModal>
     </div>
   );
 }
