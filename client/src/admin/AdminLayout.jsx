@@ -5,31 +5,21 @@ import AdminSidebar from "./AdminSidebar";
 import AdminHeader from "./AdminHeader";
 
 import "./AdminLayout.css";
+import "./AdminSystem.css";
 
 function AdminLayout() {
-  const [sidebarOpen, setSidebarOpen] =
-    useState(false);
-
-  const toggleSidebar = () => {
-    setSidebarOpen(
-      (previous) => !previous
-    );
-  };
-
-  const closeSidebar = () => {
-    setSidebarOpen(false);
-  };
+  const [sidebarOpen, setSidebarOpen] = useState(false);
 
   return (
     <div className="admin-layout">
       <AdminSidebar
         open={sidebarOpen}
-        onClose={closeSidebar}
+        onClose={() => setSidebarOpen(false)}
       />
 
       <div className="admin-layout-main">
         <AdminHeader
-          onMenuClick={toggleSidebar}
+          onMenuClick={() => setSidebarOpen((previous) => !previous)}
         />
 
         <main className="admin-layout-content">
@@ -41,7 +31,7 @@ function AdminLayout() {
         <button
           type="button"
           className="admin-layout-overlay"
-          onClick={closeSidebar}
+          onClick={() => setSidebarOpen(false)}
           aria-label="Close sidebar"
         />
       )}
