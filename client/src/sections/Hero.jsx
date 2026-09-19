@@ -216,8 +216,9 @@ function Hero({ profile }) {
             <span className="hero-availability-dot" />
 
             <span>
-              {profile?.availabilityText ||
-                "Available for opportunities"}
+              {profile?.availableForWork === false
+                ? "Currently unavailable"
+                : profile?.availabilityText || "Available for opportunities"}
             </span>
           </motion.div>
 
@@ -576,7 +577,7 @@ function Hero({ profile }) {
 
                 <div className="hero-image-frame">
                   <img
-                    src={profileImage}
+                    src={profile?.profileImageUrl || profileImage}
                     alt={
                       profile?.fullName ||
                       "Suriyaprakash"
