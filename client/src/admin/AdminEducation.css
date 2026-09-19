@@ -1,0 +1,283 @@
+.admin-education {
+    width: 100%;
+    max-width: 1450px;
+    margin: 0 auto;
+    color: #f8fafc
+}
+
+.admin-education-header {
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-between;
+    gap: 24px;
+    margin-bottom: 20px
+}
+
+.admin-education-header>div:first-child>span,
+.admin-education-modal-header span {
+    display: block;
+    color: #3b82f6;
+    font: 700 7px monospace;
+    letter-spacing: 1.4px;
+    margin-bottom: 6px
+}
+
+.admin-education-header h1 {
+    margin: 0;
+    font-size: 29px
+}
+
+.admin-education-header p {
+    margin: 7px 0 0;
+    color: #6e7c90;
+    font-size: 10px
+}
+
+.admin-education-actions,
+.admin-education-modal-actions {
+    display: flex;
+    gap: 8px
+}
+
+.admin-education-actions button,
+.admin-education-modal-actions button {
+    min-height: 39px;
+    display: flex;
+    align-items: center;
+    gap: 7px;
+    padding: 0 12px;
+    color: #95a3b7;
+    background: rgba(255, 255, 255, .02);
+    border: 1px solid rgba(255, 255, 255, .065);
+    border-radius: 9px;
+    font-size: 8px
+}
+
+.admin-education-actions .primary,
+.admin-education-modal-actions .primary {
+    color: #fff;
+    background: #2563eb
+}
+
+.admin-education-alert {
+    margin-bottom: 12px;
+    padding: 11px 13px;
+    border-radius: 9px;
+    font-size: 9px
+}
+
+.admin-education-alert.error {
+    color: #fca5a5;
+    background: rgba(239, 68, 68, .06)
+}
+
+.admin-education-alert.success {
+    color: #86efac;
+    background: rgba(34, 197, 94, .06)
+}
+
+.admin-education-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 10px
+}
+
+.admin-education-card {
+    padding: 16px;
+    background: rgba(255, 255, 255, .014);
+    border: 1px solid rgba(255, 255, 255, .055);
+    border-radius: 13px
+}
+
+.admin-education-card-top {
+    display: flex;
+    align-items: center;
+    gap: 10px
+}
+
+.admin-education-card-top>span {
+    color: #46566b;
+    font: 8px monospace
+}
+
+.admin-education-icon {
+    width: 37px;
+    height: 37px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #60a5fa;
+    background: rgba(59, 130, 246, .07);
+    border-radius: 9px
+}
+
+.admin-education-card-actions {
+    display: flex;
+    gap: 4px;
+    margin-left: auto
+}
+
+.admin-education-card-actions button {
+    width: 29px;
+    height: 29px;
+    color: #718096;
+    background: rgba(255, 255, 255, .02);
+    border: 1px solid rgba(255, 255, 255, .055);
+    border-radius: 7px
+}
+
+.admin-education-label {
+    display: block;
+    margin-top: 17px;
+    color: #4d6688;
+    font: 6px monospace
+}
+
+.admin-education-card h2 {
+    margin: 7px 0 0;
+    color: #e2e8f0;
+    font-size: 17px
+}
+
+.admin-education-card h3 {
+    margin: 6px 0 0;
+    color: #8a98aa;
+    font-size: 10px
+}
+
+.admin-education-card .field {
+    color: #60a5fa
+}
+
+.admin-education-card>p {
+    margin: 10px 0;
+    color: #718096;
+    font-size: 9px;
+    line-height: 1.6
+}
+
+.admin-education-meta {
+    display: flex;
+    gap: 12px;
+    flex-wrap: wrap;
+    margin-top: 12px;
+    color: #59687c;
+    font-size: 7px
+}
+
+.admin-education-loading,
+.admin-education-empty {
+    padding: 40px;
+    text-align: center;
+    color: #64748b
+}
+
+.admin-education-empty {
+    grid-column: 1/-1
+}
+
+.admin-education-modal-backdrop {
+    position: fixed;
+    z-index: 1400;
+    inset: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+    background: rgba(0, 0, 0, .7);
+    backdrop-filter: blur(5px)
+}
+
+.admin-education-modal {
+    width: min(700px, 100%);
+    max-height: 90vh;
+    overflow: auto;
+    padding: 19px;
+    background: #080e17;
+    border: 1px solid rgba(96, 165, 250, .12);
+    border-radius: 14px
+}
+
+.admin-education-modal-header {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    margin-bottom: 18px;
+    padding-bottom: 13px;
+    border-bottom: 1px solid rgba(255, 255, 255, .06)
+}
+
+.admin-education-modal-header h2 {
+    margin: 0;
+    font-size: 15px
+}
+
+.admin-education-modal-header button {
+    border: none;
+    background: none;
+    color: #718096;
+    font-size: 18px
+}
+
+.admin-education-form-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px
+}
+
+.admin-education-form-grid label {
+    display: flex;
+    flex-direction: column;
+    gap: 7px;
+    color: #8391a4;
+    font-size: 8px
+}
+
+.admin-education-form-grid .full {
+    grid-column: 1/-1
+}
+
+.admin-education-form-grid input,
+.admin-education-form-grid textarea {
+    width: 100%;
+    box-sizing: border-box;
+    padding: 10px;
+    color: #dce4ed;
+    background: rgba(255, 255, 255, .018);
+    border: 1px solid rgba(255, 255, 255, .07);
+    border-radius: 8px;
+    outline: none
+}
+
+.admin-education-form-grid .admin-education-check {
+    flex-direction: row;
+    align-items: center
+}
+
+.admin-education-form-grid .admin-education-check input {
+    width: auto
+}
+
+.admin-education-modal-actions {
+    justify-content: flex-end;
+    margin-top: 18px
+}
+
+@media(max-width:700px) {
+    .admin-education-header {
+        align-items: flex-start;
+        flex-direction: column
+    }
+
+    .admin-education-grid {
+        grid-template-columns: 1fr
+    }
+
+    .admin-education-form-grid {
+        grid-template-columns: 1fr
+    }
+
+    .admin-education-form-grid .full {
+        grid-column: 1
+    }
+}

@@ -1,0 +1,197 @@
+body {
+  margin: 0;
+
+  background: #06090e;
+}
+
+.portfolio-page {
+  width: 100%;
+
+  min-width: 320px;
+
+  min-height: 100vh;
+
+  margin: 0;
+
+  overflow-x: hidden;
+
+  background: #06090e;
+
+  color: #f6f8fb;
+
+  font-family:
+    Arial,
+    sans-serif;
+}
+
+.portfolio-page-loader,
+.portfolio-page-error {
+  width: 100%;
+
+  min-height: 100vh;
+
+  display: flex;
+
+  flex-direction: column;
+
+  align-items: center;
+
+  justify-content: center;
+
+  margin: 0;
+
+  padding: 30px;
+
+  color: #f6f8fb;
+
+  background: #06090e;
+
+  font-family:
+    Arial,
+    sans-serif;
+
+  text-align: center;
+}
+
+.portfolio-loader-logo {
+  width: 55px;
+  height: 55px;
+
+  display: flex;
+
+  align-items: center;
+
+  justify-content: center;
+
+  margin-bottom: 20px;
+
+  color: #ffffff;
+
+  background:
+    linear-gradient(
+      135deg,
+      #2563eb,
+      #06b6d4
+    );
+
+  border-radius: 13px;
+
+  font-size: 14px;
+
+  font-weight: 800;
+
+  box-shadow:
+    0 10px 40px
+    rgba(37, 99, 235, 0.25);
+}
+
+.portfolio-page-loader > span {
+  color: #657185;
+
+  font-family: monospace;
+
+  font-size: 8px;
+
+  letter-spacing: 2px;
+}
+
+.portfolio-loader-line {
+  width: 180px;
+  height: 2px;
+
+  overflow: hidden;
+
+  margin-top: 15px;
+
+  background:
+    rgba(255, 255, 255, 0.06);
+
+  border-radius: 100px;
+}
+
+.portfolio-loader-line div {
+  width: 60px;
+  height: 100%;
+
+  background:
+    linear-gradient(
+      90deg,
+      transparent,
+      #3b82f6,
+      transparent
+    );
+
+  animation:
+    portfolioPageLoader
+    1.3s infinite linear;
+}
+
+@keyframes portfolioPageLoader {
+  from {
+    transform:
+      translateX(-70px);
+  }
+
+  to {
+    transform:
+      translateX(190px);
+  }
+}
+
+.portfolio-page-error > span {
+  color: #ef4444;
+
+  font-family: monospace;
+
+  font-size: 9px;
+
+  letter-spacing: 2px;
+}
+
+.portfolio-page-error h1 {
+  margin:
+    12px 0 0;
+
+  font-size:
+    clamp(
+      26px,
+      5vw,
+      42px
+    );
+}
+
+.portfolio-page-error p {
+  margin-top: 10px;
+
+  color: #798496;
+
+  font-size: 13px;
+}
+
+.portfolio-page-placeholder {
+  min-height: 45vh;
+
+  display: flex;
+
+  align-items: center;
+
+  justify-content: center;
+
+  padding: 50px 20px;
+
+  color: #465163;
+
+  background: #06090e;
+
+  border-top:
+    1px solid
+    rgba(255, 255, 255, 0.035);
+
+  font-family: monospace;
+
+  font-size: 10px;
+
+  letter-spacing: 1.5px;
+
+  text-transform: uppercase;
+}

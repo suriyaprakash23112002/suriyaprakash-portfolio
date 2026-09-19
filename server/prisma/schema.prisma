@@ -1,0 +1,301 @@
+generator client {
+  provider = "prisma-client"
+  output   = "../src/generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+enum AdminRole {
+  SUPER_ADMIN
+  ADMIN
+}
+
+enum ProjectStatus {
+  DRAFT
+  PUBLISHED
+  ARCHIVED
+}
+
+enum EmploymentType {
+  TRAINEE
+  INTERNSHIP
+  FULL_TIME
+  PART_TIME
+  CONTRACT
+  FREELANCE
+}
+
+enum CareerEventType {
+  ROLE
+  PROMOTION
+  PROJECT
+  MILESTONE
+}
+
+enum SettingValueType {
+  TEXT
+  NUMBER
+  BOOLEAN
+  JSON
+}
+
+model AdminUser {
+  id          String    @id @default(cuid())
+  name        String
+  email       String    @unique
+  password    String
+  role        AdminRole @default(SUPER_ADMIN)
+  isActive    Boolean   @default(true)
+  lastLoginAt DateTime?
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model Profile {
+  id  String @id @default(cuid())
+  key String @unique @default("main")
+
+  fullName String
+  headline String
+
+  heroText String? @db.Text
+  shortBio String? @db.Text
+  longBio  String? @db.Text
+
+  location String?
+  email    String?
+  phone    String?
+
+  githubUrl   String?
+  linkedinUrl String?
+  whatsappUrl String?
+
+  resumeUrl       String?
+  profileImageUrl String?
+
+  availableForWork Boolean @default(true)
+  availabilityText String?
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model SkillCategory {
+  id   String @id @default(cuid())
+  name String
+  slug String @unique
+
+  description String? @db.Text
+
+  displayOrder Int     @default(0)
+  isActive     Boolean @default(true)
+
+  skills Skill[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([displayOrder])
+}
+
+model Skill {
+  id   String @id @default(cuid())
+  name String
+  slug String @unique
+
+  icon String?
+
+  proficiency     Int?
+  yearsExperience Float?
+
+  isFeatured Boolean @default(false)
+  isActive   Boolean @default(true)
+
+  displayOrder Int @default(0)
+
+  categoryId String
+
+  category SkillCategory @relation(fields: [categoryId], references: [id], onDelete: Cascade)
+
+  projects ProjectTechnology[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([categoryId])
+  @@index([displayOrder])
+}
+
+model Project {
+  id String @id @default(cuid())
+
+  title String
+  slug  String @unique
+
+  shortDescription String?
+  description      String? @db.Text
+
+  githubUrl String?
+  liveUrl   String?
+
+  status ProjectStatus @default(DRAFT)
+
+  isFeatured Boolean @default(false)
+  isCurrent  Boolean @default(false)
+
+  displayOrder Int @default(0)
+
+  startedAt   DateTime?
+  completedAt DateTime?
+
+  images       ProjectImage[]
+  technologies ProjectTechnology[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([status])
+  @@index([isFeatured])
+  @@index([displayOrder])
+}
+
+model ProjectImage {
+  id String @id @default(cuid())
+
+  projectId String
+
+  url     String
+  altText String?
+  caption String?
+
+  isCover Boolean @default(false)
+
+  displayOrder Int @default(0)
+
+  project Project @relation(fields: [projectId], references: [id], onDelete: Cascade)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([projectId])
+  @@index([displayOrder])
+}
+
+model ProjectTechnology {
+  projectId String
+  skillId   String
+
+  project Project @relation(fields: [projectId], references: [id], onDelete: Cascade)
+  skill   Skill   @relation(fields: [skillId], references: [id], onDelete: Cascade)
+
+  @@id([projectId, skillId])
+}
+
+model Experience {
+  id String @id @default(cuid())
+
+  company String
+  role    String
+
+  employmentType EmploymentType @default(FULL_TIME)
+
+  location String?
+
+  companyUrl  String?
+  companyLogo String?
+
+  startDate DateTime
+  endDate   DateTime?
+
+  isCurrent Boolean @default(false)
+
+  summary String? @db.Text
+
+  responsibilities String[] @default([])
+  technologies     String[] @default([])
+
+  displayOrder Int     @default(0)
+  isVisible    Boolean @default(true)
+
+  careerEvents CareerJourney[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([displayOrder])
+  @@index([isCurrent])
+}
+
+model CareerJourney {
+  id String @id @default(cuid())
+
+  title        String
+  organization String?
+
+  description String? @db.Text
+
+  eventType CareerEventType @default(ROLE)
+
+  startDate DateTime
+  endDate   DateTime?
+
+  icon String?
+
+  displayOrder Int     @default(0)
+  isVisible    Boolean @default(true)
+
+  experienceId String?
+
+  experience Experience? @relation(fields: [experienceId], references: [id], onDelete: SetNull)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([experienceId])
+  @@index([displayOrder])
+}
+
+model Education {
+  id String @id @default(cuid())
+
+  degree       String
+  fieldOfStudy String?
+
+  institution String
+  location    String?
+
+  startYear Int?
+  endYear   Int?
+
+  isCurrent Boolean @default(false)
+
+  grade String?
+
+  description String? @db.Text
+
+  displayOrder Int     @default(0)
+  isVisible    Boolean @default(true)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([displayOrder])
+}
+
+model SiteSetting {
+  id String @id @default(cuid())
+
+  key String @unique
+
+  value String @db.Text
+
+  valueType SettingValueType @default(TEXT)
+
+  description String?
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}

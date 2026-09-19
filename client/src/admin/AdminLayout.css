@@ -1,0 +1,102 @@
+.admin-layout {
+  min-height: 100vh;
+
+  display: flex;
+
+  background: #05080d;
+
+  color: #f8fafc;
+
+  font-family:
+    Arial,
+    Helvetica,
+    sans-serif;
+}
+
+.admin-layout-main {
+  width: calc(100% - 250px);
+
+  min-width: 0;
+
+  margin-left: 250px;
+
+  transition:
+    width 0.3s ease,
+    margin-left 0.3s ease;
+}
+
+.admin-layout-content {
+  min-height:
+    calc(100vh - 68px);
+
+  box-sizing: border-box;
+
+  padding: 26px;
+
+  background:
+    radial-gradient(
+      circle at top right,
+      rgba(
+        37,
+        99,
+        235,
+        0.06
+      ),
+      transparent 30%
+    ),
+    #05080d;
+}
+
+.admin-layout-overlay {
+  display: none;
+}
+
+/* =========================================================
+   TABLET / MOBILE
+========================================================= */
+
+@media (max-width: 950px) {
+  .admin-layout-main {
+    width: 100%;
+
+    margin-left: 0;
+  }
+
+  .admin-layout-content {
+    padding: 20px;
+  }
+
+  .admin-layout-overlay {
+    position: fixed;
+
+    z-index: 1050;
+
+    inset: 0;
+
+    display: block;
+
+    padding: 0;
+
+    background:
+      rgba(
+        0,
+        0,
+        0,
+        0.58
+      );
+
+    border: none;
+
+    backdrop-filter:
+      blur(3px);
+
+    -webkit-backdrop-filter:
+      blur(3px);
+  }
+}
+
+@media (max-width: 600px) {
+  .admin-layout-content {
+    padding: 16px;
+  }
+}

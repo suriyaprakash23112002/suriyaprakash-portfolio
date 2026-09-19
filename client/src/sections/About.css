@@ -1,0 +1,1534 @@
+/* =========================================================
+   ABOUT SECTION
+========================================================= */
+
+.about-section {
+  position: relative;
+
+  width: 100%;
+
+  box-sizing: border-box;
+
+  overflow: hidden;
+
+  padding: 45px 36px 42px;
+
+  color: #f8fafc;
+
+  background: #05080d;
+
+  font-family:
+    Arial,
+    Helvetica,
+    sans-serif;
+}
+
+
+/* =========================================================
+   BACKGROUND
+========================================================= */
+
+.about-grid {
+  position: absolute;
+
+  inset: 0;
+
+  pointer-events: none;
+
+  opacity: 0.28;
+
+  /*
+    ONLY VERTICAL LINES.
+    Horizontal lines removed.
+  */
+  background-image:
+    linear-gradient(
+      90deg,
+      rgba(255, 255, 255, 0.016) 1px,
+      transparent 1px
+    );
+
+  background-size: 55px 55px;
+}
+
+
+/* =========================================================
+   BACKGROUND GLOW
+========================================================= */
+
+.about-glow {
+  position: absolute;
+
+  pointer-events: none;
+
+  width: 420px;
+  height: 420px;
+
+  border-radius: 50%;
+
+  filter: blur(145px);
+}
+
+.about-glow-left {
+  left: -280px;
+  top: 20%;
+
+  background:
+    rgba(37, 99, 235, 0.08);
+}
+
+.about-glow-right {
+  right: -270px;
+  bottom: 0;
+
+  background:
+    rgba(6, 182, 212, 0.05);
+}
+
+
+/* =========================================================
+   CONTAINER
+========================================================= */
+
+.about-container {
+  position: relative;
+
+  z-index: 2;
+
+  width: 100%;
+  max-width: 1380px;
+
+  margin: 0 auto;
+}
+
+
+/* =========================================================
+   SECTION LABEL
+========================================================= */
+
+.about-section-label {
+  display: flex;
+
+  align-items: center;
+
+  gap: 11px;
+
+  margin-bottom: 24px;
+}
+
+.about-section-label > span {
+  color: #66758b;
+
+  font-family: monospace;
+
+  font-size: 10px;
+}
+
+.about-section-label > div {
+  width: 42px;
+  height: 1px;
+
+  background:
+    linear-gradient(
+      90deg,
+      #2563eb,
+      transparent
+    );
+}
+
+.about-section-label > strong {
+  color: #3b82f6;
+
+  font-family: monospace;
+
+  font-size: 11px;
+
+  font-weight: 700;
+
+  letter-spacing: 2.5px;
+}
+
+
+/* =========================================================
+   MAIN LAYOUT
+========================================================= */
+
+.about-main {
+  display: grid;
+
+  grid-template-columns:
+    minmax(0, 1fr)
+    minmax(430px, 0.9fr);
+
+  align-items: center;
+
+  gap:
+    clamp(
+      45px,
+      7vw,
+      100px
+    );
+}
+
+.about-content {
+  max-width: 710px;
+}
+
+
+/* =========================================================
+   DEVELOPMENT STATUS
+========================================================= */
+
+.about-live {
+  width: fit-content;
+
+  display: flex;
+
+  align-items: center;
+
+  gap: 8px;
+
+  margin-bottom: 16px;
+
+  color: #8794a7;
+
+  font-family: monospace;
+
+  font-size: 9px;
+
+  font-weight: 600;
+
+  letter-spacing: 1.2px;
+}
+
+.about-live > span {
+  position: relative;
+
+  width: 7px;
+  height: 7px;
+
+  flex-shrink: 0;
+
+  background: #22c55e;
+
+  border-radius: 50%;
+
+  box-shadow:
+    0 0 10px
+    rgba(34, 197, 94, 0.8);
+}
+
+.about-live > span::before {
+  content: "";
+
+  position: absolute;
+
+  inset: -4px;
+
+  border:
+    1px solid
+    rgba(34, 197, 94, 0.25);
+
+  border-radius: 50%;
+
+  animation:
+    aboutPulse
+    1.7s
+    infinite;
+}
+
+@keyframes aboutPulse {
+  from {
+    opacity: 1;
+
+    transform: scale(0.7);
+  }
+
+  to {
+    opacity: 0;
+
+    transform: scale(1.6);
+  }
+}
+
+
+/* =========================================================
+   MAIN HEADING
+========================================================= */
+
+.about-content h2 {
+  max-width: 710px;
+
+  margin: 0;
+
+  color: #f7f9fc;
+
+  font-size:
+    clamp(
+      46px,
+      4.6vw,
+      72px
+    );
+
+  font-weight: 700;
+
+  line-height: 1.04;
+
+  letter-spacing: -3.2px;
+}
+
+.about-content h2 span {
+  color: #657287;
+
+  font-weight: 500;
+}
+
+
+/* =========================================================
+   DESCRIPTION
+========================================================= */
+
+.about-primary-text,
+.about-secondary-text {
+  max-width: 650px;
+
+  margin: 0;
+}
+
+.about-primary-text {
+  margin-top: 22px;
+
+  color: #a9b4c3;
+
+  font-size: 16px;
+
+  line-height: 1.7;
+}
+
+.about-secondary-text {
+  margin-top: 11px;
+
+  color: #7d8a9e;
+
+  font-size: 14px;
+
+  line-height: 1.7;
+}
+
+
+/* =========================================================
+   CAPABILITY RAIL
+========================================================= */
+
+.about-capability-rail {
+  position: relative;
+
+  width: 100%;
+  max-width: 650px;
+
+  display: grid;
+
+  grid-template-columns:
+    repeat(
+      4,
+      minmax(0, 1fr)
+    );
+
+  gap: 8px;
+
+  margin-top: 28px;
+
+  padding: 8px;
+
+  overflow: hidden;
+
+  background:
+    linear-gradient(
+      120deg,
+      rgba(8, 14, 23, 0.64),
+      rgba(8, 25, 42, 0.35)
+    );
+
+  border:
+    1px solid
+    rgba(96, 165, 250, 0.09);
+
+  border-radius: 14px;
+
+  backdrop-filter: blur(14px);
+
+  -webkit-backdrop-filter:
+    blur(14px);
+
+  box-shadow:
+    0 14px 38px
+    rgba(0, 0, 0, 0.16);
+}
+
+
+/* =========================================================
+   REMOVE CAPABILITY HORIZONTAL LINE
+========================================================= */
+
+.about-capability-rail::before {
+  display: none;
+
+  content: none;
+}
+
+.about-capability-beam {
+  display: none !important;
+}
+
+
+/* =========================================================
+   CAPABILITY ITEM
+========================================================= */
+
+.about-capability-item {
+  position: relative;
+
+  z-index: 2;
+
+  min-width: 0;
+  min-height: 84px;
+
+  display: flex;
+
+  flex-direction: column;
+
+  align-items: flex-start;
+
+  justify-content: center;
+
+  gap: 8px;
+
+  padding: 12px;
+
+  background:
+    rgba(255, 255, 255, 0.012);
+
+  border:
+    1px solid
+    rgba(255, 255, 255, 0.04);
+
+  border-radius: 10px;
+
+  transition:
+    transform 0.3s ease,
+    background 0.3s ease,
+    border-color 0.3s ease,
+    box-shadow 0.3s ease;
+}
+
+.about-capability-item:hover {
+  background:
+    rgba(59, 130, 246, 0.055);
+
+  border-color:
+    rgba(96, 165, 250, 0.18);
+
+  box-shadow:
+    0 10px 28px
+    rgba(0, 0, 0, 0.15);
+}
+
+
+/* =========================================================
+   CAPABILITY ICON
+========================================================= */
+
+.about-capability-icon {
+  width: 32px;
+  height: 32px;
+
+  display: flex;
+
+  align-items: center;
+
+  justify-content: center;
+
+  flex-shrink: 0;
+
+  color: #60a5fa;
+
+  background:
+    rgba(59, 130, 246, 0.08);
+
+  border:
+    1px solid
+    rgba(59, 130, 246, 0.12);
+
+  border-radius: 8px;
+
+  font-size: 14px;
+
+  transition:
+    transform 0.3s ease,
+    background 0.3s ease,
+    border-color 0.3s ease;
+}
+
+.about-capability-item:hover
+.about-capability-icon {
+  transform:
+    translateY(-2px)
+    scale(1.05);
+
+  background:
+    rgba(59, 130, 246, 0.12);
+
+  border-color:
+    rgba(96, 165, 250, 0.22);
+}
+
+
+/* =========================================================
+   CAPABILITY TEXT
+========================================================= */
+
+.about-capability-copy {
+  min-width: 0;
+
+  display: flex;
+
+  flex-direction: column;
+
+  gap: 4px;
+}
+
+.about-capability-copy strong {
+  color: #e7edf5;
+
+  font-size: 12px;
+
+  font-weight: 600;
+
+  line-height: 1.25;
+}
+
+.about-capability-copy span {
+  color: #6f7d91;
+
+  font-size: 9px;
+
+  line-height: 1.45;
+}
+
+
+/* =========================================================
+   TECH SYSTEM
+========================================================= */
+
+.about-tech-system {
+  width: 100%;
+
+  display: flex;
+
+  align-items: center;
+
+  justify-content: center;
+}
+
+.about-tech-stage {
+  position: relative;
+
+  width: 430px;
+  height: 430px;
+
+  flex-shrink: 0;
+}
+
+
+/* =========================================================
+   ORBIT ANCHORS
+========================================================= */
+
+.about-orbit-anchor {
+  position: absolute;
+
+  left: 50%;
+  top: 50%;
+
+  pointer-events: none;
+
+  transform:
+    translate(
+      -50%,
+      -50%
+    );
+}
+
+.about-orbit-anchor-one {
+  width: 390px;
+  height: 390px;
+}
+
+.about-orbit-anchor-two {
+  width: 300px;
+  height: 300px;
+}
+
+.about-orbit-anchor-three {
+  width: 210px;
+  height: 210px;
+}
+
+
+/* =========================================================
+   ORBITS
+========================================================= */
+
+.about-orbit {
+  width: 100%;
+  height: 100%;
+
+  box-sizing: border-box;
+
+  border-radius: 50%;
+}
+
+.about-orbit-one {
+  border:
+    1px dashed
+    rgba(96, 165, 250, 0.13);
+}
+
+.about-orbit-two {
+  border:
+    1px solid
+    rgba(59, 130, 246, 0.1);
+}
+
+.about-orbit-three {
+  border:
+    1px dashed
+    rgba(6, 182, 212, 0.12);
+}
+
+
+/* =========================================================
+   SCAN LINE
+========================================================= */
+
+.about-scan {
+  position: absolute;
+
+  z-index: 1;
+
+  width: 280px;
+  height: 1px;
+
+  left: 50%;
+  top: 50%;
+
+  margin-left: -140px;
+
+  pointer-events: none;
+
+  background:
+    linear-gradient(
+      90deg,
+      transparent,
+      rgba(59, 130, 246, 0.6),
+      transparent
+    );
+
+  box-shadow:
+    0 0 10px
+    rgba(59, 130, 246, 0.35);
+}
+
+
+/* =========================================================
+   CORE
+========================================================= */
+
+.about-core {
+  position: absolute;
+
+  z-index: 10;
+
+  width: 145px;
+  height: 145px;
+
+  left: 50%;
+  top: 50%;
+
+  display: flex;
+
+  flex-direction: column;
+
+  align-items: center;
+
+  justify-content: center;
+
+  transform:
+    translate(
+      -50%,
+      -50%
+    );
+
+  background:
+    radial-gradient(
+      circle at 35% 25%,
+      rgba(59, 130, 246, 0.12),
+      rgba(8, 14, 23, 0.96)
+      65%
+    );
+
+  border:
+    1px solid
+    rgba(96, 165, 250, 0.18);
+
+  border-radius: 50%;
+
+  backdrop-filter: blur(16px);
+
+  -webkit-backdrop-filter:
+    blur(16px);
+}
+
+.about-core-icon {
+  width: 35px;
+  height: 35px;
+
+  display: flex;
+
+  align-items: center;
+
+  justify-content: center;
+
+  margin-bottom: 8px;
+
+  color: #60a5fa;
+
+  background:
+    rgba(59, 130, 246, 0.08);
+
+  border:
+    1px solid
+    rgba(59, 130, 246, 0.12);
+
+  border-radius: 9px;
+
+  font-size: 15px;
+}
+
+.about-core > span {
+  color: #8491a4;
+
+  font-family: monospace;
+
+  font-size: 8px;
+
+  font-weight: 600;
+
+  letter-spacing: 1.2px;
+}
+
+.about-core > strong {
+  margin-top: 4px;
+
+  color: #eef3f8;
+
+  font-size: 20px;
+
+  font-weight: 700;
+}
+
+.about-core-status {
+  display: flex;
+
+  align-items: center;
+
+  gap: 5px;
+
+  margin-top: 8px;
+
+  color: #22c55e;
+
+  font-family: monospace;
+
+  font-size: 7px;
+
+  font-weight: 600;
+}
+
+.about-core-status span {
+  width: 5px;
+  height: 5px;
+
+  background: #22c55e;
+
+  border-radius: 50%;
+
+  box-shadow:
+    0 0 8px
+    rgba(34, 197, 94, 0.6);
+}
+
+
+/* =========================================================
+   FLOATING TECHNOLOGY CARDS
+========================================================= */
+
+.about-floating-tech {
+  position: absolute;
+
+  z-index: 15;
+
+  min-width: 102px;
+
+  display: flex;
+
+  align-items: center;
+
+  gap: 8px;
+
+  padding:
+    9px 11px;
+
+  background:
+    rgba(7, 13, 21, 0.9);
+
+  border:
+    1px solid
+    rgba(255, 255, 255, 0.08);
+
+  border-radius: 10px;
+
+  backdrop-filter: blur(14px);
+
+  -webkit-backdrop-filter:
+    blur(14px);
+
+  box-shadow:
+    0 10px 30px
+    rgba(0, 0, 0, 0.22);
+
+  transition:
+    background 0.3s ease,
+    border-color 0.3s ease,
+    box-shadow 0.3s ease;
+}
+
+.about-floating-tech:hover {
+  background:
+    rgba(11, 22, 35, 0.98);
+
+  border-color:
+    rgba(96, 165, 250, 0.28);
+
+  box-shadow:
+    0 15px 35px
+    rgba(0, 0, 0, 0.28);
+}
+
+.about-floating-tech > div {
+  width: 31px;
+  height: 31px;
+
+  display: flex;
+
+  align-items: center;
+
+  justify-content: center;
+
+  flex-shrink: 0;
+
+  color: #60a5fa;
+
+  background:
+    rgba(59, 130, 246, 0.08);
+
+  border-radius: 7px;
+
+  font-size: 15px;
+}
+
+.about-floating-tech > span {
+  color: #c0c8d3;
+
+  font-size: 10px;
+
+  font-weight: 600;
+
+  white-space: nowrap;
+}
+
+
+/* =========================================================
+   TECHNOLOGY POSITIONS
+========================================================= */
+
+.about-tech-react {
+  top: 36px;
+  left: 52px;
+}
+
+.about-tech-javascript {
+  top: 70px;
+  right: 15px;
+}
+
+.about-tech-node {
+  right: -5px;
+  top: 190px;
+}
+
+.about-tech-postgres {
+  right: 25px;
+  bottom: 58px;
+}
+
+.about-tech-prisma {
+  left: 25px;
+  bottom: 56px;
+}
+
+.about-tech-express {
+  left: -5px;
+  top: 182px;
+}
+
+
+/* =========================================================
+   TECHNOLOGY TICKER
+========================================================= */
+
+.about-ticker {
+  min-height: 58px;
+
+  display: flex;
+
+  align-items: center;
+
+  gap: 18px;
+
+  margin-top: 24px;
+
+  overflow: hidden;
+
+  border-top:
+    1px solid
+    rgba(255, 255, 255, 0.055);
+
+  border-bottom:
+    1px solid
+    rgba(255, 255, 255, 0.055);
+}
+
+.about-ticker-title {
+  min-width: 115px;
+
+  display: flex;
+
+  align-items: center;
+
+  gap: 7px;
+
+  flex-shrink: 0;
+
+  color: #718096;
+
+  font-family: monospace;
+
+  font-size: 9px;
+
+  font-weight: 600;
+}
+
+.about-ticker-title span {
+  width: 6px;
+  height: 6px;
+
+  flex-shrink: 0;
+
+  background: #22c55e;
+
+  border-radius: 50%;
+
+  box-shadow:
+    0 0 8px
+    rgba(34, 197, 94, 0.55);
+}
+
+.about-ticker-window {
+  flex: 1;
+
+  overflow: hidden;
+
+  mask-image:
+    linear-gradient(
+      90deg,
+      transparent,
+      black 6%,
+      black 94%,
+      transparent
+    );
+
+  -webkit-mask-image:
+    linear-gradient(
+      90deg,
+      transparent,
+      black 6%,
+      black 94%,
+      transparent
+    );
+}
+
+.about-ticker-track {
+  width: max-content;
+
+  display: flex;
+
+  align-items: center;
+}
+
+.about-ticker-item {
+  min-width: 125px;
+
+  display: flex;
+
+  align-items: center;
+
+  justify-content: center;
+
+  gap: 8px;
+
+  color: #8f9bad;
+
+  font-size: 10px;
+
+  font-weight: 600;
+}
+
+.about-ticker-item span {
+  display: flex;
+
+  color: #4f8ef7;
+
+  font-size: 15px;
+}
+
+
+/* =========================================================
+   SHORT LAPTOP
+========================================================= */
+
+@media
+(
+  min-width: 901px
+)
+and
+(
+  max-height: 720px
+) {
+  .about-section {
+    padding:
+      38px 36px
+      36px;
+  }
+
+  .about-section-label {
+    margin-bottom: 18px;
+  }
+
+  .about-content h2 {
+    font-size:
+      clamp(
+        43px,
+        4vw,
+        62px
+      );
+  }
+
+  .about-primary-text {
+    margin-top: 17px;
+
+    font-size: 15px;
+  }
+
+  .about-secondary-text {
+    font-size: 13px;
+  }
+
+  .about-capability-rail {
+    margin-top: 21px;
+  }
+
+  .about-capability-item {
+    min-height: 73px;
+
+    padding: 10px;
+  }
+
+  .about-capability-icon {
+    width: 28px;
+    height: 28px;
+
+    font-size: 12px;
+  }
+
+  .about-capability-copy strong {
+    font-size: 10px;
+  }
+
+  .about-capability-copy span {
+    font-size: 7px;
+  }
+
+  .about-tech-stage {
+    width: 390px;
+    height: 390px;
+  }
+
+  .about-orbit-anchor-one {
+    width: 355px;
+    height: 355px;
+  }
+
+  .about-orbit-anchor-two {
+    width: 275px;
+    height: 275px;
+  }
+
+  .about-orbit-anchor-three {
+    width: 195px;
+    height: 195px;
+  }
+
+  .about-core {
+    width: 132px;
+    height: 132px;
+  }
+
+  .about-floating-tech {
+    min-width: 92px;
+
+    padding:
+      8px 9px;
+  }
+
+  .about-floating-tech > div {
+    width: 28px;
+    height: 28px;
+
+    font-size: 13px;
+  }
+
+  .about-floating-tech > span {
+    font-size: 9px;
+  }
+
+  .about-tech-react {
+    top: 28px;
+    left: 44px;
+  }
+
+  .about-tech-javascript {
+    top: 57px;
+    right: 8px;
+  }
+
+  .about-tech-node {
+    right: -3px;
+    top: 166px;
+  }
+
+  .about-tech-postgres {
+    right: 22px;
+    bottom: 46px;
+  }
+
+  .about-tech-prisma {
+    left: 20px;
+    bottom: 45px;
+  }
+
+  .about-tech-express {
+    left: -3px;
+    top: 160px;
+  }
+
+  .about-ticker {
+    min-height: 51px;
+
+    margin-top: 17px;
+  }
+}
+
+
+/* =========================================================
+   TABLET
+========================================================= */
+
+@media (
+  max-width: 900px
+) {
+  .about-section {
+    padding:
+      40px 24px
+      38px;
+  }
+
+  .about-main {
+    grid-template-columns:
+      1fr;
+
+    gap: 28px;
+  }
+
+  .about-content {
+    max-width: 760px;
+  }
+
+  .about-capability-rail {
+    max-width: 720px;
+  }
+
+  .about-tech-system {
+    margin-top: 5px;
+  }
+}
+
+
+/* =========================================================
+   MOBILE
+========================================================= */
+
+@media (
+  max-width: 600px
+) {
+  .about-section {
+    padding:
+      32px 18px;
+  }
+
+  .about-section-label {
+    margin-bottom: 18px;
+  }
+
+  .about-section-label > span {
+    font-size: 9px;
+  }
+
+  .about-section-label > strong {
+    font-size: 9px;
+
+    letter-spacing: 2px;
+  }
+
+  .about-content h2 {
+    font-size:
+      clamp(
+        36px,
+        10.5vw,
+        48px
+      );
+
+    line-height: 1.04;
+
+    letter-spacing: -2px;
+  }
+
+  .about-primary-text {
+    margin-top: 18px;
+
+    font-size: 14px;
+
+    line-height: 1.7;
+  }
+
+  .about-secondary-text {
+    font-size: 12px;
+
+    line-height: 1.65;
+  }
+
+
+  /* CAPABILITY */
+
+  .about-capability-rail {
+    grid-template-columns:
+      repeat(2, 1fr);
+
+    gap: 7px;
+
+    margin-top: 22px;
+
+    padding: 7px;
+  }
+
+  .about-capability-item {
+    min-height: 82px;
+
+    padding: 11px;
+  }
+
+  .about-capability-icon {
+    width: 29px;
+    height: 29px;
+
+    font-size: 12px;
+  }
+
+  .about-capability-copy strong {
+    font-size: 10px;
+  }
+
+  .about-capability-copy span {
+    font-size: 7px;
+  }
+
+
+  /* TECH SYSTEM */
+
+  .about-tech-stage {
+    width: 340px;
+    height: 340px;
+  }
+
+  .about-orbit-anchor-one {
+    width: 315px;
+    height: 315px;
+  }
+
+  .about-orbit-anchor-two {
+    width: 238px;
+    height: 238px;
+  }
+
+  .about-orbit-anchor-three {
+    width: 165px;
+    height: 165px;
+  }
+
+  .about-core {
+    width: 112px;
+    height: 112px;
+  }
+
+  .about-core-icon {
+    width: 29px;
+    height: 29px;
+
+    font-size: 12px;
+  }
+
+  .about-core > span {
+    font-size: 6px;
+  }
+
+  .about-core > strong {
+    font-size: 15px;
+  }
+
+  .about-core-status {
+    font-size: 6px;
+  }
+
+  .about-floating-tech {
+    min-width: 82px;
+
+    padding:
+      7px 8px;
+  }
+
+  .about-floating-tech > div {
+    width: 25px;
+    height: 25px;
+
+    font-size: 11px;
+  }
+
+  .about-floating-tech > span {
+    font-size: 8px;
+  }
+
+  .about-tech-react {
+    top: 23px;
+    left: 38px;
+  }
+
+  .about-tech-javascript {
+    top: 47px;
+    right: 0;
+  }
+
+  .about-tech-node {
+    right: -3px;
+    top: 145px;
+  }
+
+  .about-tech-postgres {
+    right: 15px;
+    bottom: 40px;
+  }
+
+  .about-tech-prisma {
+    left: 12px;
+    bottom: 39px;
+  }
+
+  .about-tech-express {
+    left: -3px;
+    top: 140px;
+  }
+
+
+  /* TICKER */
+
+  .about-ticker {
+    min-height: 48px;
+
+    margin-top: 9px;
+  }
+
+  .about-ticker-title {
+    min-width: 80px;
+
+    font-size: 7px;
+  }
+
+  .about-ticker-item {
+    min-width: 100px;
+
+    font-size: 8px;
+  }
+
+  .about-ticker-item span {
+    font-size: 12px;
+  }
+}
+
+
+/* =========================================================
+   SMALL MOBILE
+========================================================= */
+
+@media (
+  max-width: 390px
+) {
+  .about-section {
+    padding:
+      28px 15px;
+  }
+
+  .about-content h2 {
+    font-size: 33px;
+  }
+
+  .about-capability-rail {
+    grid-template-columns:
+      1fr;
+  }
+
+  .about-capability-item {
+    min-height: 68px;
+
+    flex-direction: row;
+
+    align-items: center;
+
+    justify-content: flex-start;
+  }
+
+  .about-tech-stage {
+    width: 300px;
+    height: 300px;
+  }
+
+  .about-orbit-anchor-one {
+    width: 280px;
+    height: 280px;
+  }
+
+  .about-orbit-anchor-two {
+    width: 215px;
+    height: 215px;
+  }
+
+  .about-orbit-anchor-three {
+    width: 150px;
+    height: 150px;
+  }
+
+  .about-core {
+    width: 100px;
+    height: 100px;
+  }
+
+  .about-floating-tech {
+    min-width: 72px;
+
+    padding:
+      6px 7px;
+  }
+
+  .about-floating-tech > div {
+    width: 22px;
+    height: 22px;
+
+    font-size: 10px;
+  }
+
+  .about-floating-tech > span {
+    font-size: 7px;
+  }
+
+  .about-tech-react {
+    top: 18px;
+    left: 30px;
+  }
+
+  .about-tech-javascript {
+    top: 39px;
+    right: -3px;
+  }
+
+  .about-tech-node {
+    right: -4px;
+    top: 126px;
+  }
+
+  .about-tech-postgres {
+    right: 8px;
+    bottom: 32px;
+  }
+
+  .about-tech-prisma {
+    left: 7px;
+    bottom: 31px;
+  }
+
+  .about-tech-express {
+    left: -4px;
+    top: 122px;
+  }
+
+  .about-ticker-title {
+    display: none;
+  }
+}
+
+
+/* =========================================================
+   REDUCED MOTION
+========================================================= */
+
+@media (
+  prefers-reduced-motion:
+  reduce
+) {
+  .about-live > span::before {
+    animation: none;
+  }
+
+  .about-capability-item,
+  .about-capability-icon,
+  .about-floating-tech {
+    transition: none;
+  }
+}
