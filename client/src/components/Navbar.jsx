@@ -10,7 +10,7 @@ import {
 import profileImage from "../assets/sample.png";
 import "./Navbar.css";
 
-function Navbar() {
+function Navbar({ profile }) {
   const [menuOpen, setMenuOpen] = useState(false);
 
   const navItems = [
@@ -44,14 +44,14 @@ function Navbar() {
         >
           <div className="navbar-brand-image-wrap">
             <img
-              src={profileImage}
-              alt="Suriyaprakash"
+              src={profile?.profileImageUrl || profileImage}
+              alt={profile?.fullName || "Suriyaprakash"}
               className="navbar-brand-image"
             />
           </div>
 
           <div className="navbar-brand-text">
-            <h3>Suriyaprakash</h3>
+            <h3>{profile?.fullName || "Suriyaprakash"}</h3>
             <span>FULL-STACK DEVELOPER</span>
           </div>
         </div>
@@ -72,7 +72,7 @@ function Navbar() {
         {/* RIGHT ACTIONS */}
         <div className="navbar-actions">
           <a
-            href="https://github.com/suriyaprakash23112002"
+            href={profile?.githubUrl || "https://github.com/suriyaprakash23112002"}
             target="_blank"
             rel="noreferrer"
             className="navbar-icon-btn"
@@ -82,7 +82,7 @@ function Navbar() {
           </a>
 
           <a
-            href="https://www.linkedin.com/in/suriyaprakash-k-20821b352"
+            href={profile?.linkedinUrl || "https://www.linkedin.com/in/suriyaprakash-k-20821b352"}
             target="_blank"
             rel="noreferrer"
             className="navbar-icon-btn"
