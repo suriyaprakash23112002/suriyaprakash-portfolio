@@ -35,6 +35,7 @@ const emptyForm = {
   startedAt: "",
   completedAt: "",
   coverImageUrl: "",
+  images: [],
   technologyIds: [],
 };
 
@@ -116,6 +117,7 @@ function AdminProjects() {
       startedAt: dateInput(project.startedAt),
       completedAt: dateInput(project.completedAt),
       coverImageUrl: cover?.url || "",
+      images: Array.isArray(project?.images) ? project.images : [],
       technologyIds:
         project?.technologies?.map((item) => item?.skill?.id || item?.skillId).filter(Boolean) || [],
     });
@@ -160,16 +162,36 @@ function AdminProjects() {
         startedAt: form.startedAt || null,
         completedAt: form.isCurrent ? null : form.completedAt || null,
         technologyIds: form.technologyIds,
-        images: form.coverImageUrl.trim()
-          ? [
-              {
-                url: form.coverImageUrl.trim(),
-                altText: form.title,
-                isCover: true,
-                displayOrder: 0,
-              },
-            ]
-          : [],
+        images: (() => {
+          const existingImages = Array.isArray(form.images)
+            ? form.images
+            : [];
+
+          const withoutCover = existingImages
+            .filter((image) => !image.isCover)
+            .map((image, index) => ({
+              url: image.url,
+              altText: image.altText || "",
+              caption: image.caption || "",
+              isCover: false,
+              displayOrder: image.displayOrder ?? index + 1,
+            }));
+
+          const coverUrl = form.coverImageUrl.trim();
+
+          return coverUrl
+            ? [
+                {
+                  url: coverUrl,
+                  altText: form.title,
+                  caption: "",
+                  isCover: true,
+                  displayOrder: 0,
+                },
+                ...withoutCover,
+              ]
+            : withoutCover;
+        })(),
       };
 
       if (editingId) await api.put(`/projects/${editingId}`, payload);
