@@ -122,9 +122,14 @@ function Contact({
     ) ||
     "suriyaprakashkumaran567@gmail.com";
 
+  const directWhatsappUrl =
+    profile?.whatsappUrl ||
+    getSetting(
+      "whatsappUrl",
+      "whatsapp_url"
+    );
+
   const rawWhatsapp =
-    profile?.whatsapp ||
-    profile?.whatsappNumber ||
     profile?.phone ||
     getSetting(
       "whatsapp",
@@ -166,9 +171,10 @@ function Contact({
     );
 
   const whatsappUrl =
-    whatsappNumber
+    directWhatsappUrl ||
+    (whatsappNumber
       ? `https://wa.me/${whatsappNumber}?text=${whatsappMessage}`
-      : "";
+      : "");
 
   /* =====================================================
      COPY EMAIL
@@ -514,8 +520,9 @@ function Contact({
                 </span>
 
                 <strong>
-                  Available for
-                  opportunities
+                  {profile?.availableForWork === false
+                    ? "Currently unavailable"
+                    : profile?.availabilityText || "Available for opportunities"}
                 </strong>
               </div>
 
