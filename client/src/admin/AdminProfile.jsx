@@ -13,7 +13,6 @@ import {
   AdminSaving,
 } from "./AdminUI";
 
-import "./AdminProfile.css";
 
 const emptyForm = {
   fullName: "",
