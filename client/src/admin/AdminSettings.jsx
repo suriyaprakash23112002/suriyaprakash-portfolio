@@ -6,41 +6,23 @@ import {
   FiSave,
   FiSettings,
   FiTrash2,
-  FiX,
 } from "react-icons/fi";
 
 import api from "../services/api";
-import "./AdminSettings.css";
+import {
+  AdminAlert,
+  AdminEmptyState,
+  AdminLoader,
+  AdminModal,
+  AdminPageHeader,
+  AdminSaving,
+} from "./AdminUI";
 
 const emptyForm = {
   key: "",
   value: "",
-  type: "STRING",
-};
-
-const getList = (response) => {
-  const data = response?.data;
-
-  if (Array.isArray(data)) return data;
-  if (Array.isArray(data?.settings)) return data.settings;
-  if (Array.isArray(data?.data?.settings)) return data.data.settings;
-  if (Array.isArray(data?.data)) return data.data;
-
-  if (data?.settings && typeof data.settings === "object") {
-    return Object.entries(data.settings).map(([key, value]) => ({
-      key,
-      value:
-        typeof value === "object" && value !== null
-          ? value?.value ?? JSON.stringify(value)
-          : String(value ?? ""),
-      type:
-        typeof value === "object" && value !== null
-          ? value?.type || "STRING"
-          : "STRING",
-    }));
-  }
-
-  return [];
+  valueType: "TEXT",
+  description: "",
 };
 
 function AdminSettings() {
@@ -57,8 +39,8 @@ function AdminSettings() {
     try {
       setLoading(true);
       setError("");
-      const response = await api.get("/settings");
-      setSettings(getList(response));
+      const response = await api.get("/settings/admin/all");
+      setSettings(response?.data?.settings || []);
     } catch (err) {
       console.error("Settings load error:", err);
       setError(err?.response?.data?.message || "Unable to load settings.");
@@ -78,14 +60,12 @@ function AdminSettings() {
   };
 
   const openEdit = (setting) => {
-    setEditingKey(setting?.id || setting?.key);
+    setEditingKey(setting.key);
     setForm({
-      key: setting?.key || setting?.name || "",
-      value:
-        typeof setting?.value === "string"
-          ? setting.value
-          : JSON.stringify(setting?.value ?? ""),
-      type: setting?.type || setting?.valueType || "STRING",
+      key: setting.key,
+      value: setting.value ?? "",
+      valueType: setting.valueType || "TEXT",
+      description: setting.description || "",
     });
     setModalOpen(true);
   };
@@ -93,22 +73,30 @@ function AdminSettings() {
   const saveSetting = async (event) => {
     event.preventDefault();
 
+    const key = form.key.trim();
+    if (!key) return;
+
     try {
       setSaving(true);
       setError("");
       setMessage("");
 
-      if (editingKey) {
-        await api.put(`/settings/${editingKey}`, form);
-      } else {
-        await api.post("/settings", form);
+      await api.put(`/settings/${encodeURIComponent(editingKey || key)}`, {
+        value: form.value,
+        valueType: form.valueType,
+        description: form.description,
+      });
+
+      if (editingKey && editingKey !== key) {
+        await api.put(`/settings/${encodeURIComponent(key)}`, {
+          value: form.value,
+          valueType: form.valueType,
+          description: form.description,
+        });
+        await api.delete(`/settings/${encodeURIComponent(editingKey)}`);
       }
 
-      setMessage(
-        editingKey
-          ? "Setting updated successfully."
-          : "Setting created successfully."
-      );
+      setMessage(editingKey ? "Setting updated successfully." : "Setting created successfully.");
       setModalOpen(false);
       await loadSettings();
     } catch (err) {
@@ -120,13 +108,12 @@ function AdminSettings() {
   };
 
   const removeSetting = async (setting) => {
-    const identifier = setting?.id || setting?.key;
-    if (!identifier) return;
-
     if (!window.confirm(`Delete setting "${setting.key}"?`)) return;
 
     try {
-      await api.delete(`/settings/${identifier}`);
+      setError("");
+      setMessage("");
+      await api.delete(`/settings/${encodeURIComponent(setting.key)}`);
       setMessage("Setting deleted successfully.");
       await loadSettings();
     } catch (err) {
@@ -135,167 +122,182 @@ function AdminSettings() {
     }
   };
 
+  if (loading) {
+    return <AdminLoader label="Loading settings..." />;
+  }
+
   return (
-    <div className="admin-settings">
-      <div className="admin-settings-header">
-        <div>
-          <span>SITE CONFIGURATION</span>
-          <h1>Settings</h1>
-          <p>Manage reusable portfolio settings such as resume and contact values.</p>
+    <div className="admin-ui-page">
+      <AdminPageHeader
+        eyebrow="SITE CONFIGURATION"
+        title="Settings"
+        description="Manage reusable portfolio values and feature configuration."
+        actions={
+          <>
+            <button type="button" className="admin-ui-button" onClick={loadSettings}>
+              <FiRefreshCw />
+              Refresh
+            </button>
+            <button
+              type="button"
+              className="admin-ui-button admin-ui-button-primary"
+              onClick={openCreate}
+            >
+              <FiPlus />
+              Add Setting
+            </button>
+          </>
+        }
+      />
+
+      <AdminAlert type="error">{error}</AdminAlert>
+      <AdminAlert type="success">{message}</AdminAlert>
+
+      <section className="admin-ui-panel">
+        <div className="admin-ui-section-title">
+          <div>
+            <span>CONFIGURATION</span>
+            <h2>Site settings</h2>
+          </div>
+          <span>{settings.length} ITEMS</span>
         </div>
 
-        <div className="admin-settings-actions">
-          <button type="button" onClick={loadSettings}>
-            <FiRefreshCw />
-            Refresh
-          </button>
-          <button type="button" className="primary" onClick={openCreate}>
-            <FiPlus />
-            Add Setting
-          </button>
-        </div>
-      </div>
-
-      {error && <div className="admin-settings-alert error">{error}</div>}
-      {message && <div className="admin-settings-alert success">{message}</div>}
-
-      <div className="admin-settings-guide">
-        <FiSettings />
-        <div>
-          <span>USEFUL KEYS</span>
-          <p>
-            Examples: email, whatsapp, resumeUrl, githubUrl, linkedinUrl,
-            footerText.
-          </p>
-        </div>
-      </div>
-
-      {loading ? (
-        <div className="admin-settings-loading">Loading settings...</div>
-      ) : (
-        <div className="admin-settings-table-wrap">
-          <table className="admin-settings-table">
-            <thead>
-              <tr>
-                <th>Key</th>
-                <th>Value</th>
-                <th>Type</th>
-                <th />
-              </tr>
-            </thead>
-
-            <tbody>
-              {settings.map((setting, index) => (
-                <tr key={setting?.id || setting?.key || index}>
-                  <td>
-                    <strong>{setting?.key || setting?.name}</strong>
-                  </td>
-                  <td>
-                    <span className="admin-settings-value">
-                      {typeof setting?.value === "object"
-                        ? JSON.stringify(setting.value)
-                        : String(setting?.value ?? "")}
-                    </span>
-                  </td>
-                  <td>{setting?.type || setting?.valueType || "STRING"}</td>
-                  <td>
-                    <div className="admin-settings-row-actions">
-                      <button type="button" onClick={() => openEdit(setting)}>
-                        <FiEdit2 />
-                      </button>
-                      <button type="button" onClick={() => removeSetting(setting)}>
-                        <FiTrash2 />
-                      </button>
-                    </div>
-                  </td>
-                </tr>
-              ))}
-
-              {settings.length === 0 && (
+        {settings.length === 0 ? (
+          <AdminEmptyState
+            icon={<FiSettings />}
+            title="No settings yet"
+            description="Add a setting to manage reusable portfolio values."
+          />
+        ) : (
+          <div className="admin-ui-table-wrap">
+            <table className="admin-ui-table">
+              <thead>
                 <tr>
-                  <td colSpan="4">
-                    <div className="admin-settings-empty">
-                      No site settings created yet.
-                    </div>
-                  </td>
+                  <th>Key</th>
+                  <th>Value</th>
+                  <th>Type</th>
+                  <th>Description</th>
+                  <th />
                 </tr>
-              )}
-            </tbody>
-          </table>
-        </div>
-      )}
+              </thead>
+              <tbody>
+                {settings.map((setting) => (
+                  <tr key={setting.id || setting.key}>
+                    <td><strong>{setting.key}</strong></td>
+                    <td>{setting.value}</td>
+                    <td>
+                      <span className="admin-ui-badge">{setting.valueType}</span>
+                    </td>
+                    <td>{setting.description || "—"}</td>
+                    <td>
+                      <div className="admin-ui-actions">
+                        <button
+                          type="button"
+                          className="admin-ui-icon-button"
+                          onClick={() => openEdit(setting)}
+                          aria-label="Edit setting"
+                        >
+                          <FiEdit2 />
+                        </button>
+                        <button
+                          type="button"
+                          className="admin-ui-icon-button admin-ui-button-danger"
+                          onClick={() => removeSetting(setting)}
+                          aria-label="Delete setting"
+                        >
+                          <FiTrash2 />
+                        </button>
+                      </div>
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+        )}
+      </section>
 
-      {modalOpen && (
-        <div className="admin-settings-modal-backdrop">
-          <form className="admin-settings-modal" onSubmit={saveSetting}>
-            <div className="admin-settings-modal-header">
-              <div>
-                <span>SETTING EDITOR</span>
-                <h2>{editingKey ? "Edit Setting" : "Add Setting"}</h2>
-              </div>
-              <button type="button" onClick={() => setModalOpen(false)}>
-                <FiX />
-              </button>
-            </div>
-
-            <label>
-              Key
+      <AdminModal
+        open={modalOpen}
+        onClose={() => setModalOpen(false)}
+        eyebrow="SETTING EDITOR"
+        title={editingKey ? "Edit Setting" : "Add Setting"}
+        footer={
+          <>
+            <button
+              type="button"
+              className="admin-ui-button"
+              onClick={() => setModalOpen(false)}
+            >
+              Cancel
+            </button>
+            <button
+              type="submit"
+              form="admin-settings-form"
+              className="admin-ui-button admin-ui-button-primary"
+              disabled={saving}
+            >
+              {saving ? <AdminSaving /> : <><FiSave />Save Setting</>}
+            </button>
+          </>
+        }
+      >
+        <form id="admin-settings-form" onSubmit={saveSetting}>
+          <div className="admin-ui-form-grid">
+            <label className="admin-ui-field admin-ui-field-full">
+              <span>Key</span>
               <input
                 value={form.key}
                 onChange={(event) =>
-                  setForm((previous) => ({
-                    ...previous,
-                    key: event.target.value,
-                  }))
+                  setForm((previous) => ({ ...previous, key: event.target.value }))
                 }
                 required
               />
             </label>
 
-            <label>
-              Value
+            <label className="admin-ui-field admin-ui-field-full">
+              <span>Value</span>
               <textarea
-                rows="5"
                 value={form.value}
                 onChange={(event) =>
-                  setForm((previous) => ({
-                    ...previous,
-                    value: event.target.value,
-                  }))
+                  setForm((previous) => ({ ...previous, value: event.target.value }))
                 }
               />
             </label>
 
-            <label>
-              Type
+            <label className="admin-ui-field">
+              <span>Type</span>
               <select
-                value={form.type}
+                value={form.valueType}
                 onChange={(event) =>
                   setForm((previous) => ({
                     ...previous,
-                    type: event.target.value,
+                    valueType: event.target.value,
                   }))
                 }
               >
-                <option value="STRING">String</option>
+                <option value="TEXT">Text</option>
                 <option value="NUMBER">Number</option>
                 <option value="BOOLEAN">Boolean</option>
                 <option value="JSON">JSON</option>
               </select>
             </label>
 
-            <div className="admin-settings-modal-actions">
-              <button type="button" onClick={() => setModalOpen(false)}>
-                Cancel
-              </button>
-              <button type="submit" className="primary" disabled={saving}>
-                <FiSave />
-                {saving ? "Saving..." : "Save Setting"}
-              </button>
-            </div>
-          </form>
-        </div>
-      )}
+            <label className="admin-ui-field">
+              <span>Description</span>
+              <input
+                value={form.description}
+                onChange={(event) =>
+                  setForm((previous) => ({
+                    ...previous,
+                    description: event.target.value,
+                  }))
+                }
+              />
+            </label>
+          </div>
+        </form>
+      </AdminModal>
     </div>
   );
 }
