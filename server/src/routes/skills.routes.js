@@ -2,6 +2,7 @@ import express from "express";
 
 import {
   getSkills,
+  getAdminSkills,
   createSkill,
   updateSkill,
   deleteSkill,
@@ -12,6 +13,9 @@ import {
 } from "../middleware/auth.middleware.js";
 
 const router = express.Router();
+
+/* Admin */
+router.get("/admin/all", protectAdmin, getAdminSkills);
 
 /* Public */
 router.get("/", getSkills);
