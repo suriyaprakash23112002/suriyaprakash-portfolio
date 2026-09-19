@@ -7,52 +7,46 @@ import {
   FiSave,
   FiSearch,
   FiTrash2,
-  FiX,
 } from "react-icons/fi";
 
 import api from "../services/api";
-import "./AdminSkills.css";
+import {
+  AdminAlert,
+  AdminEmptyState,
+  AdminLoader,
+  AdminModal,
+  AdminPageHeader,
+  AdminSaving,
+} from "./AdminUI";
 
 const emptyCategory = {
   name: "",
   description: "",
-  order: 0,
+  displayOrder: 0,
   isActive: true,
 };
 
 const emptySkill = {
   name: "",
   categoryId: "",
+  icon: "",
   proficiency: "",
-  order: 0,
+  yearsExperience: "",
+  isFeatured: false,
   isActive: true,
-};
-
-const getList = (response, keys = []) => {
-  const data = response?.data;
-
-  if (Array.isArray(data)) return data;
-
-  for (const key of keys) {
-    if (Array.isArray(data?.[key])) return data[key];
-    if (Array.isArray(data?.data?.[key])) return data.data[key];
-  }
-
-  if (Array.isArray(data?.data)) return data.data;
-
-  return [];
+  displayOrder: 0,
 };
 
 function AdminSkills() {
   const [categories, setCategories] = useState([]);
   const [skills, setSkills] = useState([]);
+  const [search, setSearch] = useState("");
   const [categoryForm, setCategoryForm] = useState(emptyCategory);
   const [skillForm, setSkillForm] = useState(emptySkill);
   const [editingCategoryId, setEditingCategoryId] = useState(null);
   const [editingSkillId, setEditingSkillId] = useState(null);
-  const [categoryModalOpen, setCategoryModalOpen] = useState(false);
-  const [skillModalOpen, setSkillModalOpen] = useState(false);
-  const [search, setSearch] = useState("");
+  const [categoryOpen, setCategoryOpen] = useState(false);
+  const [skillOpen, setSkillOpen] = useState(false);
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
   const [message, setMessage] = useState("");
@@ -64,20 +58,15 @@ function AdminSkills() {
       setError("");
 
       const [categoryResponse, skillResponse] = await Promise.all([
-        api.get("/skills/categories"),
-        api.get("/skills"),
+        api.get("/skill-categories/admin/all"),
+        api.get("/skills/admin/all"),
       ]);
 
-      setCategories(
-        getList(categoryResponse, ["categories", "skillCategories"])
-      );
-      setSkills(getList(skillResponse, ["skills"]));
+      setCategories(categoryResponse?.data?.categories || []);
+      setSkills(skillResponse?.data?.skills || []);
     } catch (err) {
-      console.error("Skills loading error:", err);
-      setError(
-        err?.response?.data?.message ||
-          "Unable to load skill categories and technologies."
-      );
+      console.error("Skills load error:", err);
+      setError(err?.response?.data?.message || "Unable to load skills.");
     } finally {
       setLoading(false);
     }
@@ -87,72 +76,60 @@ function AdminSkills() {
     loadData();
   }, []);
 
-  const categoryMap = useMemo(() => {
-    return Object.fromEntries(
-      categories.map((category) => [category.id, category.name])
-    );
-  }, [categories]);
-
   const filteredSkills = useMemo(() => {
     const value = search.trim().toLowerCase();
-
     if (!value) return skills;
 
-    return skills.filter((skill) => {
-      const categoryName =
-        skill?.category?.name ||
-        categoryMap[skill?.categoryId] ||
-        "";
+    return skills.filter((skill) =>
+      `${skill.name} ${skill?.category?.name || ""}`
+        .toLowerCase()
+        .includes(value)
+    );
+  }, [skills, search]);
 
-      return (
-        skill?.name?.toLowerCase().includes(value) ||
-        categoryName.toLowerCase().includes(value)
-      );
-    });
-  }, [skills, search, categoryMap]);
-
-  const openCreateCategory = () => {
+  const openCategoryCreate = () => {
     setEditingCategoryId(null);
     setCategoryForm(emptyCategory);
-    setCategoryModalOpen(true);
+    setCategoryOpen(true);
   };
 
-  const openEditCategory = (category) => {
+  const openCategoryEdit = (category) => {
     setEditingCategoryId(category.id);
     setCategoryForm({
-      name: category?.name || "",
-      description: category?.description || "",
-      order: category?.order ?? 0,
-      isActive: category?.isActive !== false,
+      name: category.name || "",
+      description: category.description || "",
+      displayOrder: category.displayOrder ?? 0,
+      isActive: category.isActive !== false,
     });
-    setCategoryModalOpen(true);
+    setCategoryOpen(true);
   };
 
-  const openCreateSkill = () => {
+  const openSkillCreate = () => {
     setEditingSkillId(null);
     setSkillForm({
       ...emptySkill,
-      categoryId: categories?.[0]?.id || "",
+      categoryId: categories[0]?.id || "",
     });
-    setSkillModalOpen(true);
+    setSkillOpen(true);
   };
 
-  const openEditSkill = (skill) => {
+  const openSkillEdit = (skill) => {
     setEditingSkillId(skill.id);
     setSkillForm({
-      name: skill?.name || "",
-      categoryId: skill?.categoryId || skill?.category?.id || "",
-      proficiency: skill?.proficiency || "",
-      order: skill?.order ?? 0,
-      isActive: skill?.isActive !== false,
+      name: skill.name || "",
+      categoryId: skill.categoryId || skill?.category?.id || "",
+      icon: skill.icon || "",
+      proficiency: skill.proficiency ?? "",
+      yearsExperience: skill.yearsExperience ?? "",
+      isFeatured: Boolean(skill.isFeatured),
+      isActive: skill.isActive !== false,
+      displayOrder: skill.displayOrder ?? 0,
     });
-    setSkillModalOpen(true);
+    setSkillOpen(true);
   };
 
   const saveCategory = async (event) => {
     event.preventDefault();
-
-    if (!categoryForm.name.trim()) return;
 
     try {
       setSaving(true);
@@ -160,26 +137,16 @@ function AdminSkills() {
       setMessage("");
 
       if (editingCategoryId) {
-        await api.put(
-          `/skills/categories/${editingCategoryId}`,
-          categoryForm
-        );
+        await api.put(`/skill-categories/${editingCategoryId}`, categoryForm);
       } else {
-        await api.post("/skills/categories", categoryForm);
+        await api.post("/skill-categories", categoryForm);
       }
 
-      setMessage(
-        editingCategoryId
-          ? "Category updated successfully."
-          : "Category created successfully."
-      );
-      setCategoryModalOpen(false);
+      setMessage(editingCategoryId ? "Category updated." : "Category created.");
+      setCategoryOpen(false);
       await loadData();
     } catch (err) {
-      console.error("Category save error:", err);
-      setError(
-        err?.response?.data?.message || "Unable to save category."
-      );
+      setError(err?.response?.data?.message || "Unable to save category.");
     } finally {
       setSaving(false);
     }
@@ -188,179 +155,170 @@ function AdminSkills() {
   const saveSkill = async (event) => {
     event.preventDefault();
 
-    if (!skillForm.name.trim() || !skillForm.categoryId) return;
-
     try {
       setSaving(true);
       setError("");
       setMessage("");
 
+      const payload = {
+        ...skillForm,
+        proficiency:
+          skillForm.proficiency === "" ? null : Number(skillForm.proficiency),
+        yearsExperience:
+          skillForm.yearsExperience === ""
+            ? null
+            : Number(skillForm.yearsExperience),
+        displayOrder: Number(skillForm.displayOrder || 0),
+      };
+
       if (editingSkillId) {
-        await api.put(`/skills/${editingSkillId}`, skillForm);
+        await api.put(`/skills/${editingSkillId}`, payload);
       } else {
-        await api.post("/skills", skillForm);
+        await api.post("/skills", payload);
       }
 
-      setMessage(
-        editingSkillId
-          ? "Technology updated successfully."
-          : "Technology created successfully."
-      );
-      setSkillModalOpen(false);
+      setMessage(editingSkillId ? "Technology updated." : "Technology created.");
+      setSkillOpen(false);
       await loadData();
     } catch (err) {
-      console.error("Skill save error:", err);
-      setError(
-        err?.response?.data?.message || "Unable to save technology."
-      );
+      setError(err?.response?.data?.message || "Unable to save technology.");
     } finally {
       setSaving(false);
     }
   };
 
   const removeCategory = async (category) => {
-    const confirmed = window.confirm(
-      `Delete "${category.name}" category?`
-    );
-
-    if (!confirmed) return;
+    if (!window.confirm(`Delete "${category.name}" category?`)) return;
 
     try {
-      await api.delete(`/skills/categories/${category.id}`);
-      setMessage("Category deleted successfully.");
+      setError("");
+      await api.delete(`/skill-categories/${category.id}`);
+      setMessage("Category deleted.");
       await loadData();
     } catch (err) {
-      console.error("Category delete error:", err);
-      setError(
-        err?.response?.data?.message || "Unable to delete category."
-      );
+      setError(err?.response?.data?.message || "Unable to delete category.");
     }
   };
 
   const removeSkill = async (skill) => {
-    const confirmed = window.confirm(`Delete "${skill.name}"?`);
-
-    if (!confirmed) return;
+    if (!window.confirm(`Delete "${skill.name}"?`)) return;
 
     try {
+      setError("");
       await api.delete(`/skills/${skill.id}`);
-      setMessage("Technology deleted successfully.");
+      setMessage("Technology deleted.");
       await loadData();
     } catch (err) {
-      console.error("Skill delete error:", err);
-      setError(
-        err?.response?.data?.message || "Unable to delete technology."
-      );
+      setError(err?.response?.data?.message || "Unable to delete technology.");
     }
   };
 
+  if (loading) {
+    return <AdminLoader label="Loading skills..." />;
+  }
+
   return (
-    <div className="admin-skills">
-      <div className="admin-skills-header">
-        <div>
-          <span>PORTFOLIO CONTENT</span>
-          <h1>Skills & Technologies</h1>
-          <p>Manage technology categories and the stack shown on your portfolio.</p>
+    <div className="admin-ui-page">
+      <AdminPageHeader
+        eyebrow="PORTFOLIO CONTENT"
+        title="Skills & Technologies"
+        description="Manage technology categories, proficiency and the stack shown publicly."
+        actions={
+          <>
+            <button className="admin-ui-button" type="button" onClick={loadData}>
+              <FiRefreshCw /> Refresh
+            </button>
+            <button className="admin-ui-button" type="button" onClick={openCategoryCreate}>
+              <FiPlus /> Category
+            </button>
+            <button
+              className="admin-ui-button admin-ui-button-primary"
+              type="button"
+              onClick={openSkillCreate}
+              disabled={!categories.length}
+            >
+              <FiPlus /> Technology
+            </button>
+          </>
+        }
+      />
+
+      <AdminAlert type="error">{error}</AdminAlert>
+      <AdminAlert type="success">{message}</AdminAlert>
+
+      <div className="admin-ui-stats">
+        <div className="admin-ui-stat">
+          <span>CATEGORIES</span>
+          <strong>{categories.length}</strong>
+          <small>Technology groups</small>
         </div>
-
-        <div className="admin-skills-header-actions">
-          <button type="button" onClick={loadData}>
-            <FiRefreshCw />
-            Refresh
-          </button>
-
-          <button type="button" onClick={openCreateCategory}>
-            <FiPlus />
-            Category
-          </button>
-
-          <button
-            type="button"
-            className="admin-skills-primary"
-            onClick={openCreateSkill}
-            disabled={categories.length === 0}
-          >
-            <FiPlus />
-            Technology
-          </button>
+        <div className="admin-ui-stat">
+          <span>TECHNOLOGIES</span>
+          <strong>{skills.length}</strong>
+          <small>Total skills</small>
         </div>
-      </div>
-
-      {error && <div className="admin-skills-alert error">{error}</div>}
-      {message && <div className="admin-skills-alert success">{message}</div>}
-
-      <div className="admin-skills-summary">
-        <div>
-          <span>{String(categories.length).padStart(2, "0")}</span>
-          <strong>Categories</strong>
+        <div className="admin-ui-stat">
+          <span>ACTIVE</span>
+          <strong>{skills.filter((skill) => skill.isActive).length}</strong>
+          <small>Visible skills</small>
         </div>
-        <div>
-          <span>{String(skills.length).padStart(2, "0")}</span>
-          <strong>Technologies</strong>
-        </div>
-        <div>
-          <span>
-            {String(
-              skills.filter((skill) => skill?.isActive !== false).length
-            ).padStart(2, "0")}
-          </span>
-          <strong>Active</strong>
+        <div className="admin-ui-stat">
+          <span>FEATURED</span>
+          <strong>{skills.filter((skill) => skill.isFeatured).length}</strong>
+          <small>Highlighted skills</small>
         </div>
       </div>
 
-      <section className="admin-skills-section">
-        <div className="admin-skills-section-heading">
+      <section className="admin-ui-panel">
+        <div className="admin-ui-section-title">
           <div>
             <span>01</span>
             <h2>Categories</h2>
           </div>
         </div>
 
-        <div className="admin-skills-category-grid">
-          {categories.map((category) => (
-            <article key={category.id} className="admin-skills-category-card">
-              <div>
-                <FiCode />
-              </div>
+        {categories.length === 0 ? (
+          <AdminEmptyState
+            icon={<FiCode />}
+            title="No categories yet"
+            description="Create a category before adding technologies."
+          />
+        ) : (
+          <div className="admin-ui-list">
+            {categories.map((category) => (
+              <article className="admin-ui-list-card admin-ui-card" key={category.id}>
+                <div className="admin-ui-list-icon">
+                  <FiCode />
+                </div>
 
-              <section>
-                <span>{category?.isActive === false ? "INACTIVE" : "ACTIVE"}</span>
-                <h3>{category.name}</h3>
-                <p>
-                  {category?.description ||
-                    `${skills.filter((skill) =>
-                      (skill?.categoryId || skill?.category?.id) === category.id
-                    ).length} technologies`}
-                </p>
-              </section>
+                <div className="admin-ui-list-content">
+                  <span>{category.isActive ? "ACTIVE" : "INACTIVE"}</span>
+                  <h3>{category.name}</h3>
+                  <p>{category.description || `${category?._count?.skills || 0} skills`}</p>
+                </div>
 
-              <div className="admin-skills-card-actions">
-                <button type="button" onClick={() => openEditCategory(category)}>
-                  <FiEdit2 />
-                </button>
-                <button type="button" onClick={() => removeCategory(category)}>
-                  <FiTrash2 />
-                </button>
-              </div>
-            </article>
-          ))}
-
-          {!loading && categories.length === 0 && (
-            <div className="admin-skills-empty">
-              Create your first category before adding technologies.
-            </div>
-          )}
-        </div>
+                <div className="admin-ui-actions">
+                  <button className="admin-ui-icon-button" type="button" onClick={() => openCategoryEdit(category)}>
+                    <FiEdit2 />
+                  </button>
+                  <button className="admin-ui-icon-button admin-ui-button-danger" type="button" onClick={() => removeCategory(category)}>
+                    <FiTrash2 />
+                  </button>
+                </div>
+              </article>
+            ))}
+          </div>
+        )}
       </section>
 
-      <section className="admin-skills-section">
-        <div className="admin-skills-section-heading">
+      <section className="admin-ui-panel admin-ui-section">
+        <div className="admin-ui-section-title">
           <div>
             <span>02</span>
             <h2>Technologies</h2>
           </div>
 
-          <label className="admin-skills-search">
+          <label className="admin-ui-search">
             <FiSearch />
             <input
               type="search"
@@ -371,268 +329,199 @@ function AdminSkills() {
           </label>
         </div>
 
-        {loading ? (
-          <div className="admin-skills-loading">
-            <FiRefreshCw />
-            Loading technologies...
-          </div>
-        ) : (
-          <div className="admin-skills-table-wrap">
-            <table className="admin-skills-table">
-              <thead>
-                <tr>
-                  <th>Technology</th>
-                  <th>Category</th>
-                  <th>Proficiency</th>
-                  <th>Order</th>
-                  <th>Status</th>
-                  <th />
+        <div className="admin-ui-table-wrap">
+          <table className="admin-ui-table">
+            <thead>
+              <tr>
+                <th>Technology</th>
+                <th>Category</th>
+                <th>Proficiency</th>
+                <th>Experience</th>
+                <th>Status</th>
+                <th />
+              </tr>
+            </thead>
+            <tbody>
+              {filteredSkills.map((skill) => (
+                <tr key={skill.id}>
+                  <td><strong>{skill.name}</strong></td>
+                  <td>{skill?.category?.name || "—"}</td>
+                  <td>{skill.proficiency ?? "—"}{skill.proficiency != null ? "%" : ""}</td>
+                  <td>{skill.yearsExperience ?? "—"}</td>
+                  <td>
+                    <span className={`admin-ui-badge ${skill.isActive ? "admin-ui-badge-success" : "admin-ui-badge-muted"}`}>
+                      {skill.isActive ? "Active" : "Inactive"}
+                    </span>
+                  </td>
+                  <td>
+                    <div className="admin-ui-actions">
+                      <button className="admin-ui-icon-button" type="button" onClick={() => openSkillEdit(skill)}>
+                        <FiEdit2 />
+                      </button>
+                      <button className="admin-ui-icon-button admin-ui-button-danger" type="button" onClick={() => removeSkill(skill)}>
+                        <FiTrash2 />
+                      </button>
+                    </div>
+                  </td>
                 </tr>
-              </thead>
-
-              <tbody>
-                {filteredSkills.map((skill) => (
-                  <tr key={skill.id}>
-                    <td>
-                      <strong>{skill.name}</strong>
-                    </td>
-                    <td>
-                      {skill?.category?.name ||
-                        categoryMap[skill?.categoryId] ||
-                        "—"}
-                    </td>
-                    <td>{skill?.proficiency || "—"}</td>
-                    <td>{skill?.order ?? 0}</td>
-                    <td>
-                      <span
-                        className={`admin-skills-status ${
-                          skill?.isActive === false ? "off" : ""
-                        }`}
-                      >
-                        {skill?.isActive === false ? "Inactive" : "Active"}
-                      </span>
-                    </td>
-                    <td>
-                      <div className="admin-skills-row-actions">
-                        <button type="button" onClick={() => openEditSkill(skill)}>
-                          <FiEdit2 />
-                        </button>
-                        <button type="button" onClick={() => removeSkill(skill)}>
-                          <FiTrash2 />
-                        </button>
-                      </div>
-                    </td>
-                  </tr>
-                ))}
-
-                {filteredSkills.length === 0 && (
-                  <tr>
-                    <td colSpan="6">
-                      <div className="admin-skills-empty">
-                        No technologies found.
-                      </div>
-                    </td>
-                  </tr>
-                )}
-              </tbody>
-            </table>
-          </div>
-        )}
+              ))}
+            </tbody>
+          </table>
+        </div>
       </section>
 
-      {categoryModalOpen && (
-        <div className="admin-skills-modal-backdrop">
-          <form className="admin-skills-modal" onSubmit={saveCategory}>
-            <div className="admin-skills-modal-header">
-              <div>
-                <span>CATEGORY</span>
-                <h2>{editingCategoryId ? "Edit category" : "New category"}</h2>
-              </div>
-
-              <button type="button" onClick={() => setCategoryModalOpen(false)}>
-                <FiX />
-              </button>
-            </div>
-
-            <label>
-              Name
+      <AdminModal
+        open={categoryOpen}
+        onClose={() => setCategoryOpen(false)}
+        eyebrow="CATEGORY"
+        title={editingCategoryId ? "Edit Category" : "New Category"}
+        footer={
+          <>
+            <button className="admin-ui-button" type="button" onClick={() => setCategoryOpen(false)}>Cancel</button>
+            <button className="admin-ui-button admin-ui-button-primary" type="submit" form="category-form" disabled={saving}>
+              {saving ? <AdminSaving /> : <><FiSave />Save Category</>}
+            </button>
+          </>
+        }
+      >
+        <form id="category-form" onSubmit={saveCategory}>
+          <div className="admin-ui-form-grid">
+            <label className="admin-ui-field admin-ui-field-full">
+              <span>Name</span>
               <input
-                type="text"
                 value={categoryForm.name}
-                onChange={(event) =>
-                  setCategoryForm((previous) => ({
-                    ...previous,
-                    name: event.target.value,
-                  }))
-                }
+                onChange={(event) => setCategoryForm((previous) => ({ ...previous, name: event.target.value }))}
                 required
               />
             </label>
 
-            <label>
-              Description
+            <label className="admin-ui-field admin-ui-field-full">
+              <span>Description</span>
               <textarea
-                rows="4"
                 value={categoryForm.description}
-                onChange={(event) =>
-                  setCategoryForm((previous) => ({
-                    ...previous,
-                    description: event.target.value,
-                  }))
-                }
+                onChange={(event) => setCategoryForm((previous) => ({ ...previous, description: event.target.value }))}
               />
             </label>
 
-            <div className="admin-skills-modal-grid">
-              <label>
-                Order
-                <input
-                  type="number"
-                  value={categoryForm.order}
-                  onChange={(event) =>
-                    setCategoryForm((previous) => ({
-                      ...previous,
-                      order: Number(event.target.value),
-                    }))
-                  }
-                />
-              </label>
-
-              <label className="admin-skills-check">
-                <input
-                  type="checkbox"
-                  checked={categoryForm.isActive}
-                  onChange={(event) =>
-                    setCategoryForm((previous) => ({
-                      ...previous,
-                      isActive: event.target.checked,
-                    }))
-                  }
-                />
-                Active
-              </label>
-            </div>
-
-            <div className="admin-skills-modal-actions">
-              <button type="button" onClick={() => setCategoryModalOpen(false)}>
-                Cancel
-              </button>
-              <button type="submit" className="primary" disabled={saving}>
-                <FiSave />
-                {saving ? "Saving..." : "Save Category"}
-              </button>
-            </div>
-          </form>
-        </div>
-      )}
-
-      {skillModalOpen && (
-        <div className="admin-skills-modal-backdrop">
-          <form className="admin-skills-modal" onSubmit={saveSkill}>
-            <div className="admin-skills-modal-header">
-              <div>
-                <span>TECHNOLOGY</span>
-                <h2>{editingSkillId ? "Edit technology" : "New technology"}</h2>
-              </div>
-
-              <button type="button" onClick={() => setSkillModalOpen(false)}>
-                <FiX />
-              </button>
-            </div>
-
-            <label>
-              Technology name
+            <label className="admin-ui-field">
+              <span>Display order</span>
               <input
-                type="text"
+                type="number"
+                value={categoryForm.displayOrder}
+                onChange={(event) => setCategoryForm((previous) => ({ ...previous, displayOrder: Number(event.target.value) }))}
+              />
+            </label>
+
+            <label className="admin-ui-check">
+              <input
+                type="checkbox"
+                checked={categoryForm.isActive}
+                onChange={(event) => setCategoryForm((previous) => ({ ...previous, isActive: event.target.checked }))}
+              />
+              Active
+            </label>
+          </div>
+        </form>
+      </AdminModal>
+
+      <AdminModal
+        open={skillOpen}
+        onClose={() => setSkillOpen(false)}
+        eyebrow="TECHNOLOGY"
+        title={editingSkillId ? "Edit Technology" : "New Technology"}
+        footer={
+          <>
+            <button className="admin-ui-button" type="button" onClick={() => setSkillOpen(false)}>Cancel</button>
+            <button className="admin-ui-button admin-ui-button-primary" type="submit" form="skill-form" disabled={saving}>
+              {saving ? <AdminSaving /> : <><FiSave />Save Technology</>}
+            </button>
+          </>
+        }
+      >
+        <form id="skill-form" onSubmit={saveSkill}>
+          <div className="admin-ui-form-grid">
+            <label className="admin-ui-field">
+              <span>Name</span>
+              <input
                 value={skillForm.name}
-                onChange={(event) =>
-                  setSkillForm((previous) => ({
-                    ...previous,
-                    name: event.target.value,
-                  }))
-                }
+                onChange={(event) => setSkillForm((previous) => ({ ...previous, name: event.target.value }))}
                 required
               />
             </label>
 
-            <label>
-              Category
+            <label className="admin-ui-field">
+              <span>Category</span>
               <select
                 value={skillForm.categoryId}
-                onChange={(event) =>
-                  setSkillForm((previous) => ({
-                    ...previous,
-                    categoryId: event.target.value,
-                  }))
-                }
+                onChange={(event) => setSkillForm((previous) => ({ ...previous, categoryId: event.target.value }))}
                 required
               >
                 <option value="">Select category</option>
                 {categories.map((category) => (
-                  <option key={category.id} value={category.id}>
-                    {category.name}
-                  </option>
+                  <option key={category.id} value={category.id}>{category.name}</option>
                 ))}
               </select>
             </label>
 
-            <div className="admin-skills-modal-grid">
-              <label>
-                Proficiency
-                <input
-                  type="text"
-                  value={skillForm.proficiency}
-                  onChange={(event) =>
-                    setSkillForm((previous) => ({
-                      ...previous,
-                      proficiency: event.target.value,
-                    }))
-                  }
-                  placeholder="Advanced"
-                />
-              </label>
+            <label className="admin-ui-field">
+              <span>Icon key</span>
+              <input
+                value={skillForm.icon}
+                onChange={(event) => setSkillForm((previous) => ({ ...previous, icon: event.target.value }))}
+              />
+            </label>
 
-              <label>
-                Order
-                <input
-                  type="number"
-                  value={skillForm.order}
-                  onChange={(event) =>
-                    setSkillForm((previous) => ({
-                      ...previous,
-                      order: Number(event.target.value),
-                    }))
-                  }
-                />
-              </label>
-            </div>
+            <label className="admin-ui-field">
+              <span>Proficiency (0-100)</span>
+              <input
+                type="number"
+                min="0"
+                max="100"
+                value={skillForm.proficiency}
+                onChange={(event) => setSkillForm((previous) => ({ ...previous, proficiency: event.target.value }))}
+              />
+            </label>
 
-            <label className="admin-skills-check">
+            <label className="admin-ui-field">
+              <span>Years experience</span>
+              <input
+                type="number"
+                step="0.1"
+                min="0"
+                value={skillForm.yearsExperience}
+                onChange={(event) => setSkillForm((previous) => ({ ...previous, yearsExperience: event.target.value }))}
+              />
+            </label>
+
+            <label className="admin-ui-field">
+              <span>Display order</span>
+              <input
+                type="number"
+                value={skillForm.displayOrder}
+                onChange={(event) => setSkillForm((previous) => ({ ...previous, displayOrder: Number(event.target.value) }))}
+              />
+            </label>
+
+            <label className="admin-ui-check">
+              <input
+                type="checkbox"
+                checked={skillForm.isFeatured}
+                onChange={(event) => setSkillForm((previous) => ({ ...previous, isFeatured: event.target.checked }))}
+              />
+              Featured
+            </label>
+
+            <label className="admin-ui-check">
               <input
                 type="checkbox"
                 checked={skillForm.isActive}
-                onChange={(event) =>
-                  setSkillForm((previous) => ({
-                    ...previous,
-                    isActive: event.target.checked,
-                  }))
-                }
+                onChange={(event) => setSkillForm((previous) => ({ ...previous, isActive: event.target.checked }))}
               />
               Active
             </label>
-
-            <div className="admin-skills-modal-actions">
-              <button type="button" onClick={() => setSkillModalOpen(false)}>
-                Cancel
-              </button>
-              <button type="submit" className="primary" disabled={saving}>
-                <FiSave />
-                {saving ? "Saving..." : "Save Technology"}
-              </button>
-            </div>
-          </form>
-        </div>
-      )}
+          </div>
+        </form>
+      </AdminModal>
     </div>
   );
 }
