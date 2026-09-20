@@ -135,12 +135,40 @@
   font-weight: 500;
 }
 
-.projects-intro {
+.projects-header-note {
+  min-width: 0;
+  display: flex;
+  align-items: flex-start;
+  gap: 15px;
+  padding: 16px 0 3px;
+}
+
+.projects-header-count {
+  color: #3b82f6;
+  font-family: monospace;
+  font-size: 27px;
+  font-weight: 700;
+  line-height: 1;
+}
+
+.projects-header-note > div {
+  min-width: 0;
+}
+
+.projects-header-note strong {
+  display: block;
+  color: #718198;
+  font-family: monospace;
+  font-size: 8px;
+  letter-spacing: 1.2px;
+}
+
+.projects-header-note p {
   max-width: 290px;
-  margin: 0 0 4px;
-  color: #748196;
+  margin: 7px 0 0;
+  color: #778598;
   font-size: 12px;
-  line-height: 1.7;
+  line-height: 1.65;
 }
 
 
@@ -219,12 +247,10 @@
 }
 
 .project-index-number-block {
-  min-height: 56px;
+  min-height: 44px;
   display: flex;
-  flex-direction: column;
-  align-items: flex-start;
-  justify-content: center;
-  gap: 5px;
+  align-items: center;
+  justify-content: flex-start;
   padding-right: 14px;
   border-right:
     1px solid
@@ -236,14 +262,6 @@
   font-family: monospace;
   font-size: 16px;
   line-height: 1;
-}
-
-.project-index-number-block small {
-  color: #44536a;
-  font-family: monospace;
-  font-size: 6px;
-  font-weight: 700;
-  letter-spacing: 1px;
 }
 
 .project-index-project {
@@ -786,8 +804,13 @@ and
     gap: 16px;
   }
 
-  .projects-intro {
+  .projects-header-note {
     max-width: 520px;
+    padding-top: 0;
+  }
+
+  .projects-header-note p {
+    max-width: 420px;
   }
 
   .project-index-row {
@@ -854,27 +877,42 @@ and
     letter-spacing: -2px;
   }
 
-  .projects-intro {
-    font-size: 11px;
+  .projects-header-note {
+    max-width: 100%;
+    padding-top: 0;
+  }
+
+  .projects-header-count {
+    font-size: 23px;
+  }
+
+  .projects-header-note strong {
+    font-size: 7px;
+  }
+
+  .projects-header-note p {
+    max-width: 290px;
+    font-size: 10px;
+    line-height: 1.55;
   }
 
   .project-index {
-    gap: 9px;
+    gap: 8px;
   }
 
   .project-index-item {
-    border-radius: 12px;
+    border-radius: 11px;
   }
 
   .project-index-row {
-    min-height: 92px;
+    min-height: 76px;
     grid-template-columns:
-      45px
+      32px
       minmax(0, 1fr)
-      32px;
-    gap: 10px;
+      27px;
+    gap: 8px;
     padding:
-      13px 11px;
+      9px 9px;
   }
 
   .project-index-meta,
@@ -883,47 +921,49 @@ and
   }
 
   .project-index-number-block {
-    width: 34px;
-    height: 34px;
-    min-height: 34px;
+    width: 30px;
+    height: 30px;
+    min-height: 30px;
     padding-right: 0;
     align-items: center;
     justify-content: center;
-    gap: 0;
     background:
       rgba(59, 130, 246, 0.055);
     border:
       1px solid
       rgba(96, 165, 250, 0.12);
-    border-radius: 9px;
+    border-radius: 8px;
   }
 
   .project-index-number-block strong {
     color: #60a5fa;
-    font-size: 11px;
+    font-size: 10px;
   }
 
-  .project-index-number-block small {
-    display: none;
+  .project-index-project {
+    gap: 3px;
   }
 
   .project-index-project > strong {
-    font-size: 16px;
+    font-size: 14px;
+    line-height: 1.15;
   }
 
   .project-index-description-preview {
-    font-size: 8px;
-    -webkit-line-clamp: 2;
+    font-size: 7px;
+    line-height: 1.35;
+    -webkit-line-clamp: 1;
   }
 
   .project-index-tech-preview {
-    font-size: 6px;
+    font-size: 5.5px;
   }
 
   .project-index-toggle {
-    width: 30px;
-    height: 30px;
-    font-size: 13px;
+    width: 26px;
+    height: 26px;
+    font-size: 11px;
+    border-radius: 7px;
   }
 
   .project-detail-inner {
@@ -994,22 +1034,36 @@ and
 
   .project-index-row {
     grid-template-columns:
-      39px
+      29px
       minmax(0, 1fr)
-      30px;
+      25px;
+    gap: 7px;
     padding:
-      12px 9px;
+      8px 8px;
   }
 
   .project-index-number-block {
-    width: 32px;
-    height: 32px;
-    min-height: 32px;
+    width: 27px;
+    height: 27px;
+    min-height: 27px;
     padding-right: 0;
+  }
+
+  .project-index-number-block strong {
+    font-size: 9px;
+  }
+
+  .project-index-project > strong {
+    font-size: 13px;
   }
 
   .project-index-description-preview {
     -webkit-line-clamp: 1;
+  }
+
+  .project-index-toggle {
+    width: 24px;
+    height: 24px;
   }
 
   .project-detail-inner {
