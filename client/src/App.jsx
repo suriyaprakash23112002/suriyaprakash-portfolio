@@ -16,7 +16,6 @@ import AdminProjects from "./admin/AdminProjects";
 import AdminExperience from "./admin/AdminExperience";
 import AdminCareer from "./admin/AdminCareer";
 import AdminEducation from "./admin/AdminEducation";
-import AdminSettings from "./admin/AdminSettings";
 import ProtectedRoute from "./admin/ProtectedRoute";
 
 function App() {
@@ -44,7 +43,6 @@ function App() {
             <Route path="experience" element={<AdminExperience />} />
             <Route path="career" element={<AdminCareer />} />
             <Route path="education" element={<AdminEducation />} />
-            <Route path="settings" element={<AdminSettings />} />
           </Route>
         </Route>
 
