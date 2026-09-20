@@ -363,15 +363,41 @@ function AdminProjects() {
           </>
         }
       >
-        <form id="project-form" onSubmit={save}>
-          <div className="admin-ui-form-grid">
+        <form id="project-form" onSubmit={save} className="admin-project-form">
+          <section className="admin-project-form-section">
+            <div className="admin-project-form-heading">
+              <span>01 · PROJECT DETAILS</span>
+              <strong>Basic information</strong>
+            </div>
+
+            <div className="admin-ui-form-grid">
             <label className="admin-ui-field admin-ui-field-full"><span>Project title</span><input name="title" value={form.title} onChange={change} required /></label>
             <label className="admin-ui-field admin-ui-field-full"><span>Short description</span><input name="shortDescription" value={form.shortDescription} onChange={change} /></label>
             <label className="admin-ui-field admin-ui-field-full"><span>Description</span><textarea name="description" value={form.description} onChange={change} /></label>
-            <label className="admin-ui-field admin-ui-field-full"><span>Cover image URL</span><input name="coverImageUrl" type="url" value={form.coverImageUrl} onChange={change} /></label>
-            <label className="admin-ui-field"><span>Live URL</span><input name="liveUrl" type="url" value={form.liveUrl} onChange={change} /></label>
-            <label className="admin-ui-field"><span>GitHub URL</span><input name="githubUrl" type="url" value={form.githubUrl} onChange={change} /></label>
-            <label className="admin-ui-field">
+            </div>
+          </section>
+
+          <section className="admin-project-form-section">
+            <div className="admin-project-form-heading">
+              <span>02 · MEDIA & LINKS</span>
+              <strong>Project access</strong>
+            </div>
+
+            <div className="admin-ui-form-grid">
+              <label className="admin-ui-field admin-ui-field-full"><span>Cover image URL</span><input name="coverImageUrl" type="url" value={form.coverImageUrl} onChange={change} /></label>
+              <label className="admin-ui-field"><span>Live URL</span><input name="liveUrl" type="url" value={form.liveUrl} onChange={change} /></label>
+              <label className="admin-ui-field"><span>GitHub URL</span><input name="githubUrl" type="url" value={form.githubUrl} onChange={change} /></label>
+            </div>
+          </section>
+
+          <section className="admin-project-form-section">
+            <div className="admin-project-form-heading">
+              <span>03 · STATUS</span>
+              <strong>Publishing & timeline</strong>
+            </div>
+
+            <div className="admin-ui-form-grid">
+              <label className="admin-ui-field">
               <span>Status</span>
               <select name="status" value={form.status} onChange={change}>
                 <option value="DRAFT">Draft</option>
@@ -382,11 +408,36 @@ function AdminProjects() {
             <label className="admin-ui-field"><span>Display order</span><input name="displayOrder" type="number" value={form.displayOrder} onChange={change} /></label>
             <label className="admin-ui-field"><span>Started at</span><input name="startedAt" type="date" value={form.startedAt} onChange={change} /></label>
             <label className="admin-ui-field"><span>Completed at</span><input name="completedAt" type="date" value={form.completedAt} onChange={change} disabled={form.isCurrent} /></label>
-            <label className="admin-ui-check"><input name="isFeatured" type="checkbox" checked={form.isFeatured} onChange={change} />Featured project</label>
-            <label className="admin-ui-check"><input name="isCurrent" type="checkbox" checked={form.isCurrent} onChange={change} />Current project</label>
+              <div className="admin-project-toggle-grid admin-ui-field-full">
+                <label className="admin-ui-check admin-project-toggle">
+                  <input name="isFeatured" type="checkbox" checked={form.isFeatured} onChange={change} />
+                  <span>
+                    <strong>Featured project</strong>
+                    <small>Highlight this project on the public portfolio.</small>
+                  </span>
+                </label>
+
+                <label className="admin-ui-check admin-project-toggle">
+                  <input name="isCurrent" type="checkbox" checked={form.isCurrent} onChange={change} />
+                  <span>
+                    <strong>Current project</strong>
+                    <small>Mark this as an active project in development.</small>
+                  </span>
+                </label>
+              </div>
+            </div>
+          </section>
+
+          <section className="admin-project-form-section">
+            <div className="admin-project-form-heading">
+              <span>04 · TECHNOLOGIES</span>
+              <strong>Select the stack used</strong>
+            </div>
 
             <div className="admin-ui-field admin-ui-field-full">
-              <span>Technologies</span>
+              <span className="admin-project-tech-count">
+                {form.technologyIds.length} selected
+              </span>
               <div className="admin-projects-refactor-skill-grid">
                 {skills.map((skill) => (
                   <label className="admin-projects-refactor-skill" key={skill.id}>
@@ -400,7 +451,7 @@ function AdminProjects() {
                 ))}
               </div>
             </div>
-          </div>
+          </section>
         </form>
       </AdminModal>
     </div>
