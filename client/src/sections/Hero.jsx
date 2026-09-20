@@ -91,7 +91,16 @@ function Hero({ profile, performanceMode = false }) {
         "(hover: hover) and (pointer: fine)"
       ).matches;
 
-    if (!finePointer) return;
+    if (
+      !finePointer ||
+      performanceMode
+    ) {
+      document.body.classList.remove(
+        "hero-custom-cursor-enabled"
+      );
+
+      return;
+    }
 
     document.body.classList.add(
       "hero-custom-cursor-enabled"
@@ -160,7 +169,11 @@ function Hero({ profile, performanceMode = false }) {
         showCursor
       );
     };
-  }, [cursorX, cursorY]);
+  }, [
+    cursorX,
+    cursorY,
+    performanceMode,
+  ]);
 
   const scrollToSection = (id) => {
     document
