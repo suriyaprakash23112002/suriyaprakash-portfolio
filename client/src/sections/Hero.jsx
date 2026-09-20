@@ -14,6 +14,7 @@ import {
   FiServer,
   FiDatabase,
   FiCloud,
+  FiFileText,
 } from "react-icons/fi";
 
 import profileImage from "../assets/sample.png";
@@ -192,6 +193,45 @@ function Hero({ profile }) {
 
       <div className="hero-grid" />
 
+      <div className="hero-data-streams" aria-hidden="true">
+        <span className="hero-data-stream hero-data-stream-one" />
+        <span className="hero-data-stream hero-data-stream-two" />
+        <span className="hero-data-stream hero-data-stream-three" />
+      </div>
+
+      <motion.div
+        className="hero-floating-code hero-floating-code-one"
+        aria-hidden="true"
+        animate={{
+          y: [0, -10, 0],
+          opacity: [0.35, 0.72, 0.35],
+        }}
+        transition={{
+          duration: 5.5,
+          repeat: Infinity,
+          ease: "easeInOut",
+        }}
+      >
+        API / REST
+      </motion.div>
+
+      <motion.div
+        className="hero-floating-code hero-floating-code-two"
+        aria-hidden="true"
+        animate={{
+          y: [0, 9, 0],
+          opacity: [0.3, 0.65, 0.3],
+        }}
+        transition={{
+          duration: 6.2,
+          repeat: Infinity,
+          ease: "easeInOut",
+          delay: 0.8,
+        }}
+      >
+        PRISMA / SQL
+      </motion.div>
+
       <div className="hero-glow hero-glow-left" />
       <div className="hero-glow hero-glow-right" />
 
@@ -330,6 +370,19 @@ function Hero({ profile }) {
                 View Projects
                 <FiArrowUpRight />
               </button>
+
+              {profile?.resumeUrl && (
+                <a
+                  href={profile.resumeUrl}
+                  target="_blank"
+                  rel="noreferrer"
+                  className="hero-resume-button"
+                  aria-label="Open resume"
+                >
+                  <FiFileText />
+                  Resume
+                </a>
+              )}
 
               <button
                 type="button"
@@ -552,6 +605,37 @@ function Hero({ profile }) {
               transition={{
                 duration: 3.2,
                 repeat: Infinity,
+              }}
+            />
+
+            <motion.span
+              className="hero-particle hero-particle-four"
+              animate={{
+                x: [0, 12, 0],
+                y: [0, 10, 0],
+                opacity: [0.18, 0.85, 0.18],
+                scale: [0.8, 1.3, 0.8],
+              }}
+              transition={{
+                duration: 4.4,
+                repeat: Infinity,
+                ease: "easeInOut",
+              }}
+            />
+
+            <motion.span
+              className="hero-particle hero-particle-five"
+              animate={{
+                x: [0, -10, 0],
+                y: [0, -12, 0],
+                opacity: [0.2, 0.9, 0.2],
+                scale: [0.9, 1.25, 0.9],
+              }}
+              transition={{
+                duration: 5,
+                repeat: Infinity,
+                ease: "easeInOut",
+                delay: 0.6,
               }}
             />
 
