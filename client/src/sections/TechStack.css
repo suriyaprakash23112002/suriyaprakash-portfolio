@@ -167,6 +167,8 @@
 ========================================================= */
 
 .skills-showcase-layout {
+  min-width: 0;
+
   display: grid;
 
   grid-template-columns:
@@ -189,6 +191,8 @@
 ========================================================= */
 
 .skills-showcase-content {
+  min-width: 0;
+
   max-width: 600px;
 }
 
@@ -1577,5 +1581,97 @@ and
 
   .skills-node-copy > small {
     display: none;
+  }
+}
+
+
+/* =========================================================
+   NARROW DESKTOP / MOBILE DESKTOP-SITE FIX
+   Prevents the right Skills column from overflowing when
+   Chrome desktop-site mode reports a desktop-width viewport.
+========================================================= */
+
+@media (min-width: 951px) and (max-width: 1200px) {
+  .skills-showcase {
+    padding-left: 28px;
+    padding-right: 28px;
+  }
+
+  .skills-showcase-container,
+  .skills-showcase-layout,
+  .skills-showcase-content,
+  .skills-canvas {
+    min-width: 0;
+  }
+
+  .skills-showcase-layout {
+    grid-template-columns:
+      minmax(0, 1.12fr)
+      minmax(0, 0.88fr);
+
+    gap: 28px;
+  }
+
+  .skills-canvas {
+    width: 100%;
+  }
+
+  .skills-showcase-content {
+    width: 100%;
+    max-width: none;
+    justify-self: stretch;
+    padding-left: 0;
+  }
+
+  .skills-showcase-content h2 {
+    max-width: 100%;
+
+    font-size:
+      clamp(
+        40px,
+        4.7vw,
+        56px
+      );
+
+    letter-spacing: -3px;
+  }
+
+  .skills-showcase-content > p {
+    max-width: 100%;
+  }
+
+  .skills-category-summary {
+    width: 100%;
+    grid-template-columns:
+      repeat(
+        2,
+        minmax(0, 1fr)
+      );
+  }
+}
+
+@media (min-width: 951px) and (orientation: portrait) {
+  .skills-showcase {
+    padding-left: 24px;
+    padding-right: 24px;
+  }
+
+  .skills-showcase-layout {
+    grid-template-columns:
+      minmax(0, 1.08fr)
+      minmax(0, 0.92fr);
+
+    gap: 24px;
+  }
+
+  .skills-showcase-content {
+    min-width: 0;
+    max-width: 100%;
+    padding-left: 0;
+  }
+
+  .skills-showcase-content h2,
+  .skills-showcase-content > p {
+    max-width: 100%;
   }
 }
