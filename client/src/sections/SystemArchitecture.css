@@ -1,12 +1,15 @@
 .architecture-section {
   position: relative;
+  width: 100%;
+  box-sizing: border-box;
   overflow: hidden;
-  padding: 118px 0;
-  color: #f6f8fb;
-  background:
-    linear-gradient(180deg, #05080d 0%, #050912 45%, #05080d 100%);
-  border-top: 1px solid rgba(255, 255, 255, 0.04);
-  border-bottom: 1px solid rgba(255, 255, 255, 0.04);
+  padding: 52px 36px 58px;
+  color: #f8fafc;
+  background: #05080d;
+  font-family:
+    Arial,
+    Helvetica,
+    sans-serif;
 }
 
 .architecture-background-grid {
@@ -50,57 +53,68 @@
 .architecture-container {
   position: relative;
   z-index: 2;
-  width: min(1200px, calc(100% - 48px));
+  width: 100%;
+  max-width: 1380px;
   margin: 0 auto;
 }
 
 .architecture-section-label {
-  display: grid;
-  grid-template-columns: auto minmax(42px, 92px) auto;
+  display: flex;
   align-items: center;
-  gap: 13px;
+  gap: 11px;
   width: fit-content;
-  margin-bottom: 36px;
+  margin-bottom: 29px;
 }
 
 .architecture-section-label span,
 .architecture-section-label strong {
-  font: 700 11px/1 monospace;
-  letter-spacing: 1.6px;
+  font-family: monospace;
 }
 
 .architecture-section-label span {
-  color: #60a5fa;
+  color: #657287;
+  font-size: 10px;
 }
 
 .architecture-section-label strong {
-  color: #718096;
+  color: #3b82f6;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 2.4px;
 }
 
 .architecture-section-label div {
+  width: 42px;
   height: 1px;
-  background: linear-gradient(
-    90deg,
-    #3b82f6,
-    rgba(59, 130, 246, 0.08)
-  );
+  background:
+    linear-gradient(
+      90deg,
+      #2563eb,
+      transparent
+    );
 }
 
 .architecture-header {
   display: grid;
-  grid-template-columns: 1.15fr 0.85fr;
-  gap: clamp(36px, 6vw, 90px);
+  grid-template-columns:
+    minmax(0, 1fr)
+    330px;
   align-items: end;
-  margin-bottom: 42px;
+  gap: 65px;
+  margin-bottom: 40px;
 }
 
 .architecture-live-label {
+  width: fit-content;
   display: inline-flex;
   align-items: center;
-  gap: 9px;
-  color: #7f8fa6;
-  font: 700 11px monospace;
-  letter-spacing: 1.25px;
+  gap: 8px;
+  margin-bottom: 15px;
+  color: #8692a5;
+  font-family: monospace;
+  font-size: 9px;
+  font-weight: 600;
+  letter-spacing: 1.2px;
 }
 
 .architecture-live-label i {
@@ -115,13 +129,18 @@
   animation: architecturePulse 2s ease-in-out infinite;
 }
 
+.architecture-heading {
+  max-width: 790px;
+}
+
 .architecture-heading h2 {
-  max-width: 690px;
-  margin: 18px 0 0;
-  color: #f7f9fc;
-  font-size: clamp(38px, 5vw, 70px);
-  line-height: 0.98;
-  letter-spacing: -3.1px;
+  max-width: 780px;
+  margin: 0;
+  color: #f5f7fb;
+  font-size: clamp(46px, 5vw, 74px);
+  font-weight: 700;
+  line-height: 1.02;
+  letter-spacing: -3.6px;
 }
 
 .architecture-heading h2 span {
@@ -130,15 +149,15 @@
 }
 
 .architecture-intro {
-  padding-bottom: 5px;
+  padding-bottom: 0;
 }
 
 .architecture-intro > p {
-  max-width: 520px;
+  max-width: 320px;
   margin: 0;
-  color: #93a1b5;
-  font-size: 15px;
-  line-height: 1.8;
+  color: #7b889b;
+  font-size: 13px;
+  line-height: 1.75;
 }
 
 .architecture-intro-meta {
@@ -809,11 +828,7 @@
 
 @media (max-width: 760px) {
   .architecture-section {
-    padding: 88px 0;
-  }
-
-  .architecture-container {
-    width: min(100% - 32px, 1200px);
+    padding: 44px 20px 50px;
   }
 
   .architecture-heading h2 {
@@ -848,11 +863,7 @@
 
 @media (max-width: 520px) {
   .architecture-section {
-    padding: 76px 0;
-  }
-
-  .architecture-container {
-    width: min(100% - 26px, 1200px);
+    padding: 42px 15px 46px;
   }
 
   .architecture-section-label {
@@ -918,5 +929,28 @@
     animation-duration: 0.01ms !important;
     animation-iteration-count: 1 !important;
     scroll-behavior: auto !important;
+  }
+}
+
+
+@media (max-width: 900px) {
+  .architecture-header {
+    grid-template-columns: 1fr;
+    gap: 22px;
+  }
+
+  .architecture-intro > p {
+    max-width: 650px;
+  }
+}
+
+@media (max-width: 600px) {
+  .architecture-section-label {
+    margin-bottom: 22px;
+  }
+
+  .architecture-heading h2 {
+    font-size: clamp(39px, 12vw, 58px);
+    letter-spacing: -2.7px;
   }
 }
