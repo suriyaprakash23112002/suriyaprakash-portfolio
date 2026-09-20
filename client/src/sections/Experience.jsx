@@ -161,51 +161,7 @@ function Experience({
       .filter(Boolean);
   };
 
-  /* =====================================================
-     EMPTY
-  ===================================================== */
-
-  if (
-    activeExperiences.length === 0
-  ) {
     return (
-      <section
-        id="experience"
-        className="experience-section"
-      >
-        <div className="experience-container">
-          <div className="experience-section-label">
-            <span>06</span>
-            <div />
-            <strong>
-              EXPERIENCE
-            </strong>
-          </div>
-
-          <div className="experience-empty">
-            <FiBriefcase />
-
-            <span>
-              CAREER HISTORY
-            </span>
-
-            <h3>
-              Experience will appear
-              here.
-            </h3>
-
-            <p>
-              Add professional
-              experience through the
-              admin dashboard.
-            </p>
-          </div>
-        </div>
-      </section>
-    );
-  }
-
-  return (
     <section
       id="experience"
       className="experience-section"
@@ -273,14 +229,14 @@ function Experience({
             <div className="experience-status">
               <span />
 
-              PROFESSIONAL JOURNEY
+              PROFESSIONAL EXPERIENCE
             </div>
 
             <h2>
-              Experience shaped by
+              Where I’ve worked
               <span>
                 {" "}
-                building real products.
+                and what I’ve built.
               </span>
             </h2>
           </motion.div>
@@ -303,11 +259,11 @@ function Experience({
               delay: 0.1,
             }}
           >
-            A timeline of the roles,
-            projects and environments
-            that have shaped my
-            full-stack development
-            experience.
+            A view of the roles,
+            responsibilities and
+            technologies that have
+            shaped my full-stack
+            development journey.
           </motion.p>
         </div>
 
@@ -315,6 +271,28 @@ function Experience({
             TIMELINE
         ============================================ */}
 
+        {activeExperiences.length === 0 ? (
+          <div className="experience-empty">
+            <FiBriefcase />
+
+            <span>
+              PROFESSIONAL TIMELINE
+            </span>
+
+            <h3>
+              Building real-world
+              experience.
+            </h3>
+
+            <p>
+              My professional roles,
+              responsibilities and
+              production work will be
+              documented here as the
+              journey grows.
+            </p>
+          </div>
+        ) : (
         <div className="experience-timeline">
           {activeExperiences.map(
             (
