@@ -883,16 +883,28 @@ and
   }
 
   .project-index-number-block {
-    min-height: 50px;
-    padding-right: 8px;
+    width: 34px;
+    height: 34px;
+    min-height: 34px;
+    padding-right: 0;
+    align-items: center;
+    justify-content: center;
+    gap: 0;
+    background:
+      rgba(59, 130, 246, 0.055);
+    border:
+      1px solid
+      rgba(96, 165, 250, 0.12);
+    border-radius: 9px;
   }
 
   .project-index-number-block strong {
-    font-size: 13px;
+    color: #60a5fa;
+    font-size: 11px;
   }
 
   .project-index-number-block small {
-    font-size: 5px;
+    display: none;
   }
 
   .project-index-project > strong {
@@ -990,7 +1002,10 @@ and
   }
 
   .project-index-number-block {
-    padding-right: 6px;
+    width: 32px;
+    height: 32px;
+    min-height: 32px;
+    padding-right: 0;
   }
 
   .project-index-description-preview {
