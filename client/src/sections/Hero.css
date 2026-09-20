@@ -2608,7 +2608,3 @@ and (
   }
 }
 
-.hero-performance-mode .hero-cursor-dot,
-.hero-performance-mode .hero-cursor-ring {
-  display: none !important;
-}
