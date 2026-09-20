@@ -71,9 +71,7 @@ function PortfolioPage() {
     ) => {
       if (
         event.key ===
-          "portfolio_profile_updated_at" ||
-        event.key ===
-          "portfolio_settings_updated_at"
+          "portfolio_profile_updated_at"
       ) {
         loadPortfolio({
           silent: true,
