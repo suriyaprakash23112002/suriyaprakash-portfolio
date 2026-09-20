@@ -134,10 +134,29 @@ body {
 .portfolio-performance-mode *,
 .portfolio-performance-mode *::before,
 .portfolio-performance-mode *::after {
-  animation-duration: 0.001ms !important;
-  animation-iteration-count: 1 !important;
+  animation: none !important;
 }
 
 .portfolio-performance-mode {
   scroll-behavior: auto;
+}
+
+.portfolio-performance-mode .navbar-container,
+.portfolio-performance-mode .navbar-menu,
+.portfolio-performance-mode .navbar-icon-btn,
+.portfolio-performance-mode .navbar-mobile-toggle,
+.portfolio-performance-mode .navbar-mobile-menu,
+.portfolio-performance-mode .hero-action-dock {
+  backdrop-filter: none !important;
+  -webkit-backdrop-filter: none !important;
+}
+
+.portfolio-performance-mode .hero-glow,
+.portfolio-performance-mode .hero-image-glow {
+  filter: blur(28px) !important;
+}
+
+.portfolio-performance-mode .hero-cursor-dot,
+.portfolio-performance-mode .hero-cursor-ring {
+  display: none !important;
 }
