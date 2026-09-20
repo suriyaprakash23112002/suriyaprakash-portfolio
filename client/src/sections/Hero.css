@@ -2521,12 +2521,12 @@ and (
 ========================================================= */
 
 .hero-section.hero-desktop-site-portrait {
-  min-height: 760px !important;
+  min-height: 600px !important;
   height: auto !important;
   align-items: flex-start !important;
 
-  padding-top: 108px !important;
-  padding-bottom: 58px !important;
+  padding-top: 104px !important;
+  padding-bottom: 30px !important;
 }
 
 .hero-section.hero-desktop-site-portrait .hero-container {
@@ -2534,7 +2534,7 @@ and (
 }
 
 .hero-section.hero-desktop-site-portrait .hero-bottom-line {
-  bottom: 18px;
+  bottom: 10px;
 }
 
 
@@ -2584,13 +2584,13 @@ and (
 
 @media (min-width: 951px) and (orientation: portrait) {
   .hero-section {
-    min-height: 720px !important;
+    min-height: 600px !important;
     height: auto !important;
     align-items: flex-start !important;
 
     padding:
       104px 30px
-      56px !important;
+      30px !important;
   }
 
   .hero-container {
@@ -2604,7 +2604,7 @@ and (
   }
 
   .hero-bottom-line {
-    bottom: 16px !important;
+    bottom: 10px !important;
   }
 }
 
