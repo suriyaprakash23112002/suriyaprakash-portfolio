@@ -16,6 +16,7 @@ import "./Contact.css";
 
 function Contact({
   profile,
+  performanceMode = false,
 }) {
   const [copied, setCopied] =
     useState(false);
@@ -427,7 +428,7 @@ function Contact({
                 }}
                 transition={{
                   duration: 2,
-                  repeat: Infinity,
+                  repeat: performanceMode ? 0 : Infinity,
                 }}
               />
             </div>
