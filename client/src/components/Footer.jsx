@@ -50,10 +50,6 @@ function Footer({
       id: "skills",
     },
     {
-      label: "Architecture",
-      id: "architecture",
-    },
-    {
       label: "Projects",
       id: "projects",
     },
