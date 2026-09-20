@@ -1,1 +1,2 @@
--- AlterTable\nALTER TABLE "Profile" ADD COLUMN "heroImageUrl" TEXT;\n
+-- AlterTable
+ALTER TABLE "Profile" ADD COLUMN "heroImageUrl" TEXT;
