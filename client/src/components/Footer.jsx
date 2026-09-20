@@ -112,6 +112,13 @@ function Footer({
       "linkedin_url"
     );
 
+  const footerText =
+    getSetting(
+      "footer_text",
+      "footerText"
+    ) ||
+    "Designed and developed by Suriyaprakash";
+
   const currentYear =
     new Date().getFullYear();
 
@@ -311,14 +318,8 @@ function Footer({
 
           <div className="footer-built">
             <span>
-              DESIGNED & BUILT
+              {footerText}
             </span>
-
-            <i />
-
-            <strong>
-              WITH REACT
-            </strong>
           </div>
 
           <button
