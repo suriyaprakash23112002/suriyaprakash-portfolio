@@ -156,7 +156,3 @@ body {
   filter: blur(28px) !important;
 }
 
-.portfolio-performance-mode .hero-cursor-dot,
-.portfolio-performance-mode .hero-cursor-ring {
-  display: none !important;
-}
