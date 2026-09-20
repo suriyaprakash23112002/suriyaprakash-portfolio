@@ -10,6 +10,7 @@ import {
   FiCopy,
   FiCheck,
   FiCode,
+  FiMapPin,
 } from "react-icons/fi";
 
 import "./Contact.css";
@@ -417,6 +418,17 @@ function Contact({
                 </strong>
               </div>
 
+              {profile?.location && (
+                <div className="contact-location">
+                  <FiMapPin />
+
+                  <div>
+                    <span>LOCATION</span>
+                    <strong>{profile.location}</strong>
+                  </div>
+                </div>
+              )}
+
               <motion.span
                 className="contact-directory-pulse"
                 animate={{
@@ -441,13 +453,13 @@ function Contact({
 
         <div className="contact-signature">
           <span>
-            SURIYAPRAKASH
+            {(profile?.fullName || "Suriyaprakash").toUpperCase()}
           </span>
 
           <div />
 
           <span>
-            FULL-STACK DEVELOPER
+            {(profile?.headline || "FULL-STACK DEVELOPER").toUpperCase()}
           </span>
         </div>
       </div>
