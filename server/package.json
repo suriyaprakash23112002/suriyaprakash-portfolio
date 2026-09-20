@@ -6,7 +6,9 @@
   "scripts": {
     "dev": "tsx watch src/server.js",
     "start": "tsx src/server.js",
-    "postinstall": "prisma generate --schema prisma/schema.prisma"
+    "postinstall": "prisma generate --schema prisma/schema.prisma",
+    "seed:test": "tsx prisma/seed-test-data.js",
+    "seed:test:clear": "tsx prisma/seed-test-data.js --clear"
   },
   "keywords": [],
   "author": "",
