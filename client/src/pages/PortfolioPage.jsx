@@ -39,7 +39,7 @@ function PortfolioPage() {
     const updatePerformanceMode = () => {
       setPerformanceMode(
         pointerQuery.matches ||
-          window.innerWidth <= 900
+          window.innerWidth <= 1440
       );
     };
 
@@ -251,13 +251,7 @@ function PortfolioPage() {
   ===================================================== */
 
   return (
-    <MotionConfig
-      reducedMotion={
-        performanceMode
-          ? "always"
-          : "user"
-      }
-    >
+    <MotionConfig reducedMotion="user">
       <div
         className={`portfolio-page ${
           performanceMode
