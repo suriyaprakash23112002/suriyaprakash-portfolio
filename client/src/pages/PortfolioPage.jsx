@@ -33,9 +33,11 @@ function PortfolioPage() {
 
   useEffect(() => {
     const loadPortfolio =
-      async () => {
+      async ({ silent = false } = {}) => {
         try {
-          setLoading(true);
+          if (!silent) {
+            setLoading(true);
+          }
 
           setError("");
 
@@ -52,15 +54,44 @@ function PortfolioPage() {
             err
           );
 
-          setError(
-            "Unable to load portfolio."
-          );
+          if (!silent) {
+            setError(
+              "Unable to load portfolio."
+            );
+          }
         } finally {
-          setLoading(false);
+          if (!silent) {
+            setLoading(false);
+          }
         }
       };
 
+    const handleProfileUpdate = (
+      event
+    ) => {
+      if (
+        event.key ===
+        "portfolio_profile_updated_at"
+      ) {
+        loadPortfolio({
+          silent: true,
+        });
+      }
+    };
+
     loadPortfolio();
+
+    window.addEventListener(
+      "storage",
+      handleProfileUpdate
+    );
+
+    return () => {
+      window.removeEventListener(
+        "storage",
+        handleProfileUpdate
+      );
+    };
   }, []);
 
   /* =====================================================
