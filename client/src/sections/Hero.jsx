@@ -21,7 +21,7 @@ import profileImage from "../assets/sample.png";
 
 import "./Hero.css";
 
-function Hero({ profile }) {
+function Hero({ profile, performanceMode = false }) {
   const cursorX = useMotionValue(-100);
   const cursorY = useMotionValue(-100);
 
@@ -42,6 +42,48 @@ function Hero({ profile }) {
 
   const [cursorHover, setCursorHover] =
     useState(false);
+
+  const [
+    tallDesktopViewport,
+    setTallDesktopViewport,
+  ] = useState(false);
+
+  useEffect(() => {
+    const updateViewportMode = () => {
+      const width = window.innerWidth;
+      const height = window.innerHeight;
+
+      setTallDesktopViewport(
+        width >= 900 &&
+          height / width >= 1.25
+      );
+    };
+
+    updateViewportMode();
+
+    window.addEventListener(
+      "resize",
+      updateViewportMode,
+      { passive: true }
+    );
+
+    window.addEventListener(
+      "orientationchange",
+      updateViewportMode
+    );
+
+    return () => {
+      window.removeEventListener(
+        "resize",
+        updateViewportMode
+      );
+
+      window.removeEventListener(
+        "orientationchange",
+        updateViewportMode
+      );
+    };
+  }, []);
 
   useEffect(() => {
     const finePointer =
@@ -159,7 +201,15 @@ function Hero({ profile }) {
   return (
     <section
       id="home"
-      className="hero-section"
+      className={`hero-section ${
+        tallDesktopViewport
+          ? "hero-desktop-site-portrait"
+          : ""
+      } ${
+        performanceMode
+          ? "hero-performance-mode"
+          : ""
+      }`}
     >
       {/* CUSTOM CURSOR */}
 
@@ -208,7 +258,7 @@ function Hero({ profile }) {
         }}
         transition={{
           duration: 5.5,
-          repeat: Infinity,
+          repeat: performanceMode ? 0 : Infinity,
           ease: "easeInOut",
         }}
       >
@@ -224,7 +274,7 @@ function Hero({ profile }) {
         }}
         transition={{
           duration: 6.2,
-          repeat: Infinity,
+          repeat: performanceMode ? 0 : Infinity,
           ease: "easeInOut",
           delay: 0.8,
         }}
@@ -468,7 +518,7 @@ function Hero({ profile }) {
               animate={{ rotate: 360 }}
               transition={{
                 duration: 16,
-                repeat: Infinity,
+                repeat: performanceMode ? 0 : Infinity,
                 ease: "linear",
               }}
             />
@@ -489,7 +539,7 @@ function Hero({ profile }) {
               }}
               transition={{
                 duration: 3.6,
-                repeat: Infinity,
+                repeat: performanceMode ? 0 : Infinity,
                 ease: "easeInOut",
               }}
             >
@@ -505,7 +555,7 @@ function Hero({ profile }) {
               }}
               transition={{
                 duration: 4.2,
-                repeat: Infinity,
+                repeat: performanceMode ? 0 : Infinity,
                 ease: "easeInOut",
                 delay: 0.5,
               }}
@@ -523,7 +573,7 @@ function Hero({ profile }) {
                 }}
                 transition={{
                   duration: 32,
-                  repeat: Infinity,
+                  repeat: performanceMode ? 0 : Infinity,
                   ease: "linear",
                 }}
               />
@@ -537,7 +587,7 @@ function Hero({ profile }) {
                 }}
                 transition={{
                   duration: 24,
-                  repeat: Infinity,
+                  repeat: performanceMode ? 0 : Infinity,
                   ease: "linear",
                 }}
               />
@@ -551,7 +601,7 @@ function Hero({ profile }) {
                 }}
                 transition={{
                   duration: 18,
-                  repeat: Infinity,
+                  repeat: performanceMode ? 0 : Infinity,
                   ease: "linear",
                 }}
               />
@@ -579,7 +629,7 @@ function Hero({ profile }) {
               }}
               transition={{
                 duration: 5,
-                repeat: Infinity,
+                repeat: performanceMode ? 0 : Infinity,
                 ease: "easeInOut",
               }}
             />
@@ -609,7 +659,7 @@ function Hero({ profile }) {
               }}
               transition={{
                 duration: 3.4,
-                repeat: Infinity,
+                repeat: performanceMode ? 0 : Infinity,
               }}
             />
 
@@ -636,7 +686,7 @@ function Hero({ profile }) {
               }}
               transition={{
                 duration: 4,
-                repeat: Infinity,
+                repeat: performanceMode ? 0 : Infinity,
               }}
             />
 
@@ -657,7 +707,7 @@ function Hero({ profile }) {
               }}
               transition={{
                 duration: 3.2,
-                repeat: Infinity,
+                repeat: performanceMode ? 0 : Infinity,
               }}
             />
 
@@ -671,7 +721,7 @@ function Hero({ profile }) {
               }}
               transition={{
                 duration: 4.4,
-                repeat: Infinity,
+                repeat: performanceMode ? 0 : Infinity,
                 ease: "easeInOut",
               }}
             />
@@ -686,7 +736,7 @@ function Hero({ profile }) {
               }}
               transition={{
                 duration: 5,
-                repeat: Infinity,
+                repeat: performanceMode ? 0 : Infinity,
                 ease: "easeInOut",
                 delay: 0.6,
               }}
@@ -706,7 +756,7 @@ function Hero({ profile }) {
                 }}
                 transition={{
                   duration: 5,
-                  repeat: Infinity,
+                  repeat: performanceMode ? 0 : Infinity,
                   ease: "easeInOut",
                 }}
               >
@@ -794,7 +844,7 @@ function Hero({ profile }) {
                         4 +
                         index * 0.4,
 
-                      repeat: Infinity,
+                      repeat: performanceMode ? 0 : Infinity,
 
                       ease:
                         "easeInOut",
@@ -832,7 +882,7 @@ function Hero({ profile }) {
               }}
               transition={{
                 duration: 2.8,
-                repeat: Infinity,
+                repeat: performanceMode ? 0 : Infinity,
               }}
             >
               <span>
