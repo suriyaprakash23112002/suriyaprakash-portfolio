@@ -7,7 +7,6 @@ import {
   FiCode,
   FiEye,
   FiFolder,
-  FiSettings,
 } from "react-icons/fi";
 import { useNavigate } from "react-router-dom";
 
@@ -86,13 +85,6 @@ function AdminDashboard() {
       text: "Academic records",
       icon: <FiBookOpen />,
       path: "/admin/education",
-    },
-    {
-      label: "Settings",
-      value: counts.settings ?? 0,
-      text: "Site configuration",
-      icon: <FiSettings />,
-      path: "/admin/settings",
     },
   ];
 
