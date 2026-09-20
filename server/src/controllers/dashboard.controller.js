@@ -9,7 +9,6 @@ export const getDashboard =
         skills,
         skillCategories,
         experiences,
-        careerEvents,
         education,
         profile,
       ] =
@@ -28,8 +27,6 @@ export const getDashboard =
           prisma.skillCategory.count(),
 
           prisma.experience.count(),
-
-          prisma.careerJourney.count(),
 
           prisma.education.count(),
 
@@ -79,7 +76,6 @@ export const getDashboard =
             skills,
             skillCategories,
             experiences,
-            careerEvents,
             education,
           },
 
