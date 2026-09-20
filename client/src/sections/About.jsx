@@ -22,7 +22,7 @@ import {
 
 import "./About.css";
 
-function About({ profile }) {
+function About({ profile, performanceMode = false }) {
   const capabilities = [
     {
       label: "Frontend",
@@ -305,7 +305,7 @@ function About({ profile }) {
                   }}
                   transition={{
                     duration: 38,
-                    repeat: Infinity,
+                    repeat: performanceMode ? 0 : Infinity,
                     ease: "linear",
                   }}
                 />
@@ -319,7 +319,7 @@ function About({ profile }) {
                   }}
                   transition={{
                     duration: 28,
-                    repeat: Infinity,
+                    repeat: performanceMode ? 0 : Infinity,
                     ease: "linear",
                   }}
                 />
@@ -333,7 +333,7 @@ function About({ profile }) {
                   }}
                   transition={{
                     duration: 18,
-                    repeat: Infinity,
+                    repeat: performanceMode ? 0 : Infinity,
                     ease: "linear",
                   }}
                 />
@@ -356,7 +356,7 @@ function About({ profile }) {
                 }}
                 transition={{
                   duration: 4.5,
-                  repeat: Infinity,
+                  repeat: performanceMode ? 0 : Infinity,
                   ease: "easeInOut",
                 }}
               />
@@ -372,7 +372,7 @@ function About({ profile }) {
                 }}
                 transition={{
                   duration: 3,
-                  repeat: Infinity,
+                  repeat: performanceMode ? 0 : Infinity,
                 }}
               >
                 <motion.div
@@ -388,7 +388,7 @@ function About({ profile }) {
                   }}
                   transition={{
                     duration: 5,
-                    repeat: Infinity,
+                    repeat: performanceMode ? 0 : Infinity,
                   }}
                 >
                   <FiCode />
@@ -435,7 +435,7 @@ function About({ profile }) {
                         3.5 +
                         index * 0.4,
 
-                      repeat: Infinity,
+                      repeat: performanceMode ? 0 : Infinity,
 
                       ease:
                         "easeInOut",
@@ -478,7 +478,7 @@ function About({ profile }) {
               }}
               transition={{
                 duration: 25,
-                repeat: Infinity,
+                repeat: performanceMode ? 0 : Infinity,
                 ease: "linear",
               }}
             >
