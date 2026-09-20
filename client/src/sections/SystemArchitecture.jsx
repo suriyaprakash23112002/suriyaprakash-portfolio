@@ -3,12 +3,17 @@ import { motion } from "framer-motion";
 import {
   FiActivity,
   FiArrowRight,
+  FiCheckCircle,
   FiCloud,
   FiCode,
+  FiCpu,
   FiDatabase,
   FiGitBranch,
+  FiLayers,
   FiServer,
+  FiShield,
   FiTerminal,
+  FiZap,
 } from "react-icons/fi";
 
 import "./SystemArchitecture.css";
@@ -31,54 +36,93 @@ function SystemArchitecture({
       project?.isActive !== false
   );
 
-  const flow = [
+  const stages = [
     {
       step: "01",
-      label: "Interface",
-      title: "React UI",
-      detail: "Responsive views, interactions and component-driven interfaces.",
+      type: "CLIENT",
+      title: "React Interface",
+      detail: "Responsive UI, interactions and reusable components.",
+      tech: "React + JavaScript",
       icon: <FiCode />,
-      command: "client → event",
     },
     {
       step: "02",
-      label: "Application",
-      title: "Node + Express",
-      detail: "REST APIs, validation, authentication and business logic.",
+      type: "SERVER",
+      title: "Express API",
+      detail: "REST endpoints, authentication and application logic.",
+      tech: "Node.js + Express",
       icon: <FiServer />,
-      command: "request → api",
     },
     {
       step: "03",
-      label: "Data layer",
-      title: "Prisma ORM",
-      detail: "Typed data access, relational models and controlled migrations.",
+      type: "DATA ACCESS",
+      title: "Prisma Layer",
+      detail: "Typed queries, relations and controlled database access.",
+      tech: "Prisma ORM",
       icon: <FiGitBranch />,
-      command: "service → prisma",
     },
     {
       step: "04",
-      label: "Database",
+      type: "DATABASE",
       title: "PostgreSQL",
-      detail: "Structured relational data backed by PostgreSQL / Neon.",
+      detail: "Relational data stored with a production-ready structure.",
+      tech: "PostgreSQL + Neon",
       icon: <FiDatabase />,
-      command: "query → data",
     },
     {
       step: "05",
-      label: "Delivery",
+      type: "DELIVERY",
       title: "Cloud Deploy",
-      detail: "Frontend and backend prepared for production deployment.",
+      detail: "Build, environment configuration and production delivery.",
+      tech: "Vercel + Cloud",
       icon: <FiCloud />,
-      command: "build → production",
     },
   ];
 
-  const terminalLines = [
-    { key: "route", value: "GET /api/portfolio", tone: "blue" },
-    { key: "auth", value: "admin session verified", tone: "green" },
-    { key: "db", value: "prisma → postgresql", tone: "cyan" },
-    { key: "render", value: "react UI hydrated", tone: "white" },
+  const runtimeLines = [
+    {
+      time: "00.012",
+      label: "request",
+      value: "GET /api/portfolio",
+    },
+    {
+      time: "00.046",
+      label: "auth",
+      value: "admin/public route resolved",
+    },
+    {
+      time: "00.093",
+      label: "database",
+      value: "Prisma → PostgreSQL",
+    },
+    {
+      time: "00.128",
+      label: "response",
+      value: "JSON payload returned",
+    },
+    {
+      time: "00.171",
+      label: "render",
+      value: "React interface updated",
+    },
+  ];
+
+  const principles = [
+    {
+      icon: <FiLayers />,
+      title: "End-to-end thinking",
+      text: "I design features across frontend, API and data layers.",
+    },
+    {
+      icon: <FiShield />,
+      title: "Maintainable structure",
+      text: "Reusable components, protected routes and clear data models.",
+    },
+    {
+      icon: <FiZap />,
+      title: "Production mindset",
+      text: "Development decisions include deployment and real usage.",
+    },
   ];
 
   return (
@@ -86,206 +130,290 @@ function SystemArchitecture({
       id="architecture"
       className="architecture-section"
     >
-      <div className="architecture-grid" />
-      <div className="architecture-glow architecture-glow-one" />
-      <div className="architecture-glow architecture-glow-two" />
+      <div className="architecture-background-grid" />
+      <div className="architecture-background-beam" />
+      <div className="architecture-glow architecture-glow-left" />
+      <div className="architecture-glow architecture-glow-right" />
 
       <div className="architecture-container">
         <motion.div
           className="architecture-section-label"
-          initial={{ opacity: 0, y: 15 }}
+          initial={{ opacity: 0, y: 14 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
-          transition={{ duration: 0.5 }}
+          transition={{ duration: 0.45 }}
         >
           <span>04</span>
           <div />
           <strong>SYSTEM ARCHITECTURE</strong>
         </motion.div>
 
-        <div className="architecture-layout">
+        <div className="architecture-header">
           <motion.div
-            className="architecture-copy"
-            initial={{ opacity: 0, x: -35 }}
+            className="architecture-heading"
+            initial={{ opacity: 0, x: -32 }}
             whileInView={{ opacity: 1, x: 0 }}
-            viewport={{ once: true, amount: 0.2 }}
-            transition={{ duration: 0.7 }}
+            viewport={{ once: true, amount: 0.3 }}
+            transition={{ duration: 0.65 }}
           >
-            <div className="architecture-status">
-              <span />
-              FULL-STACK DELIVERY MAP
+            <div className="architecture-live-label">
+              <i />
+              FULL-STACK SYSTEM ONLINE
             </div>
 
             <h2>
-              I build the complete path
-              <span> from interface to production.</span>
+              One request.
+              <span> Five layers. One complete product.</span>
             </h2>
-
-            <p>
-              My work is not limited to one layer. I connect the user
-              experience, API logic, database structure and deployment flow
-              so the whole product works as one system.
-            </p>
-
-            <div className="architecture-metrics">
-              <div>
-                <span>STACK NODES</span>
-                <strong>{String(activeSkills.length).padStart(2, "0")}</strong>
-                <small>Technologies managed</small>
-              </div>
-
-              <div>
-                <span>PROJECT DATA</span>
-                <strong>{String(activeProjects.length).padStart(2, "0")}</strong>
-                <small>Portfolio projects</small>
-              </div>
-
-              <div>
-                <span>CONTENT MODE</span>
-                <strong>API</strong>
-                <small>Database driven</small>
-              </div>
-            </div>
-
-            <div className="architecture-principles">
-              <div>
-                <FiActivity />
-                <span>
-                  <strong>Build for the full request cycle</strong>
-                  <small>UI → API → data → response</small>
-                </span>
-              </div>
-
-              <div>
-                <FiTerminal />
-                <span>
-                  <strong>Keep content maintainable</strong>
-                  <small>Admin managed, reusable and deployable</small>
-                </span>
-              </div>
-            </div>
           </motion.div>
 
           <motion.div
-            className="architecture-console"
-            initial={{ opacity: 0, scale: 0.96, x: 30 }}
-            whileInView={{ opacity: 1, scale: 1, x: 0 }}
-            viewport={{ once: true, amount: 0.2 }}
-            transition={{ duration: 0.8 }}
+            className="architecture-intro"
+            initial={{ opacity: 0, x: 32 }}
+            whileInView={{ opacity: 1, x: 0 }}
+            viewport={{ once: true, amount: 0.3 }}
+            transition={{ duration: 0.65, delay: 0.08 }}
           >
-            <div className="architecture-console-top">
-              <div className="architecture-window-dots">
-                <i />
-                <i />
-                <i />
-              </div>
+            <p>
+              I build beyond the screen. Each feature moves through a complete
+              engineering path—from interface interaction to API logic,
+              database operations and production delivery.
+            </p>
 
-              <span>request_pipeline.ts</span>
+            <div className="architecture-intro-meta">
+              <span>
+                <FiActivity />
+                LIVE REQUEST FLOW
+              </span>
+              <code>GET /api/portfolio</code>
+            </div>
+          </motion.div>
+        </div>
 
-              <div className="architecture-console-live">
-                <i />
-                LIVE
-              </div>
+        <motion.div
+          className="architecture-workbench"
+          initial={{ opacity: 0, y: 34 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, amount: 0.16 }}
+          transition={{ duration: 0.75 }}
+        >
+          <div className="architecture-workbench-topbar">
+            <div className="architecture-window-controls">
+              <i />
+              <i />
+              <i />
             </div>
 
-            <div className="architecture-request">
+            <div className="architecture-file">
+              <FiCpu />
+              <span>fullstack.pipeline</span>
+            </div>
+
+            <div className="architecture-workbench-status">
+              <span />
+              RUNNING
+            </div>
+          </div>
+
+          <div className="architecture-map">
+            <motion.div
+              className="architecture-map-scan"
+              animate={{
+                x: ["-20%", "120%"],
+                opacity: [0, 0.7, 0.7, 0],
+              }}
+              transition={{
+                duration: 4.8,
+                repeat: Infinity,
+                ease: "linear",
+              }}
+            />
+
+            <div className="architecture-map-caption">
               <div>
-                <span>REQUEST TRACE</span>
-                <strong>Full-stack execution path</strong>
+                <span>REQUEST PIPELINE</span>
+                <strong>Interface → production</strong>
               </div>
 
-              <code>GET /api/portfolio</code>
+              <div className="architecture-map-badge">
+                <span />
+                200 OK
+              </div>
             </div>
 
             <div className="architecture-flow">
-              {flow.map((item, index) => (
-                <div
-                  className="architecture-flow-row"
-                  key={item.step}
-                >
-                  <motion.div
-                    className="architecture-node"
-                    initial={{ opacity: 0, y: 18 }}
+              {stages.map((stage, index) => (
+                <div className="architecture-stage-wrap" key={stage.step}>
+                  <motion.article
+                    className="architecture-stage"
+                    initial={{ opacity: 0, y: 24 }}
                     whileInView={{ opacity: 1, y: 0 }}
                     viewport={{ once: true }}
                     transition={{
                       duration: 0.45,
                       delay: index * 0.08,
                     }}
-                    whileHover={{ x: 5 }}
+                    whileHover={{
+                      y: -7,
+                      scale: 1.015,
+                    }}
                   >
-                    <div className="architecture-node-index">
-                      {item.step}
+                    <div className="architecture-stage-top">
+                      <span>{stage.step}</span>
+
+                      <div className="architecture-stage-icon">
+                        {stage.icon}
+                      </div>
                     </div>
 
-                    <div className="architecture-node-icon">
-                      {item.icon}
+                    <div className="architecture-stage-copy">
+                      <span>{stage.type}</span>
+                      <h3>{stage.title}</h3>
+                      <p>{stage.detail}</p>
                     </div>
 
-                    <div className="architecture-node-copy">
-                      <span>{item.label}</span>
-                      <strong>{item.title}</strong>
-                      <p>{item.detail}</p>
-                    </div>
+                    <code>{stage.tech}</code>
+                  </motion.article>
 
-                    <code>{item.command}</code>
-                  </motion.div>
-
-                  {index < flow.length - 1 && (
-                    <div className="architecture-connector">
-                      <motion.span
-                        animate={{ y: [0, 16, 0] }}
-                        transition={{
-                          duration: 1.8,
-                          repeat: Infinity,
-                          delay: index * 0.12,
-                          ease: "easeInOut",
-                        }}
-                      />
+                  {index < stages.length - 1 && (
+                    <div className="architecture-link" aria-hidden="true">
+                      <div className="architecture-link-line">
+                        <motion.span
+                          animate={{
+                            x: [0, 42, 0],
+                            opacity: [0.15, 1, 0.15],
+                          }}
+                          transition={{
+                            duration: 1.9,
+                            repeat: Infinity,
+                            delay: index * 0.18,
+                            ease: "easeInOut",
+                          }}
+                        />
+                      </div>
                       <FiArrowRight />
                     </div>
                   )}
                 </div>
               ))}
             </div>
+          </div>
 
+          <div className="architecture-runtime">
             <div className="architecture-terminal">
-              <div className="architecture-terminal-heading">
-                <FiTerminal />
-                <span>RUNTIME TRACE</span>
+              <div className="architecture-terminal-header">
+                <div>
+                  <FiTerminal />
+                  <span>runtime.trace</span>
+                </div>
+
+                <strong>
+                  <i />
+                  LIVE
+                </strong>
               </div>
 
-              <div className="architecture-terminal-lines">
-                {terminalLines.map((line, index) => (
+              <div className="architecture-terminal-body">
+                {runtimeLines.map((line, index) => (
                   <motion.div
-                    key={line.key}
-                    initial={{ opacity: 0, x: -10 }}
+                    className="architecture-terminal-row"
+                    key={line.label}
+                    initial={{ opacity: 0, x: -14 }}
                     whileInView={{ opacity: 1, x: 0 }}
                     viewport={{ once: true }}
                     transition={{
                       duration: 0.35,
-                      delay: 0.35 + index * 0.12,
+                      delay: 0.25 + index * 0.11,
                     }}
                   >
-                    <span>$</span>
-                    <code className={`architecture-terminal-${line.tone}`}>
-                      {line.value}
-                    </code>
+                    <span>{line.time}</span>
+                    <strong>{line.label}</strong>
+                    <code>{line.value}</code>
+                    <FiCheckCircle />
                   </motion.div>
                 ))}
+
+                <motion.div
+                  className="architecture-terminal-cursor"
+                  animate={{ opacity: [0, 1, 0] }}
+                  transition={{
+                    duration: 1,
+                    repeat: Infinity,
+                  }}
+                >
+                  <span>$</span>
+                  <i />
+                </motion.div>
               </div>
             </div>
-          </motion.div>
-        </div>
 
-        <div className="architecture-bottom">
-          <span>FRONTEND</span>
-          <i />
-          <span>API</span>
-          <i />
-          <span>DATABASE</span>
-          <i />
-          <span>DEPLOYMENT</span>
+            <div className="architecture-system-overview">
+              <div className="architecture-overview-heading">
+                <span>PORTFOLIO ENGINE</span>
+                <strong>System overview</strong>
+              </div>
+
+              <div className="architecture-overview-stats">
+                <div>
+                  <span>TECHNOLOGIES</span>
+                  <strong>
+                    {String(activeSkills.length).padStart(2, "0")}
+                  </strong>
+                  <small>active stack nodes</small>
+                </div>
+
+                <div>
+                  <span>PROJECTS</span>
+                  <strong>
+                    {String(activeProjects.length).padStart(2, "0")}
+                  </strong>
+                  <small>portfolio builds</small>
+                </div>
+
+                <div>
+                  <span>LAYERS</span>
+                  <strong>05</strong>
+                  <small>delivery stages</small>
+                </div>
+
+                <div>
+                  <span>CONTENT</span>
+                  <strong>API</strong>
+                  <small>database driven</small>
+                </div>
+              </div>
+
+              <div className="architecture-overview-route">
+                <div className="architecture-route-pulse" />
+                <div>
+                  <span>CURRENT FLOW</span>
+                  <strong>Client → API → ORM → DB → UI</strong>
+                </div>
+              </div>
+            </div>
+          </div>
+        </motion.div>
+
+        <div className="architecture-principles">
+          {principles.map((item, index) => (
+            <motion.article
+              key={item.title}
+              initial={{ opacity: 0, y: 18 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{
+                duration: 0.45,
+                delay: index * 0.08,
+              }}
+              whileHover={{ y: -4 }}
+            >
+              <div>{item.icon}</div>
+              <span>
+                <strong>{item.title}</strong>
+                <small>{item.text}</small>
+              </span>
+            </motion.article>
+          ))}
         </div>
       </div>
     </section>
