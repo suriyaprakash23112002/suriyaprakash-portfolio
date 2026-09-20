@@ -26,25 +26,6 @@
   );
 }
 
-.architecture-background-beam {
-  position: absolute;
-  top: 18%;
-  left: -15%;
-  width: 130%;
-  height: 1px;
-  opacity: 0.35;
-  background: linear-gradient(
-    90deg,
-    transparent,
-    rgba(34, 211, 238, 0.18),
-    rgba(59, 130, 246, 0.65),
-    rgba(34, 211, 238, 0.18),
-    transparent
-  );
-  box-shadow: 0 0 26px rgba(59, 130, 246, 0.28);
-  animation: architectureBeamFloat 7s ease-in-out infinite;
-}
-
 .architecture-glow {
   position: absolute;
   width: 560px;
@@ -790,13 +771,6 @@
     opacity: 1;
   }
 }
-
-@keyframes architectureBeamFloat {
-  0%,
-  100% {
-    transform: translateY(0);
-    opacity: 0.18;
-  }
 
   50% {
     transform: translateY(12px);
