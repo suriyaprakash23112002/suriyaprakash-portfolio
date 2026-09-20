@@ -273,11 +273,11 @@ function Projects({
             </h2>
           </motion.div>
 
-          <motion.p
-            className="projects-intro"
+          <motion.div
+            className="projects-header-note"
             initial={{
               opacity: 0,
-              y: 16,
+              y: 18,
             }}
             whileInView={{
               opacity: 1,
@@ -287,14 +287,31 @@ function Projects({
               once: true,
             }}
             transition={{
-              duration: 0.5,
-              delay: 0.06,
+              duration: 0.55,
+              delay: 0.08,
             }}
           >
-            Open a project to see the
-            build, stack and live
-            links.
-          </motion.p>
+            <span className="projects-header-count">
+              {String(
+                activeProjects.length
+              ).padStart(
+                2,
+                "0"
+              )}
+            </span>
+
+            <div>
+              <strong>
+                PROJECTS & BUILDS
+              </strong>
+
+              <p>
+                Selected full-stack work
+                across frontend, backend,
+                databases and deployment.
+              </p>
+            </div>
+          </motion.div>
         </div>
 
         {activeProjects.length === 0 ? (
@@ -423,9 +440,6 @@ function Projects({
                           )}
                         </strong>
 
-                        <small>
-                          PROJECT
-                        </small>
                       </span>
 
                       <span className="project-index-project">
