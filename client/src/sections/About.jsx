@@ -199,17 +199,12 @@ function About({ profile, performanceMode = false }) {
 
             <p className="about-primary-text">
               {profile?.longBio ||
-                profile?.shortBio ||
                 "I work across frontend development, backend APIs, databases and deployment to build complete web applications."}
             </p>
 
             <p className="about-secondary-text">
-              I enjoy working through the
-              complete development cycle —
-              designing responsive interfaces,
-              connecting APIs, structuring data
-              and taking applications into
-              production.
+              {profile?.shortBio ||
+                "I enjoy working through the complete development cycle — designing responsive interfaces, connecting APIs, structuring data and taking applications into production."}
             </p>
 
             {/* NEW CAPABILITY RAIL */}
