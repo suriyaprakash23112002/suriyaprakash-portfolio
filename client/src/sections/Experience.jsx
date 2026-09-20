@@ -175,7 +175,7 @@ function Experience({
       >
         <div className="experience-container">
           <div className="experience-section-label">
-            <span>05</span>
+            <span>06</span>
             <div />
             <strong>
               EXPERIENCE
@@ -238,7 +238,7 @@ function Experience({
           }}
         >
           <span>
-            05
+            06
           </span>
 
           <div />
