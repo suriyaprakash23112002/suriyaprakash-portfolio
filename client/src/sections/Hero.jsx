@@ -460,6 +460,59 @@ function Hero({ profile }) {
           }}
         >
           <div className="hero-portrait-stage">
+            <div className="hero-portrait-grid" aria-hidden="true" />
+
+            <motion.div
+              className="hero-orbit-sweep"
+              aria-hidden="true"
+              animate={{ rotate: 360 }}
+              transition={{
+                duration: 16,
+                repeat: Infinity,
+                ease: "linear",
+              }}
+            />
+
+            <div className="hero-hud-corners" aria-hidden="true">
+              <span />
+              <span />
+              <span />
+              <span />
+            </div>
+
+            <motion.div
+              className="hero-signal-chip hero-signal-chip-one"
+              aria-hidden="true"
+              animate={{
+                y: [0, -7, 0],
+                opacity: [0.45, 1, 0.45],
+              }}
+              transition={{
+                duration: 3.6,
+                repeat: Infinity,
+                ease: "easeInOut",
+              }}
+            >
+              UI / API
+            </motion.div>
+
+            <motion.div
+              className="hero-signal-chip hero-signal-chip-two"
+              aria-hidden="true"
+              animate={{
+                y: [0, 7, 0],
+                opacity: [0.4, 0.9, 0.4],
+              }}
+              transition={{
+                duration: 4.2,
+                repeat: Infinity,
+                ease: "easeInOut",
+                delay: 0.5,
+              }}
+            >
+              DB / CLOUD
+            </motion.div>
+
             {/* LIVE RINGS */}
 
             <div className="hero-ring-anchor hero-ring-anchor-one">
@@ -661,7 +714,11 @@ function Hero({ profile }) {
 
                 <div className="hero-image-frame">
                   <img
-                    src={profile?.profileImageUrl || profileImage}
+                    src={
+                      profile?.heroImageUrl ||
+                      profile?.profileImageUrl ||
+                      profileImage
+                    }
                     alt={
                       profile?.fullName ||
                       "Suriyaprakash"
