@@ -66,12 +66,14 @@ function PortfolioPage() {
         }
       };
 
-    const handleProfileUpdate = (
+    const handlePortfolioUpdate = (
       event
     ) => {
       if (
         event.key ===
-        "portfolio_profile_updated_at"
+          "portfolio_profile_updated_at" ||
+        event.key ===
+          "portfolio_settings_updated_at"
       ) {
         loadPortfolio({
           silent: true,
@@ -83,16 +85,62 @@ function PortfolioPage() {
 
     window.addEventListener(
       "storage",
-      handleProfileUpdate
+      handlePortfolioUpdate
     );
 
     return () => {
       window.removeEventListener(
         "storage",
-        handleProfileUpdate
+        handlePortfolioUpdate
       );
     };
   }, []);
+
+  /* =====================================================
+     APPLY SITE SETTINGS
+  ===================================================== */
+
+  useEffect(() => {
+    const settings =
+      portfolio?.settings || {};
+
+    const siteTitle =
+      settings.site_title ||
+      settings.siteTitle ||
+      "Suriyaprakash | Full-Stack Developer";
+
+    const siteDescription =
+      settings.site_description ||
+      settings.siteDescription ||
+      "Full-Stack Developer portfolio of Suriyaprakash.";
+
+    document.title =
+      String(siteTitle);
+
+    let descriptionMeta =
+      document.querySelector(
+        'meta[name="description"]'
+      );
+
+    if (!descriptionMeta) {
+      descriptionMeta =
+        document.createElement("meta");
+
+      descriptionMeta.setAttribute(
+        "name",
+        "description"
+      );
+
+      document.head.appendChild(
+        descriptionMeta
+      );
+    }
+
+    descriptionMeta.setAttribute(
+      "content",
+      String(siteDescription)
+    );
+  }, [portfolio?.settings]);
 
   /* =====================================================
      LOADING
