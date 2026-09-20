@@ -124,3 +124,20 @@ body {
     animation-iteration-count: 1;
   }
 }
+
+
+/* =========================================================
+   MOBILE PERFORMANCE MODE
+   Touch devices get the same design with lighter motion.
+========================================================= */
+
+.portfolio-performance-mode *,
+.portfolio-performance-mode *::before,
+.portfolio-performance-mode *::after {
+  animation-duration: 0.001ms !important;
+  animation-iteration-count: 1 !important;
+}
+
+.portfolio-performance-mode {
+  scroll-behavior: auto;
+}
