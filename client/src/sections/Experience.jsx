@@ -1,11 +1,12 @@
 import { motion } from "framer-motion";
 
 import {
-  FiBriefcase,
-  FiMapPin,
-  FiCalendar,
   FiArrowUpRight,
+  FiBriefcase,
+  FiCalendar,
+  FiCheck,
   FiCode,
+  FiMapPin,
 } from "react-icons/fi";
 
 import "./Experience.css";
@@ -14,14 +15,11 @@ function Experience({
   experiences = [],
   performanceMode = false,
 }) {
-  /* =====================================================
-     HELPERS
-  ===================================================== */
-
   const activeExperiences =
     experiences.filter(
       (experience) =>
-        experience?.isActive !== false
+        experience?.isActive !== false &&
+        experience?.isVisible !== false
     );
 
   const formatDate = (value) => {
@@ -30,7 +28,7 @@ function Experience({
     const date = new Date(value);
 
     if (Number.isNaN(date.getTime())) {
-      return value;
+      return String(value);
     }
 
     return date.toLocaleDateString(
@@ -42,33 +40,25 @@ function Experience({
     );
   };
 
-  const getRole = (
-    experience
-  ) =>
+  const getRole = (experience) =>
     experience?.role ||
     experience?.position ||
     experience?.title ||
     experience?.jobTitle ||
     "Full-Stack Developer";
 
-  const getCompany = (
-    experience
-  ) =>
+  const getCompany = (experience) =>
     experience?.company ||
     experience?.companyName ||
     experience?.organization ||
     "Company";
 
-  const getLocation = (
-    experience
-  ) =>
+  const getLocation = (experience) =>
     experience?.location ||
     experience?.companyLocation ||
     "";
 
-  const getDescription = (
-    experience
-  ) =>
+  const getDescription = (experience) =>
     experience?.description ||
     experience?.summary ||
     experience?.details ||
@@ -92,9 +82,7 @@ function Experience({
       );
   };
 
-  const getEndDate = (
-    experience
-  ) => {
+  const getEndDate = (experience) => {
     if (
       experience?.isCurrent ||
       experience?.currentlyWorking
@@ -105,30 +93,21 @@ function Experience({
     return (
       formatDate(
         experience?.endDate
-      ) || "Present"
+      ) || ""
     );
   };
 
   const getResponsibilities = (
     experience
   ) => {
-    if (
-      Array.isArray(
-        experience?.responsibilities
-      )
-    ) {
-      return experience.responsibilities;
-    }
+    const values =
+      experience?.responsibilities ||
+      experience?.highlights ||
+      [];
 
-    if (
-      Array.isArray(
-        experience?.highlights
-      )
-    ) {
-      return experience.highlights;
-    }
-
-    return [];
+    return Array.isArray(values)
+      ? values.filter(Boolean)
+      : [];
   };
 
   const getTechnologies = (
@@ -162,29 +141,29 @@ function Experience({
       .filter(Boolean);
   };
 
-    return (
+  const getCompanyInitial = (
+    company
+  ) =>
+    String(company || "C")
+      .trim()
+      .charAt(0)
+      .toUpperCase();
+
+  return (
     <section
       id="experience"
       className="experience-section"
     >
-      {/* BACKGROUND */}
-
-      <div className="experience-bg-lines" />
-
+      <div className="experience-grid-bg" />
       <div className="experience-glow experience-glow-one" />
-
       <div className="experience-glow experience-glow-two" />
 
       <div className="experience-container">
-        {/* ============================================
-            SECTION LABEL
-        ============================================ */}
-
         <motion.div
           className="experience-section-label"
           initial={{
             opacity: 0,
-            y: 15,
+            y: 12,
           }}
           whileInView={{
             opacity: 1,
@@ -194,59 +173,19 @@ function Experience({
             once: true,
           }}
         >
-          <span>
-            05
-          </span>
-
+          <span>05</span>
           <div />
-
           <strong>
             EXPERIENCE
           </strong>
         </motion.div>
 
-        {/* ============================================
-            HEADER
-        ============================================ */}
-
         <div className="experience-header">
           <motion.div
-            className="experience-heading"
+            className="experience-header-copy"
             initial={{
               opacity: 0,
-              x: -30,
-            }}
-            whileInView={{
-              opacity: 1,
-              x: 0,
-            }}
-            viewport={{
-              once: true,
-            }}
-            transition={{
-              duration: 0.7,
-            }}
-          >
-            <div className="experience-status">
-              <span />
-
-              PROFESSIONAL EXPERIENCE
-            </div>
-
-            <h2>
-              Where I’ve worked
-              <span>
-                {" "}
-                and what I’ve built.
-              </span>
-            </h2>
-          </motion.div>
-
-          <motion.p
-            className="experience-intro"
-            initial={{
-              opacity: 0,
-              y: 20,
+              y: 24,
             }}
             whileInView={{
               opacity: 1,
@@ -257,345 +196,419 @@ function Experience({
             }}
             transition={{
               duration: 0.6,
-              delay: 0.1,
             }}
           >
-            A view of the roles,
-            responsibilities and
-            technologies that have
-            shaped my full-stack
-            development journey.
-          </motion.p>
+            <div className="experience-kicker">
+              <span />
+              PROFESSIONAL JOURNEY
+            </div>
+
+            <h2>
+              Experience that
+              <span>
+                {" "}
+                shaped how I build.
+              </span>
+            </h2>
+          </motion.div>
+
+          <motion.div
+            className="experience-header-note"
+            initial={{
+              opacity: 0,
+              y: 18,
+            }}
+            whileInView={{
+              opacity: 1,
+              y: 0,
+            }}
+            viewport={{
+              once: true,
+            }}
+            transition={{
+              duration: 0.55,
+              delay: 0.08,
+            }}
+          >
+            <span className="experience-header-count">
+              {String(
+                activeExperiences.length
+              ).padStart(2, "0")}
+            </span>
+
+            <div>
+              <strong>
+                ROLES & EXPERIENCE
+              </strong>
+
+              <p>
+                Real-world work across
+                frontend, backend,
+                databases and
+                deployment.
+              </p>
+            </div>
+          </motion.div>
         </div>
 
-        {/* ============================================
-            TIMELINE
-        ============================================ */}
-
-        {activeExperiences.length === 0 ? (
+        {activeExperiences.length ===
+        0 ? (
           <div className="experience-empty">
-            <FiBriefcase />
+            <div className="experience-empty-icon">
+              <FiBriefcase />
+            </div>
 
             <span>
-              PROFESSIONAL TIMELINE
+              PROFESSIONAL EXPERIENCE
             </span>
 
             <h3>
-              Building real-world
-              experience.
+              Experience will appear
+              here.
             </h3>
 
             <p>
-              My professional roles,
-              responsibilities and
-              production work will be
-              documented here as the
-              journey grows.
+              Add visible experience
+              records from the admin
+              dashboard to populate
+              this section.
             </p>
           </div>
         ) : (
-        <div className="experience-timeline">
-          {activeExperiences.map(
-            (
-              experience,
-              index
-            ) => {
-              const role =
-                getRole(
-                  experience
-                );
+          <div className="experience-list">
+            {activeExperiences.map(
+              (
+                experience,
+                index
+              ) => {
+                const role =
+                  getRole(
+                    experience
+                  );
 
-              const company =
-                getCompany(
-                  experience
-                );
+                const company =
+                  getCompany(
+                    experience
+                  );
 
-              const location =
-                getLocation(
-                  experience
-                );
+                const location =
+                  getLocation(
+                    experience
+                  );
 
-              const description =
-                getDescription(
-                  experience
-                );
+                const description =
+                  getDescription(
+                    experience
+                  );
 
-              const employmentType =
-                getEmploymentType(
-                  experience
-                );
+                const employmentType =
+                  getEmploymentType(
+                    experience
+                  );
 
-              const responsibilities =
-                getResponsibilities(
-                  experience
-                );
+                const responsibilities =
+                  getResponsibilities(
+                    experience
+                  );
 
-              const technologies =
-                getTechnologies(
-                  experience
-                );
+                const technologies =
+                  getTechnologies(
+                    experience
+                  );
 
-              const startDate =
-                formatDate(
-                  experience?.startDate
-                );
+                const startDate =
+                  formatDate(
+                    experience?.startDate
+                  );
 
-              const endDate =
-                getEndDate(
-                  experience
-                );
+                const endDate =
+                  getEndDate(
+                    experience
+                  );
 
-              const current =
-                experience?.isCurrent ||
-                experience?.currentlyWorking ||
-                endDate === "Present";
+                const current =
+                  Boolean(
+                    experience?.isCurrent ||
+                    experience
+                      ?.currentlyWorking
+                  );
 
-              return (
-                <motion.article
-                  className={`experience-item ${
-                    current
-                      ? "experience-item-current"
-                      : ""
-                  }`}
-                  key={
-                    experience?.id ||
-                    `${company}-${role}-${index}`
-                  }
-                  initial={{
-                    opacity: 0,
-                    y: 35,
-                  }}
-                  whileInView={{
-                    opacity: 1,
-                    y: 0,
-                  }}
-                  viewport={{
-                    once: true,
-                    amount: 0.18,
-                  }}
-                  transition={{
-                    duration: 0.65,
-                    delay:
-                      index * 0.07,
-                  }}
-                >
-                  {/* ==================================
-                      TIMELINE NUMBER
-                  ================================== */}
-
-                  <div className="experience-index">
-                    <span>
-                      {String(
-                        index + 1
-                      ).padStart(
-                        2,
-                        "0"
-                      )}
-                    </span>
-
-                    <div className="experience-index-dot">
-                      {current && (
-                        <motion.span
-                          animate={{
-                            scale: [
-                              1,
-                              1.8,
-                              1,
-                            ],
-                            opacity: [
-                              0.7,
-                              0,
-                              0.7,
-                            ],
-                          }}
-                          transition={{
-                            duration:
-                              2,
-                            repeat:
-                              Infinity,
-                          }}
-                        />
-                      )}
-                    </div>
-                  </div>
-
-                  {/* ==================================
-                      META
-                  ================================== */}
-
-                  <div className="experience-meta">
-                    <span className="experience-meta-label">
-                      {current
-                        ? "CURRENT ROLE"
-                        : "EXPERIENCE"}
-                    </span>
-
-                    <h3>
-                      {company}
-                    </h3>
-
-                    {location && (
-                      <div className="experience-location">
-                        <FiMapPin />
-
-                        {location}
-                      </div>
-                    )}
-
-                    <div className="experience-dates">
-                      <FiCalendar />
-
-                      <span>
-                        {startDate ||
-                          "Start"}
+                return (
+                  <motion.article
+                    className={`experience-card ${
+                      current
+                        ? "experience-card-current"
+                        : ""
+                    }`}
+                    key={
+                      experience?.id ||
+                      `${company}-${role}-${index}`
+                    }
+                    initial={{
+                      opacity: 0,
+                      y: 28,
+                    }}
+                    whileInView={{
+                      opacity: 1,
+                      y: 0,
+                    }}
+                    viewport={{
+                      once: true,
+                      amount: 0.15,
+                    }}
+                    transition={{
+                      duration: 0.6,
+                      delay:
+                        index * 0.06,
+                    }}
+                  >
+                    <div className="experience-card-rail">
+                      <span className="experience-card-number">
+                        {String(
+                          index + 1
+                        ).padStart(
+                          2,
+                          "0"
+                        )}
                       </span>
 
-                      <i>
-                        —
-                      </i>
-
-                      <span>
-                        {endDate}
-                      </span>
-                    </div>
-
-                    {employmentType && (
-                      <span className="experience-type">
-                        {
-                          employmentType
-                        }
-                      </span>
-                    )}
-                  </div>
-
-                  {/* ==================================
-                      MAIN CONTENT
-                  ================================== */}
-
-                  <div className="experience-content">
-                    <div className="experience-role-row">
-                      <div>
-                        <span>
-                          ROLE
+                      <div className="experience-card-line">
+                        <span
+                          className={
+                            current
+                              ? "experience-card-dot experience-card-dot-live"
+                              : "experience-card-dot"
+                          }
+                        >
+                          {current && (
+                            <motion.i
+                              animate={{
+                                scale: [
+                                  1,
+                                  1.8,
+                                  1,
+                                ],
+                                opacity: [
+                                  0.6,
+                                  0,
+                                  0.6,
+                                ],
+                              }}
+                              transition={{
+                                duration: 2,
+                                repeat:
+                                  performanceMode
+                                    ? 0
+                                    : Infinity,
+                              }}
+                            />
+                          )}
                         </span>
-
-                        <h3>
-                          {role}
-                        </h3>
-                      </div>
-
-                      <div className="experience-role-icon">
-                        <FiBriefcase />
                       </div>
                     </div>
 
-                    {description && (
-                      <p className="experience-description">
-                        {
-                          description
-                        }
-                      </p>
-                    )}
-
-                    {responsibilities.length >
-                      0 && (
-                      <div className="experience-responsibilities">
-                        {responsibilities
-                          .slice(
-                            0,
-                            5
-                          )
-                          .map(
-                            (
-                              item,
-                              responsibilityIndex
-                            ) => (
-                              <div
-                                key={`${item}-${responsibilityIndex}`}
-                              >
-                                <span />
-
-                                <p>
-                                  {
-                                    item
-                                  }
-                                </p>
-                              </div>
-                            )
-                          )}
-                      </div>
-                    )}
-
-                    {technologies.length >
-                      0 && (
-                      <div className="experience-technologies">
-                        {technologies
-                          .slice(
-                            0,
-                            8
-                          )
-                          .map(
-                            (
-                              technology,
-                              techIndex
-                            ) => (
-                              <span
-                                key={`${technology}-${techIndex}`}
-                              >
-                                {
-                                  technology
+                    <div className="experience-card-body">
+                      <div className="experience-card-top">
+                        <div className="experience-company">
+                          <div className="experience-company-mark">
+                            {experience
+                              ?.companyLogo ? (
+                              <img
+                                src={
+                                  experience.companyLogo
                                 }
+                                alt={company}
+                              />
+                            ) : (
+                              <span>
+                                {getCompanyInitial(
+                                  company
+                                )}
                               </span>
-                            )
+                            )}
+                          </div>
+
+                          <div className="experience-company-copy">
+                            <span>
+                              COMPANY
+                            </span>
+
+                            <h3>
+                              {company}
+                            </h3>
+
+                            <div className="experience-company-meta">
+                              {location && (
+                                <span>
+                                  <FiMapPin />
+                                  {location}
+                                </span>
+                              )}
+
+                              {(startDate ||
+                                endDate) && (
+                                <span>
+                                  <FiCalendar />
+                                  {startDate}
+                                  {startDate &&
+                                  endDate
+                                    ? " — "
+                                    : ""}
+                                  {endDate}
+                                </span>
+                              )}
+                            </div>
+                          </div>
+                        </div>
+
+                        <div className="experience-card-badges">
+                          {current && (
+                            <span className="experience-current-badge">
+                              <i />
+                              CURRENT
+                            </span>
                           )}
+
+                          {employmentType && (
+                            <span>
+                              {
+                                employmentType
+                              }
+                            </span>
+                          )}
+                        </div>
                       </div>
-                    )}
 
-                    {experience?.companyUrl && (
-                      <a
-                        href={
-                          experience.companyUrl
-                        }
-                        target="_blank"
-                        rel="noreferrer"
-                        className="experience-company-link"
-                      >
-                        Visit company
+                      <div className="experience-card-divider" />
 
-                        <FiArrowUpRight />
-                      </a>
-                    )}
-                  </div>
-                </motion.article>
-              );
-            }
-          )}
-        </div>
+                      <div className="experience-card-main">
+                        <div className="experience-role-block">
+                          <span>
+                            ROLE
+                          </span>
+
+                          <h4>
+                            {role}
+                          </h4>
+
+                          {description && (
+                            <p>
+                              {
+                                description
+                              }
+                            </p>
+                          )}
+
+                          {experience?.companyUrl && (
+                            <a
+                              href={
+                                experience.companyUrl
+                              }
+                              target="_blank"
+                              rel="noreferrer"
+                              className="experience-company-link"
+                            >
+                              Visit company
+                              <FiArrowUpRight />
+                            </a>
+                          )}
+                        </div>
+
+                        <div className="experience-work-block">
+                          <span className="experience-work-label">
+                            CONTRIBUTIONS
+                          </span>
+
+                          {responsibilities.length >
+                          0 ? (
+                            <div className="experience-responsibilities">
+                              {responsibilities
+                                .slice(
+                                  0,
+                                  6
+                                )
+                                .map(
+                                  (
+                                    item,
+                                    responsibilityIndex
+                                  ) => (
+                                    <div
+                                      key={`${item}-${responsibilityIndex}`}
+                                    >
+                                      <FiCheck />
+
+                                      <p>
+                                        {
+                                          item
+                                        }
+                                      </p>
+                                    </div>
+                                  )
+                                )}
+                            </div>
+                          ) : (
+                            <div className="experience-no-responsibilities">
+                              <FiCode />
+
+                              <span>
+                                Role details
+                                available in
+                                the summary.
+                              </span>
+                            </div>
+                          )}
+                        </div>
+                      </div>
+
+                      {technologies.length >
+                        0 && (
+                        <div className="experience-stack">
+                          <span>
+                            STACK
+                          </span>
+
+                          <div>
+                            {technologies
+                              .slice(
+                                0,
+                                10
+                              )
+                              .map(
+                                (
+                                  technology,
+                                  techIndex
+                                ) => (
+                                  <span
+                                    key={`${technology}-${techIndex}`}
+                                  >
+                                    {
+                                      technology
+                                    }
+                                  </span>
+                                )
+                              )}
+                          </div>
+                        </div>
+                      )}
+                    </div>
+                  </motion.article>
+                );
+              }
+            )}
+          </div>
         )}
 
-        {/* ============================================
-            BOTTOM
-        ============================================ */}
+        <div className="experience-footer">
+          <span>
+            CAREER / BUILD / GROW
+          </span>
 
-        <motion.div
-          className="experience-footer"
-          initial={{
-            opacity: 0,
-          }}
-          whileInView={{
-            opacity: 1,
-          }}
-          viewport={{
-            once: true,
-          }}
-        >
-          <FiCode />
+          <div />
 
           <span>
-            LEARNING • BUILDING •
-            IMPROVING
+            FULL-STACK DEVELOPMENT
           </span>
-        </motion.div>
+        </div>
       </div>
     </section>
   );
