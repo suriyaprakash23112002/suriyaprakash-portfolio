@@ -1328,6 +1328,118 @@ and (
 
 
 /* =========================================================
+   TALL NARROW DESKTOP VIEWPORT
+   Fixes mobile Chrome "Desktop site" mode where the browser
+   reports desktop width but a very tall viewport.
+========================================================= */
+
+@media (
+  min-width: 951px
+)
+and (
+  max-width: 1100px
+)
+and (
+  min-height: 900px
+) {
+  .hero-section {
+    min-height: 720px;
+    align-items: flex-start;
+
+    padding:
+      118px 30px
+      48px;
+  }
+
+  .hero-container {
+    gap:
+      clamp(
+        34px,
+        4vw,
+        52px
+      );
+  }
+
+  .hero-content {
+    max-width: 560px;
+  }
+
+  .hero-content h1 {
+    font-size:
+      clamp(
+        52px,
+        5.8vw,
+        64px
+      );
+
+    letter-spacing: -3.6px;
+  }
+
+  .hero-content h2 {
+    margin-top: 18px;
+
+    font-size:
+      clamp(
+        23px,
+        2.45vw,
+        28px
+      );
+  }
+
+  .hero-description {
+    margin-top: 13px;
+  }
+
+  .hero-action-dock {
+    margin-top: 20px;
+  }
+
+  .hero-portrait-area {
+    height: 430px;
+  }
+
+  .hero-portrait-stage {
+    width: 420px;
+    height: 420px;
+  }
+
+  .hero-orbit-outer {
+    width: 420px;
+    height: 420px;
+  }
+
+  .hero-orbit-inner {
+    width: 315px;
+    height: 315px;
+  }
+
+  .hero-ring-anchor-one {
+    width: 405px;
+    height: 405px;
+  }
+
+  .hero-ring-anchor-two {
+    width: 336px;
+    height: 336px;
+  }
+
+  .hero-ring-anchor-three {
+    width: 268px;
+    height: 268px;
+  }
+
+  .hero-image-wrapper {
+    width: 245px;
+    height: 330px;
+  }
+
+  .hero-bottom-line {
+    bottom: 20px;
+  }
+}
+
+
+/* =========================================================
    TABLET
 ========================================================= */
 
