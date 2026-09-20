@@ -320,14 +320,6 @@ function Projects({
           </div>
         ) : (
           <div className="project-index">
-            <div className="project-index-head">
-              <span>NO.</span>
-              <span>PROJECT</span>
-              <span>YEAR</span>
-              <span>STATUS</span>
-              <span />
-            </div>
-
             {activeProjects.map(
               (
                 project,
@@ -421,13 +413,19 @@ function Projects({
                       }
                       aria-controls={`project-panel-${index}`}
                     >
-                      <span className="project-index-number">
-                        {String(
-                          index + 1
-                        ).padStart(
-                          2,
-                          "0"
-                        )}
+                      <span className="project-index-number-block">
+                        <strong>
+                          {String(
+                            index + 1
+                          ).padStart(
+                            2,
+                            "0"
+                          )}
+                        </strong>
+
+                        <small>
+                          PROJECT
+                        </small>
                       </span>
 
                       <span className="project-index-project">
@@ -435,40 +433,54 @@ function Projects({
                           {title}
                         </strong>
 
+                        <span className="project-index-description-preview">
+                          {
+                            shortDescription
+                          }
+                        </span>
+
                         <span className="project-index-tech-preview">
                           {technologies
                             .slice(
                               0,
-                              4
+                              5
                             )
                             .join(
-                              " • "
+                              "  /  "
                             ) ||
                             "Full-stack project"}
                         </span>
                       </span>
 
-                      <span className="project-index-year">
-                        {getProjectYear(
-                          project
-                        )}
+                      <span className="project-index-meta">
+                        <span className="project-index-year">
+                          {getProjectYear(
+                            project
+                          )}
+                        </span>
+
+                        <span className="project-index-status">
+                          {project?.isCurrent ? (
+                            <span className="project-status-current">
+                              <i />
+                              CURRENT
+                            </span>
+                          ) : project?.isFeatured ? (
+                            <span>
+                              FEATURED
+                            </span>
+                          ) : (
+                            <span>
+                              PROJECT
+                            </span>
+                          )}
+                        </span>
                       </span>
 
-                      <span className="project-index-status">
-                        {project?.isCurrent ? (
-                          <span className="project-status-current">
-                            <i />
-                            CURRENT
-                          </span>
-                        ) : project?.isFeatured ? (
-                          <span>
-                            FEATURED
-                          </span>
-                        ) : (
-                          <span>
-                            PROJECT
-                          </span>
-                        )}
+                      <span className="project-index-open-copy">
+                        {isOpen
+                          ? "CLOSE"
+                          : "VIEW"}
                       </span>
 
                       <span className="project-index-toggle">
