@@ -7,7 +7,6 @@ import skillsRoutes from "./skills.routes.js";
 import skillCategoriesRoutes from "./skillCategories.routes.js";
 import projectsRoutes from "./projects.routes.js";
 import experienceRoutes from "./experience.routes.js";
-import careerRoutes from "./career.routes.js";
 import educationRoutes from "./education.routes.js";
 import dashboardRoutes from "./dashboard.routes.js";
 import portfolioRoutes from "./portfolio.routes.js";
@@ -47,11 +46,6 @@ router.use(
 router.use(
   "/experience",
   experienceRoutes
-);
-
-router.use(
-  "/career",
-  careerRoutes
 );
 
 router.use(
