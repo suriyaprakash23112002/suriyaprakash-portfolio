@@ -38,13 +38,46 @@ function Projects({ projects = [], performanceMode = false }) {
     );
   };
 
-  const getDescription = (project) => {
-    return (
-      project?.shortDescription ||
-      project?.summary ||
-      project?.description ||
-      "A full-stack project built with modern web technologies."
-    );
+  const getShortDescription = (project) =>
+    project?.shortDescription ||
+    project?.summary ||
+    project?.description ||
+    "A full-stack project built with modern web technologies.";
+
+  const getFullDescription = (project) =>
+    project?.description || "";
+
+  const formatProjectDate = (value) => {
+    if (!value) return "";
+
+    const date = new Date(value);
+
+    if (Number.isNaN(date.getTime())) {
+      return "";
+    }
+
+    return date.toLocaleDateString("en-US", {
+      month: "short",
+      year: "numeric",
+    });
+  };
+
+  const getProjectPeriod = (project) => {
+    const start = formatProjectDate(project?.startedAt);
+
+    if (project?.isCurrent) {
+      return start
+        ? `${start} — Present`
+        : "Current project";
+    }
+
+    const end = formatProjectDate(project?.completedAt);
+
+    if (start && end) {
+      return `${start} — ${end}`;
+    }
+
+    return start || end || "";
   };
 
   const getTechnologies = (project) => {
@@ -335,10 +368,35 @@ function Projects({ projects = [], performanceMode = false }) {
                 </div>
 
                 <p>
-                  {getDescription(
+                  {getShortDescription(
                     featuredProject
                   )}
                 </p>
+
+                {(featuredProject?.isCurrent ||
+                  getProjectPeriod(featuredProject)) && (
+                  <div className="project-admin-meta">
+                    {featuredProject?.isCurrent && (
+                      <span className="project-current-badge">
+                        CURRENT BUILD
+                      </span>
+                    )}
+
+                    {getProjectPeriod(featuredProject) && (
+                      <span>
+                        {getProjectPeriod(featuredProject)}
+                      </span>
+                    )}
+                  </div>
+                )}
+
+                {getFullDescription(featuredProject) &&
+                  getFullDescription(featuredProject) !==
+                    getShortDescription(featuredProject) && (
+                    <p className="project-full-description">
+                      {getFullDescription(featuredProject)}
+                    </p>
+                  )}
 
                 {getTechnologies(
                   featuredProject
@@ -471,10 +529,35 @@ function Projects({ projects = [], performanceMode = false }) {
                         </div>
 
                         <p>
-                          {getDescription(
+                          {getShortDescription(
                             project
                           )}
                         </p>
+
+                        {(project?.isCurrent ||
+                          getProjectPeriod(project)) && (
+                          <div className="project-admin-meta project-admin-meta-list">
+                            {project?.isCurrent && (
+                              <span className="project-current-badge">
+                                CURRENT
+                              </span>
+                            )}
+
+                            {getProjectPeriod(project) && (
+                              <span>
+                                {getProjectPeriod(project)}
+                              </span>
+                            )}
+                          </div>
+                        )}
+
+                        {getFullDescription(project) &&
+                          getFullDescription(project) !==
+                            getShortDescription(project) && (
+                            <p className="project-list-details">
+                              {getFullDescription(project)}
+                            </p>
+                          )}
 
                         {getTechnologies(
                           project
