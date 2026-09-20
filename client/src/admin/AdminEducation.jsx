@@ -154,7 +154,7 @@ function AdminEducation() {
       <AdminPageHeader
         eyebrow="PORTFOLIO CONTENT"
         title="Education"
-        description="Manage qualifications, institutions and academic results."
+        description="Manage qualifications, institutions and academic CGPA details."
         actions={
           <>
             <button className="admin-ui-button" type="button" onClick={loadItems}>
@@ -257,7 +257,7 @@ function AdminEducation() {
                       {item.isCurrent ? "Present" : item.endYear || "—"}
                     </span>
 
-                    {item.grade && <span>{item.grade}</span>}
+                    {item.grade && <span>CGPA {item.grade}</span>}
 
                     <span
                       className={`admin-ui-badge ${
@@ -347,7 +347,7 @@ function AdminEducation() {
             </label>
 
             <label className="admin-ui-field">
-              <span>Grade / CGPA</span>
+              <span>CGPA</span>
               <input name="grade" value={form.grade} onChange={change} />
             </label>
 
