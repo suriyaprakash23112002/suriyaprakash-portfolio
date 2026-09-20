@@ -195,7 +195,7 @@ function Experience({
           }}
         >
           <span>
-            06
+            05
           </span>
 
           <div />
