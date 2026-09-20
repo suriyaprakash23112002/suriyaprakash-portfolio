@@ -6,6 +6,7 @@ import Footer from "../components/Footer";
 import Hero from "../sections/Hero";
 import About from "../sections/About";
 import TechStack from "../sections/TechStack";
+import SystemArchitecture from "../sections/SystemArchitecture";
 import Projects from "../sections/Projects";
 import Experience from "../sections/Experience";
 import Education from "../sections/Education";
@@ -134,10 +135,6 @@ function PortfolioPage() {
     portfolio?.experiences ||
     [];
 
-  const career =
-    portfolio?.career ||
-    [];
-
   const education =
     portfolio?.education ||
     [];
@@ -192,7 +189,16 @@ function PortfolioPage() {
         />
 
         {/* ===============================================
-            04 - PROJECTS
+            04 - FULL-STACK ARCHITECTURE
+        =============================================== */}
+
+        <SystemArchitecture
+          skillCategories={skillCategories}
+          projects={projects}
+        />
+
+        {/* ===============================================
+            05 - PROJECTS
         =============================================== */}
 
         <Projects
@@ -202,7 +208,7 @@ function PortfolioPage() {
         />
 
         {/* ===============================================
-            05 - EXPERIENCE
+            06 - EXPERIENCE
         =============================================== */}
 
         <Experience
@@ -212,7 +218,7 @@ function PortfolioPage() {
         />
 
         {/* ===============================================
-            06 - EDUCATION
+            07 - EDUCATION
         =============================================== */}
 
         <Education
@@ -222,7 +228,7 @@ function PortfolioPage() {
         />
 
         {/* ===============================================
-            07 - CONTACT
+            08 - CONTACT
         =============================================== */}
 
         <Contact
@@ -240,19 +246,6 @@ function PortfolioPage() {
         settings={settings}
       />
 
-      {/* =================================================
-          CAREER DATA
-          RESERVED FOR FUTURE USE
-      ================================================= */}
-
-      {/*
-        career is already loaded:
-
-        career
-
-        We can later add a separate
-        Career Journey section if needed.
-      */}
     </div>
   );
 }
