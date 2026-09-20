@@ -1,36 +1,5 @@
 import prisma from "../utils/prisma.js";
 
-const convertSetting = (
-  setting
-) => {
-  switch (
-    setting.valueType
-  ) {
-    case "NUMBER":
-      return Number(
-        setting.value
-      );
-
-    case "BOOLEAN":
-      return (
-        setting.value ===
-        "true"
-      );
-
-    case "JSON":
-      try {
-        return JSON.parse(
-          setting.value
-        );
-      } catch {
-        return null;
-      }
-
-    default:
-      return setting.value;
-  }
-};
-
 export const getPortfolio =
   async (req, res) => {
     try {
@@ -41,7 +10,6 @@ export const getPortfolio =
         experiences,
         career,
         education,
-        rawSettings,
       ] =
         await Promise.all([
           prisma.profile.findUnique({
@@ -165,19 +133,7 @@ export const getPortfolio =
             },
           }),
 
-          prisma.siteSetting.findMany(),
         ]);
-
-      const settings = {};
-
-      rawSettings.forEach(
-        (setting) => {
-          settings[setting.key] =
-            convertSetting(
-              setting
-            );
-        }
-      );
 
       return res.status(200).json({
         success: true,
@@ -189,7 +145,6 @@ export const getPortfolio =
           experiences,
           career,
           education,
-          settings,
         },
       });
     } catch (error) {
