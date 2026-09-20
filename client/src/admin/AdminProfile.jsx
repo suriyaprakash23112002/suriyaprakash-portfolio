@@ -36,6 +36,7 @@ const emptyForm = {
   whatsappUrl: "",
   resumeUrl: "",
   profileImageUrl: "",
+  heroImageUrl: "",
   availableForWork: true,
   availabilityText: "",
 };
@@ -44,14 +45,20 @@ function AdminProfile() {
   const [form, setForm] = useState(emptyForm);
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
-  const [imageError, setImageError] = useState(false);
+  const [profileImageError, setProfileImageError] = useState(false);
+  const [heroImageError, setHeroImageError] = useState(false);
   const [error, setError] = useState("");
   const [success, setSuccess] = useState("");
 
-  const previewImage =
-    !imageError && form.profileImageUrl?.trim()
+  const brandPreviewImage =
+    !profileImageError && form.profileImageUrl?.trim()
       ? form.profileImageUrl.trim()
       : profileImage;
+
+  const heroPreviewImage =
+    !heroImageError && form.heroImageUrl?.trim()
+      ? form.heroImageUrl.trim()
+      : brandPreviewImage;
 
   const loadProfile = async () => {
     try {
@@ -66,7 +73,8 @@ function AdminProfile() {
         ...(response?.data?.profile || {}),
       });
 
-      setImageError(false);
+      setProfileImageError(false);
+      setHeroImageError(false);
     } catch (err) {
       console.error("Profile load error:", err);
 
@@ -96,7 +104,8 @@ function AdminProfile() {
     }));
 
     if (name === "profileImageUrl") {
-      setImageError(false);
+      setProfileImageError(false);
+      setHeroImageError(false);
     }
 
     setSuccess("");
@@ -120,7 +129,8 @@ function AdminProfile() {
         });
       }
 
-      setImageError(false);
+      setProfileImageError(false);
+      setHeroImageError(false);
 
       localStorage.setItem(
         "portfolio_profile_updated_at",
@@ -128,7 +138,7 @@ function AdminProfile() {
       );
 
       setSuccess(
-        "Profile updated. Hero, navbar and footer now use this profile data."
+        "Profile updated. Navbar and footer use the profile image; the hero uses its own image when provided."
       );
     } catch (err) {
       console.error(
@@ -203,13 +213,13 @@ function AdminProfile() {
 
             <div className="admin-profile-photo-frame">
               <img
-                src={previewImage}
+                src={brandPreviewImage}
                 alt={
                   form.fullName ||
                   "Profile preview"
                 }
                 onError={() =>
-                  setImageError(true)
+                  setProfileImageError(true)
                 }
               />
 
@@ -221,6 +231,28 @@ function AdminProfile() {
               {form.availableForWork
                 ? "AVAILABLE"
                 : "UNAVAILABLE"}
+            </div>
+          </div>
+
+          <div className="admin-profile-hero-preview">
+            <img
+              src={heroPreviewImage}
+              alt="Hero portrait preview"
+              onError={() =>
+                setHeroImageError(true)
+              }
+            />
+
+            <div>
+              <span>
+                HERO PORTRAIT
+              </span>
+
+              <strong>
+                {form.heroImageUrl?.trim()
+                  ? "Independent hero image"
+                  : "Using profile image fallback"}
+              </strong>
             </div>
           </div>
 
@@ -262,10 +294,22 @@ function AdminProfile() {
               <FiImage />
               <span>
                 <strong>
-                  One profile image
+                  Brand profile image
                 </strong>
                 <small>
-                  Hero · Navbar · Footer
+                  Navbar · Footer
+                </small>
+              </span>
+            </div>
+
+            <div>
+              <FiImage />
+              <span>
+                <strong>
+                  Hero portrait
+                </strong>
+                <small>
+                  Separate image with fallback
                 </small>
               </span>
             </div>
@@ -306,7 +350,7 @@ function AdminProfile() {
               <div>
                 <span>01 · IDENTITY</span>
                 <h2>
-                  Profile image & identity
+                  Images & identity
                 </h2>
               </div>
 
@@ -331,9 +375,31 @@ function AdminProfile() {
                 />
 
                 <small className="admin-profile-field-note">
-                  Save once and this same
-                  image is used in the
-                  hero, navbar and footer.
+                  This image is used in the
+                  navbar and footer.
+                </small>
+              </label>
+
+              <label className="admin-ui-field admin-ui-field-full">
+                <span>
+                  Hero image URL
+                </span>
+
+                <input
+                  type="url"
+                  name="heroImageUrl"
+                  value={
+                    form.heroImageUrl ||
+                    ""
+                  }
+                  onChange={handleChange}
+                  placeholder="https://..."
+                />
+
+                <small className="admin-profile-field-note">
+                  Optional. If empty, the
+                  hero automatically uses
+                  the profile image above.
                 </small>
               </label>
 
