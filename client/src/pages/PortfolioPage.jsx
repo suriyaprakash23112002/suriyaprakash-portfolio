@@ -15,6 +15,7 @@ import Contact from "../sections/Contact";
 import { getPortfolio } from "../services/portfolioService";
 
 import "./PortfolioPage.css";
+import "./PortfolioReadability.css";
 
 function PortfolioPage() {
   const [portfolio, setPortfolio] =
