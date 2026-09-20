@@ -25,6 +25,12 @@ const emptyForm = {
   description: "",
 };
 
+const settingUsage = {
+  site_title: "Browser tab title",
+  site_description: "SEO meta description",
+  footer_text: "Footer text",
+};
+
 function AdminSettings() {
   const [settings, setSettings] = useState([]);
   const [form, setForm] = useState(emptyForm);
@@ -96,6 +102,11 @@ function AdminSettings() {
         await api.delete(`/settings/${encodeURIComponent(editingKey)}`);
       }
 
+      localStorage.setItem(
+        "portfolio_settings_updated_at",
+        String(Date.now())
+      );
+
       setMessage(editingKey ? "Setting updated successfully." : "Setting created successfully.");
       setModalOpen(false);
       await loadSettings();
@@ -114,6 +125,11 @@ function AdminSettings() {
       setError("");
       setMessage("");
       await api.delete(`/settings/${encodeURIComponent(setting.key)}`);
+      localStorage.setItem(
+        "portfolio_settings_updated_at",
+        String(Date.now())
+      );
+
       setMessage("Setting deleted successfully.");
       await loadSettings();
     } catch (err) {
@@ -177,6 +193,7 @@ function AdminSettings() {
                   <th>Value</th>
                   <th>Type</th>
                   <th>Description</th>
+                  <th>Used in</th>
                   <th />
                 </tr>
               </thead>
@@ -189,6 +206,11 @@ function AdminSettings() {
                       <span className="admin-ui-badge">{setting.valueType}</span>
                     </td>
                     <td>{setting.description || "—"}</td>
+                    <td>
+                      <span className="admin-ui-badge admin-ui-badge-muted">
+                        {settingUsage[setting.key] || "Portfolio settings"}
+                      </span>
+                    </td>
                     <td>
                       <div className="admin-ui-actions">
                         <button
