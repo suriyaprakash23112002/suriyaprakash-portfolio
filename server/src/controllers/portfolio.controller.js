@@ -8,7 +8,6 @@ export const getPortfolio =
         skillCategories,
         projects,
         experiences,
-        career,
         education,
       ] =
         await Promise.all([
@@ -103,24 +102,6 @@ export const getPortfolio =
             ],
           }),
 
-          prisma.careerJourney.findMany({
-            where: {
-              isVisible:
-                true,
-            },
-
-            orderBy: [
-              {
-                displayOrder:
-                  "asc",
-              },
-              {
-                startDate:
-                  "asc",
-              },
-            ],
-          }),
-
           prisma.education.findMany({
             where: {
               isVisible:
@@ -143,7 +124,6 @@ export const getPortfolio =
           skillCategories,
           projects,
           experiences,
-          career,
           education,
         },
       });
