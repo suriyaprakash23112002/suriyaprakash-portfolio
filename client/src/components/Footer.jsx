@@ -4,6 +4,7 @@ import {
   FiLinkedin,
   FiMail,
   FiCode,
+  FiFileText,
 } from "react-icons/fi";
 
 import profileImage from "../assets/sample.png";
@@ -260,6 +261,18 @@ function Footer({
                 aria-label="Email"
               >
                 <FiMail />
+              </a>
+            )}
+
+            {profile?.resumeUrl && (
+              <a
+                href={profile.resumeUrl}
+                target="_blank"
+                rel="noreferrer"
+                aria-label="Resume"
+                title="Resume"
+              >
+                <FiFileText />
               </a>
             )}
           </div>
