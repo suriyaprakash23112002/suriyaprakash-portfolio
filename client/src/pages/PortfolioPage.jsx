@@ -7,7 +7,6 @@ import Footer from "../components/Footer";
 import Hero from "../sections/Hero";
 import About from "../sections/About";
 import TechStack from "../sections/TechStack";
-import SystemArchitecture from "../sections/SystemArchitecture";
 import Projects from "../sections/Projects";
 import Experience from "../sections/Experience";
 import Education from "../sections/Education";
@@ -302,17 +301,7 @@ function PortfolioPage() {
         />
 
         {/* ===============================================
-            04 - FULL-STACK ARCHITECTURE
-        =============================================== */}
-
-        <SystemArchitecture
-          skillCategories={skillCategories}
-          projects={projects}
-          performanceMode={performanceMode}
-        />
-
-        {/* ===============================================
-            05 - PROJECTS
+            04 - PROJECTS
         =============================================== */}
 
         <Projects
@@ -323,7 +312,7 @@ function PortfolioPage() {
         />
 
         {/* ===============================================
-            06 - EXPERIENCE
+            05 - EXPERIENCE
         =============================================== */}
 
         <Experience
@@ -334,7 +323,7 @@ function PortfolioPage() {
         />
 
         {/* ===============================================
-            07 - EDUCATION
+            06 - EDUCATION
         =============================================== */}
 
         <Education
@@ -344,7 +333,7 @@ function PortfolioPage() {
         />
 
         {/* ===============================================
-            08 - CONTACT
+            07 - CONTACT
         =============================================== */}
 
         <Contact
