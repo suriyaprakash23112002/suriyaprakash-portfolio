@@ -1648,3 +1648,444 @@ and (
     display: none;
   }
 }
+
+/* =========================================================
+   EXTRA AMBIENT HERO MOTION
+========================================================= */
+
+.hero-grid {
+  animation: heroGridDrift 18s linear infinite;
+}
+
+.hero-glow-left {
+  animation: heroGlowLeftFloat 8s ease-in-out infinite;
+}
+
+.hero-data-streams {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  overflow: hidden;
+  pointer-events: none;
+}
+
+.hero-data-stream {
+  position: absolute;
+  width: 1px;
+  height: 190px;
+  opacity: 0;
+  background:
+    linear-gradient(
+      to bottom,
+      transparent,
+      rgba(96, 165, 250, 0.65),
+      rgba(34, 211, 238, 0.18),
+      transparent
+    );
+  box-shadow:
+    0 0 12px
+    rgba(59, 130, 246, 0.25);
+  animation:
+    heroDataStream
+    7s
+    linear
+    infinite;
+}
+
+.hero-data-stream-one {
+  left: 13%;
+  animation-delay: 0s;
+}
+
+.hero-data-stream-two {
+  left: 48%;
+  height: 140px;
+  animation-delay: 2.1s;
+}
+
+.hero-data-stream-three {
+  right: 11%;
+  height: 220px;
+  animation-delay: 4.2s;
+}
+
+.hero-floating-code {
+  position: absolute;
+  z-index: 2;
+  pointer-events: none;
+  color: rgba(96, 165, 250, 0.22);
+  font: 700 10px/1 monospace;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+}
+
+.hero-floating-code-one {
+  left: 4%;
+  top: 24%;
+}
+
+.hero-floating-code-two {
+  right: 4%;
+  bottom: 15%;
+}
+
+.hero-content h1 {
+  position: relative;
+  text-shadow:
+    0 0 0 transparent;
+  animation:
+    heroNameGlow
+    5.5s
+    ease-in-out
+    infinite;
+}
+
+.hero-content h2 span {
+  background:
+    linear-gradient(
+      90deg,
+      #f8fafc,
+      #93c5fd,
+      #f8fafc
+    );
+  background-size: 200% 100%;
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  animation:
+    heroTextShimmer
+    5s
+    linear
+    infinite;
+}
+
+.hero-action-dock {
+  position: relative;
+  overflow: hidden;
+}
+
+.hero-action-dock::before {
+  content: "";
+  position: absolute;
+  top: -40%;
+  bottom: -40%;
+  left: -70px;
+  width: 42px;
+  pointer-events: none;
+  background:
+    linear-gradient(
+      90deg,
+      transparent,
+      rgba(96, 165, 250, 0.08),
+      transparent
+    );
+  transform: skewX(-18deg);
+  animation:
+    heroDockSweep
+    6s
+    ease-in-out
+    infinite;
+}
+
+.hero-resume-button {
+  min-height: 42px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 0 14px;
+  color: #d8e7fb;
+  background:
+    rgba(59, 130, 246, 0.055);
+  border:
+    1px solid
+    rgba(96, 165, 250, 0.16);
+  border-radius: 9px;
+  font-size: 11px;
+  font-weight: 700;
+  text-decoration: none;
+  transition:
+    transform 0.25s ease,
+    color 0.25s ease,
+    background 0.25s ease,
+    border-color 0.25s ease,
+    box-shadow 0.25s ease;
+}
+
+.hero-resume-button svg {
+  color: #60a5fa;
+  font-size: 14px;
+  transition:
+    transform 0.25s ease;
+}
+
+.hero-resume-button:hover {
+  color: #ffffff;
+  transform: translateY(-2px);
+  background:
+    rgba(59, 130, 246, 0.095);
+  border-color:
+    rgba(96, 165, 250, 0.3);
+  box-shadow:
+    0 12px 28px
+    rgba(37, 99, 235, 0.12);
+}
+
+.hero-resume-button:hover svg {
+  transform: translateY(-2px);
+}
+
+.hero-orbit-outer::before,
+.hero-orbit-outer::after {
+  content: "";
+  position: absolute;
+  width: 7px;
+  height: 7px;
+  background: #3b82f6;
+  border-radius: 50%;
+  box-shadow:
+    0 0 12px
+    rgba(59, 130, 246, 0.75);
+}
+
+.hero-orbit-outer::before {
+  left: 50%;
+  top: -4px;
+  animation:
+    heroOrbitMarkerPulse
+    2.2s
+    ease-in-out
+    infinite;
+}
+
+.hero-orbit-outer::after {
+  right: 7%;
+  bottom: 17%;
+  background: #22d3ee;
+  box-shadow:
+    0 0 12px
+    rgba(34, 211, 238, 0.68);
+  animation:
+    heroOrbitMarkerPulse
+    2.7s
+    ease-in-out
+    infinite
+    reverse;
+}
+
+.hero-particle-four {
+  top: 112px;
+  left: 58px;
+}
+
+.hero-particle-five {
+  right: 108px;
+  bottom: 54px;
+  background: #22d3ee;
+  box-shadow:
+    0 0 10px
+    rgba(34, 211, 238, 0.85);
+}
+
+.hero-image-frame::before {
+  content: "";
+  position: absolute;
+  z-index: 4;
+  inset: 0;
+  pointer-events: none;
+  background:
+    linear-gradient(
+      115deg,
+      transparent 0 42%,
+      rgba(255, 255, 255, 0.07) 49%,
+      transparent 56%
+    );
+  transform: translateX(-120%);
+  animation:
+    heroImageSweep
+    7s
+    ease-in-out
+    infinite;
+}
+
+.hero-code-label {
+  animation:
+    heroCodeGlow
+    2.8s
+    ease-in-out
+    infinite;
+}
+
+@keyframes heroGridDrift {
+  from {
+    background-position:
+      0 0,
+      0 0;
+  }
+
+  to {
+    background-position:
+      60px 60px,
+      60px 60px;
+  }
+}
+
+@keyframes heroGlowLeftFloat {
+  0%,
+  100% {
+    transform:
+      translate3d(0, 0, 0)
+      scale(0.96);
+    opacity: 0.55;
+  }
+
+  50% {
+    transform:
+      translate3d(45px, -24px, 0)
+      scale(1.08);
+    opacity: 0.9;
+  }
+}
+
+@keyframes heroDataStream {
+  0% {
+    transform: translateY(-260px);
+    opacity: 0;
+  }
+
+  15% {
+    opacity: 0.55;
+  }
+
+  82% {
+    opacity: 0.4;
+  }
+
+  100% {
+    transform: translateY(calc(100vh + 260px));
+    opacity: 0;
+  }
+}
+
+@keyframes heroNameGlow {
+  0%,
+  100% {
+    text-shadow:
+      0 0 0 rgba(59, 130, 246, 0);
+  }
+
+  50% {
+    text-shadow:
+      0 0 34px rgba(59, 130, 246, 0.08);
+  }
+}
+
+@keyframes heroTextShimmer {
+  to {
+    background-position:
+      -200% 0;
+  }
+}
+
+@keyframes heroDockSweep {
+  0%,
+  72% {
+    transform:
+      translateX(-120px)
+      skewX(-18deg);
+    opacity: 0;
+  }
+
+  80% {
+    opacity: 1;
+  }
+
+  100% {
+    transform:
+      translateX(650px)
+      skewX(-18deg);
+    opacity: 0;
+  }
+}
+
+@keyframes heroOrbitMarkerPulse {
+  0%,
+  100% {
+    opacity: 0.35;
+    transform: scale(0.8);
+  }
+
+  50% {
+    opacity: 1;
+    transform: scale(1.35);
+  }
+}
+
+@keyframes heroImageSweep {
+  0%,
+  72% {
+    transform: translateX(-120%);
+    opacity: 0;
+  }
+
+  82% {
+    opacity: 0.8;
+  }
+
+  100% {
+    transform: translateX(120%);
+    opacity: 0;
+  }
+}
+
+@keyframes heroCodeGlow {
+  0%,
+  100% {
+    opacity: 0.42;
+    filter: brightness(0.9);
+  }
+
+  50% {
+    opacity: 1;
+    filter: brightness(1.25);
+  }
+}
+
+@media (max-width: 900px) {
+  .hero-floating-code {
+    display: none;
+  }
+
+  .hero-data-stream-two {
+    display: none;
+  }
+}
+
+@media (max-width: 600px) {
+  .hero-action-buttons {
+    flex-wrap: wrap;
+  }
+
+  .hero-resume-button {
+    min-height: 40px;
+  }
+
+  .hero-data-streams {
+    opacity: 0.6;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .hero-grid,
+  .hero-glow-left,
+  .hero-data-stream,
+  .hero-content h1,
+  .hero-content h2 span,
+  .hero-action-dock::before,
+  .hero-orbit-outer::before,
+  .hero-orbit-outer::after,
+  .hero-image-frame::before,
+  .hero-code-label {
+    animation: none !important;
+  }
+}
