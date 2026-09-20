@@ -1,0 +1,80 @@
+/*
+  Public portfolio readability pass.
+  Keeps the technical visual style while preventing important copy from
+  dropping into very small 6–9px text on normal laptop displays.
+*/
+
+.portfolio-page .navbar-link,
+.portfolio-page .navbar-contact-btn,
+.portfolio-page .navbar-mobile-link,
+.portfolio-page .navbar-mobile-contact {
+  font-size: 12px;
+}
+
+.portfolio-page .navbar-brand-text span {
+  font-size: 9px;
+  letter-spacing: 1.25px;
+}
+
+.portfolio-page .hero-eyebrow,
+.portfolio-page .hero-availability,
+.portfolio-page .about-live,
+.portfolio-page .skills-showcase-status,
+.portfolio-page .projects-status,
+.portfolio-page .experience-status,
+.portfolio-page .education-status,
+.portfolio-page .contact-status {
+  font-size: 11px;
+}
+
+.portfolio-page .hero-description,
+.portfolio-page .about-primary-text,
+.portfolio-page .about-secondary-text,
+.portfolio-page .skills-showcase-content > p,
+.portfolio-page .projects-intro,
+.portfolio-page .experience-intro,
+.portfolio-page .education-intro,
+.portfolio-page .contact-content > p {
+  font-size: 14px;
+  line-height: 1.75;
+}
+
+.portfolio-page .about-capability-copy span,
+.portfolio-page .skills-terminal-note strong,
+.portfolio-page .contact-response strong {
+  font-size: 12px;
+}
+
+.portfolio-page .skills-node span {
+  font-size: 11px;
+}
+
+.portfolio-page [class*="-section-label"] > span,
+.portfolio-page [class*="-section-label"] > strong {
+  font-size: 10px;
+}
+
+.portfolio-page .footer-navigation button,
+.portfolio-page .footer-top-button,
+.portfolio-page .footer-copyright,
+.portfolio-page .footer-brand-copy span,
+.portfolio-page .footer-built {
+  font-size: 10px;
+}
+
+.portfolio-page small {
+  font-size: 11px;
+}
+
+@media (max-width: 700px) {
+  .portfolio-page .hero-description,
+  .portfolio-page .about-primary-text,
+  .portfolio-page .about-secondary-text,
+  .portfolio-page .skills-showcase-content > p,
+  .portfolio-page .projects-intro,
+  .portfolio-page .experience-intro,
+  .portfolio-page .education-intro,
+  .portfolio-page .contact-content > p {
+    font-size: 14px;
+  }
+}
