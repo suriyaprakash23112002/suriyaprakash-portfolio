@@ -2511,3 +2511,64 @@ and (
     animation: none !important;
   }
 }
+
+
+/* =========================================================
+   RUNTIME DESKTOP-SITE PORTRAIT FIX
+   Chrome mobile "Desktop site" can report a desktop width
+   with a very tall portrait viewport. This class is set
+   from the actual runtime viewport ratio, so it is reliable.
+========================================================= */
+
+.hero-section.hero-desktop-site-portrait {
+  min-height: 760px !important;
+  height: auto !important;
+  align-items: flex-start !important;
+
+  padding-top: 108px !important;
+  padding-bottom: 58px !important;
+}
+
+.hero-section.hero-desktop-site-portrait .hero-container {
+  align-items: center;
+}
+
+.hero-section.hero-desktop-site-portrait .hero-bottom-line {
+  bottom: 18px;
+}
+
+
+/* =========================================================
+   TOUCH / MOBILE PERFORMANCE
+========================================================= */
+
+.hero-performance-mode .hero-data-streams,
+.hero-performance-mode .hero-floating-code,
+.hero-performance-mode .hero-orbit-sweep,
+.hero-performance-mode .hero-live-scan,
+.hero-performance-mode .hero-particle,
+.hero-performance-mode .hero-signal-chip,
+.hero-performance-mode .hero-portrait-grid {
+  display: none !important;
+}
+
+.hero-performance-mode .hero-glow {
+  filter: blur(55px);
+}
+
+.hero-performance-mode .hero-image-glow {
+  filter: blur(34px);
+  opacity: 0.55;
+}
+
+.hero-performance-mode .hero-action-dock,
+.hero-performance-mode .hero-image-frame {
+  backdrop-filter: none;
+  -webkit-backdrop-filter: none;
+}
+
+@media (hover: none), (pointer: coarse) {
+  .hero-live-ring {
+    opacity: 0.5;
+  }
+}
