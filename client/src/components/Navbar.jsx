@@ -72,7 +72,7 @@ function Navbar({ profile }) {
 
           <div className="navbar-brand-text">
             <h3>{profile?.fullName || "Suriyaprakash"}</h3>
-            <span>FULL-STACK DEVELOPER</span>
+            <span>{profile?.headline || "FULL-STACK DEVELOPER"}</span>
           </div>
         </div>
 
