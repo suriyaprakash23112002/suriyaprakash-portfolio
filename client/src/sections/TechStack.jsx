@@ -735,25 +735,6 @@ function TechStack({
                           <span>
                             {skill.name}
                           </span>
-
-                          {(skill.isFeatured ||
-                            skill.proficiency != null ||
-                            skill.yearsExperience != null) && (
-                            <small>
-                              {skill.isFeatured && "Featured"}
-                              {skill.isFeatured &&
-                                (skill.proficiency != null ||
-                                  skill.yearsExperience != null) &&
-                                " · "}
-                              {skill.proficiency != null &&
-                                `${skill.proficiency}%`}
-                              {skill.proficiency != null &&
-                                skill.yearsExperience != null &&
-                                " · "}
-                              {skill.yearsExperience != null &&
-                                `${skill.yearsExperience} yr${Number(skill.yearsExperience) === 1 ? "" : "s"}`}
-                            </small>
-                          )}
                         </div>
                       </motion.div>
                     </div>
