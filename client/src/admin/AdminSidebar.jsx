@@ -6,7 +6,6 @@ import {
   FiFolder,
   FiGrid,
   FiLogOut,
-  FiSettings,
   FiUser,
   FiX,
 } from "react-icons/fi";
@@ -31,7 +30,6 @@ function AdminSidebar({ open, onClose }) {
     { label: "Experience", path: "/admin/experience", icon: <FiBriefcase /> },
     { label: "Career Journey", path: "/admin/career", icon: <FiActivity /> },
     { label: "Education", path: "/admin/education", icon: <FiBookOpen /> },
-    { label: "Settings", path: "/admin/settings", icon: <FiSettings /> },
   ];
 
   const handleLogout = () => {
