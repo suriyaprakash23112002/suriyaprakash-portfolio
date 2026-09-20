@@ -31,6 +31,7 @@ import "./TechStack.css";
 
 function TechStack({
   skillCategories = [],
+  performanceMode = false,
 }) {
   /* =====================================================
      FLATTEN SKILLS FROM DATABASE
@@ -602,7 +603,7 @@ function TechStack({
               }}
               transition={{
                 duration: 2,
-                repeat: Infinity,
+                repeat: performanceMode ? 0 : Infinity,
               }}
             />
 
@@ -622,7 +623,7 @@ function TechStack({
               }}
               transition={{
                 duration: 2.8,
-                repeat: Infinity,
+                repeat: performanceMode ? 0 : Infinity,
               }}
             />
 
@@ -642,7 +643,7 @@ function TechStack({
               }}
               transition={{
                 duration: 2.4,
-                repeat: Infinity,
+                repeat: performanceMode ? 0 : Infinity,
               }}
             />
 
