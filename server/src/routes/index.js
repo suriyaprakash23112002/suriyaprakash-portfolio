@@ -9,7 +9,6 @@ import projectsRoutes from "./projects.routes.js";
 import experienceRoutes from "./experience.routes.js";
 import careerRoutes from "./career.routes.js";
 import educationRoutes from "./education.routes.js";
-import settingsRoutes from "./settings.routes.js";
 import dashboardRoutes from "./dashboard.routes.js";
 import portfolioRoutes from "./portfolio.routes.js";
 
@@ -58,11 +57,6 @@ router.use(
 router.use(
   "/education",
   educationRoutes
-);
-
-router.use(
-  "/settings",
-  settingsRoutes
 );
 
 /* Full Public Portfolio */
