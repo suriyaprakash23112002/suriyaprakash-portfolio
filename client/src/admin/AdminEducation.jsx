@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import {
   FiBookOpen,
   FiEdit2,
@@ -6,6 +6,7 @@ import {
   FiPlus,
   FiRefreshCw,
   FiSave,
+  FiSearch,
   FiTrash2,
 } from "react-icons/fi";
 
@@ -38,6 +39,7 @@ function AdminEducation() {
   const [form, setForm] = useState(emptyForm);
   const [editingId, setEditingId] = useState(null);
   const [modalOpen, setModalOpen] = useState(false);
+  const [search, setSearch] = useState("");
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
   const [message, setMessage] = useState("");
@@ -59,6 +61,18 @@ function AdminEducation() {
   useEffect(() => {
     loadItems();
   }, []);
+
+  const filteredItems = useMemo(() => {
+    const value = search.trim().toLowerCase();
+
+    if (!value) return items;
+
+    return items.filter((item) =>
+      `${item.degree || ""} ${item.fieldOfStudy || ""} ${item.institution || ""} ${item.location || ""}`
+        .toLowerCase()
+        .includes(value)
+    );
+  }, [items, search]);
 
   const openCreate = () => {
     setEditingId(null);
@@ -86,6 +100,7 @@ function AdminEducation() {
 
   const change = (event) => {
     const { name, value, type, checked } = event.target;
+
     setForm((previous) => ({
       ...previous,
       [name]: type === "checkbox" ? checked : value,
@@ -122,6 +137,7 @@ function AdminEducation() {
 
   const remove = async (item) => {
     if (!window.confirm(`Delete "${item.degree}"?`)) return;
+
     try {
       await api.delete(`/education/${item.id}`);
       setMessage("Education deleted.");
@@ -141,8 +157,19 @@ function AdminEducation() {
         description="Manage qualifications, institutions and academic results."
         actions={
           <>
-            <button className="admin-ui-button" type="button" onClick={loadItems}><FiRefreshCw />Refresh</button>
-            <button className="admin-ui-button admin-ui-button-primary" type="button" onClick={openCreate}><FiPlus />Add Education</button>
+            <button className="admin-ui-button" type="button" onClick={loadItems}>
+              <FiRefreshCw />
+              Refresh
+            </button>
+
+            <button
+              className="admin-ui-button admin-ui-button-primary"
+              type="button"
+              onClick={openCreate}
+            >
+              <FiPlus />
+              Add Education
+            </button>
           </>
         }
       />
@@ -150,37 +177,126 @@ function AdminEducation() {
       <AdminAlert type="error">{error}</AdminAlert>
       <AdminAlert type="success">{message}</AdminAlert>
 
-      {items.length === 0 ? (
-        <AdminEmptyState
-          icon={<FiBookOpen />}
-          title="No education records"
-          description="Add your academic qualifications."
-        />
-      ) : (
-        <div className="admin-ui-list">
-          {items.map((item) => (
-            <article className="admin-ui-list-card admin-ui-card" key={item.id}>
-              <div className="admin-ui-list-icon"><FiBookOpen /></div>
-              <div className="admin-ui-list-content">
-                <span>QUALIFICATION</span>
-                <h3>{item.degree}</h3>
-                <h4>{item.institution}</h4>
-                <div className="admin-ui-meta">
-                  {item.location && <span><FiMapPin />{item.location}</span>}
-                  <span>{item.startYear || "—"} — {item.isCurrent ? "Present" : item.endYear || "—"}</span>
-                  {item.grade && <span>{item.grade}</span>}
-                  <span className={`admin-ui-badge ${item.isVisible ? "admin-ui-badge-success" : "admin-ui-badge-muted"}`}>{item.isVisible ? "Visible" : "Hidden"}</span>
-                </div>
-                {item.description && <p>{item.description}</p>}
-              </div>
-              <div className="admin-ui-actions">
-                <button className="admin-ui-icon-button" type="button" onClick={() => openEdit(item)}><FiEdit2 /></button>
-                <button className="admin-ui-icon-button admin-ui-button-danger" type="button" onClick={() => remove(item)}><FiTrash2 /></button>
-              </div>
-            </article>
-          ))}
+      <div className="admin-ui-stats">
+        <div className="admin-ui-stat">
+          <span>TOTAL</span>
+          <strong>{items.length}</strong>
+          <small>All qualifications</small>
         </div>
-      )}
+
+        <div className="admin-ui-stat">
+          <span>CURRENT</span>
+          <strong>{items.filter((item) => item.isCurrent).length}</strong>
+          <small>Currently studying</small>
+        </div>
+
+        <div className="admin-ui-stat">
+          <span>COMPLETED</span>
+          <strong>{items.filter((item) => !item.isCurrent).length}</strong>
+          <small>Completed records</small>
+        </div>
+
+        <div className="admin-ui-stat">
+          <span>VISIBLE</span>
+          <strong>{items.filter((item) => item.isVisible).length}</strong>
+          <small>Shown publicly</small>
+        </div>
+      </div>
+
+      <section className="admin-ui-panel">
+        <div className="admin-ui-section-title">
+          <div>
+            <span>EDUCATION LIBRARY</span>
+            <h2>All education</h2>
+          </div>
+
+          <label className="admin-ui-search">
+            <FiSearch />
+            <input
+              type="search"
+              value={search}
+              onChange={(event) => setSearch(event.target.value)}
+              placeholder="Search education..."
+            />
+          </label>
+        </div>
+
+        {filteredItems.length === 0 ? (
+          <AdminEmptyState
+            icon={<FiBookOpen />}
+            title={search ? "No education found" : "No education records"}
+            description={
+              search
+                ? "Try another search term."
+                : "Add your academic qualifications."
+            }
+          />
+        ) : (
+          <div className="admin-ui-list">
+            {filteredItems.map((item) => (
+              <article className="admin-ui-list-card admin-ui-card" key={item.id}>
+                <div className="admin-ui-list-icon">
+                  <FiBookOpen />
+                </div>
+
+                <div className="admin-ui-list-content">
+                  <span>QUALIFICATION</span>
+                  <h3>{item.degree}</h3>
+                  <h4>{item.institution}</h4>
+
+                  <div className="admin-ui-meta">
+                    {item.location && (
+                      <span>
+                        <FiMapPin />
+                        {item.location}
+                      </span>
+                    )}
+
+                    <span>
+                      {item.startYear || "—"} —{" "}
+                      {item.isCurrent ? "Present" : item.endYear || "—"}
+                    </span>
+
+                    {item.grade && <span>{item.grade}</span>}
+
+                    <span
+                      className={`admin-ui-badge ${
+                        item.isVisible
+                          ? "admin-ui-badge-success"
+                          : "admin-ui-badge-muted"
+                      }`}
+                    >
+                      {item.isVisible ? "Visible" : "Hidden"}
+                    </span>
+                  </div>
+
+                  {item.description && <p>{item.description}</p>}
+                </div>
+
+                <div className="admin-ui-actions">
+                  <button
+                    className="admin-ui-icon-button"
+                    type="button"
+                    onClick={() => openEdit(item)}
+                    aria-label="Edit education"
+                  >
+                    <FiEdit2 />
+                  </button>
+
+                  <button
+                    className="admin-ui-icon-button admin-ui-button-danger"
+                    type="button"
+                    onClick={() => remove(item)}
+                    aria-label="Delete education"
+                  >
+                    <FiTrash2 />
+                  </button>
+                </div>
+              </article>
+            ))}
+          </div>
+        )}
+      </section>
 
       <AdminModal
         open={modalOpen}
@@ -189,24 +305,81 @@ function AdminEducation() {
         title={editingId ? "Edit Education" : "Add Education"}
         footer={
           <>
-            <button className="admin-ui-button" type="button" onClick={() => setModalOpen(false)}>Cancel</button>
-            <button className="admin-ui-button admin-ui-button-primary" type="submit" form="education-form" disabled={saving}>{saving ? <AdminSaving /> : <><FiSave />Save Education</>}</button>
+            <button
+              className="admin-ui-button"
+              type="button"
+              onClick={() => setModalOpen(false)}
+            >
+              Cancel
+            </button>
+
+            <button
+              className="admin-ui-button admin-ui-button-primary"
+              type="submit"
+              form="education-form"
+              disabled={saving}
+            >
+              {saving ? <AdminSaving /> : <><FiSave />Save Education</>}
+            </button>
           </>
         }
       >
         <form id="education-form" onSubmit={save}>
           <div className="admin-ui-form-grid">
-            <label className="admin-ui-field"><span>Degree</span><input name="degree" value={form.degree} onChange={change} required /></label>
-            <label className="admin-ui-field"><span>Field of study</span><input name="fieldOfStudy" value={form.fieldOfStudy} onChange={change} /></label>
-            <label className="admin-ui-field admin-ui-field-full"><span>Institution</span><input name="institution" value={form.institution} onChange={change} required /></label>
-            <label className="admin-ui-field"><span>Location</span><input name="location" value={form.location} onChange={change} /></label>
-            <label className="admin-ui-field"><span>Grade / CGPA</span><input name="grade" value={form.grade} onChange={change} /></label>
-            <label className="admin-ui-field"><span>Start year</span><input name="startYear" type="number" value={form.startYear} onChange={change} /></label>
-            <label className="admin-ui-field"><span>End year</span><input name="endYear" type="number" value={form.endYear} onChange={change} disabled={form.isCurrent} /></label>
-            <label className="admin-ui-field"><span>Display order</span><input name="displayOrder" type="number" value={form.displayOrder} onChange={change} /></label>
-            <label className="admin-ui-check"><input name="isCurrent" type="checkbox" checked={form.isCurrent} onChange={change} />Currently studying</label>
-            <label className="admin-ui-field admin-ui-field-full"><span>Description</span><textarea name="description" value={form.description} onChange={change} /></label>
-            <label className="admin-ui-check admin-ui-field-full"><input name="isVisible" type="checkbox" checked={form.isVisible} onChange={change} />Visible on portfolio</label>
+            <label className="admin-ui-field">
+              <span>Degree</span>
+              <input name="degree" value={form.degree} onChange={change} required />
+            </label>
+
+            <label className="admin-ui-field">
+              <span>Field of study</span>
+              <input name="fieldOfStudy" value={form.fieldOfStudy} onChange={change} />
+            </label>
+
+            <label className="admin-ui-field admin-ui-field-full">
+              <span>Institution</span>
+              <input name="institution" value={form.institution} onChange={change} required />
+            </label>
+
+            <label className="admin-ui-field">
+              <span>Location</span>
+              <input name="location" value={form.location} onChange={change} />
+            </label>
+
+            <label className="admin-ui-field">
+              <span>Grade / CGPA</span>
+              <input name="grade" value={form.grade} onChange={change} />
+            </label>
+
+            <label className="admin-ui-field">
+              <span>Start year</span>
+              <input name="startYear" type="number" value={form.startYear} onChange={change} />
+            </label>
+
+            <label className="admin-ui-field">
+              <span>End year</span>
+              <input name="endYear" type="number" value={form.endYear} onChange={change} disabled={form.isCurrent} />
+            </label>
+
+            <label className="admin-ui-field">
+              <span>Display order</span>
+              <input name="displayOrder" type="number" value={form.displayOrder} onChange={change} />
+            </label>
+
+            <label className="admin-ui-check">
+              <input name="isCurrent" type="checkbox" checked={form.isCurrent} onChange={change} />
+              Currently studying
+            </label>
+
+            <label className="admin-ui-field admin-ui-field-full">
+              <span>Description</span>
+              <textarea name="description" value={form.description} onChange={change} />
+            </label>
+
+            <label className="admin-ui-check admin-ui-field-full">
+              <input name="isVisible" type="checkbox" checked={form.isVisible} onChange={change} />
+              Visible on portfolio
+            </label>
           </div>
         </form>
       </AdminModal>
