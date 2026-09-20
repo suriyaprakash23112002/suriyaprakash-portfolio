@@ -103,6 +103,7 @@ function Education({
   const getStartDate = (
     item
   ) =>
+    item?.startYear ||
     formatDate(
       item?.startDate ||
         item?.fromDate
@@ -119,6 +120,7 @@ function Education({
     }
 
     return (
+      item?.endYear ||
       formatDate(
         item?.endDate ||
           item?.toDate
@@ -163,7 +165,7 @@ function Education({
       >
         <div className="education-container">
           <div className="education-section-label">
-            <span>06</span>
+            <span>07</span>
 
             <div />
 
@@ -231,7 +233,7 @@ function Education({
           }}
         >
           <span>
-            06
+            07
           </span>
 
           <div />
