@@ -1,5 +1,4 @@
 import {
-  FiActivity,
   FiBookOpen,
   FiBriefcase,
   FiCode,
@@ -28,7 +27,6 @@ function AdminSidebar({ open, onClose }) {
     { label: "Skills", path: "/admin/skills", icon: <FiCode /> },
     { label: "Projects", path: "/admin/projects", icon: <FiFolder /> },
     { label: "Experience", path: "/admin/experience", icon: <FiBriefcase /> },
-    { label: "Career Journey", path: "/admin/career", icon: <FiActivity /> },
     { label: "Education", path: "/admin/education", icon: <FiBookOpen /> },
   ];
 
