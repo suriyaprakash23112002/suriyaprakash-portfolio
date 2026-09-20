@@ -129,3 +129,112 @@
     grid-template-columns: 1fr;
   }
 }
+
+
+/* =========================================================
+   PROJECT EDITOR
+========================================================= */
+
+.admin-project-form {
+  display: grid;
+  gap: 14px;
+}
+
+.admin-project-form-section {
+  padding: 15px;
+  background: rgba(255,255,255,.012);
+  border: 1px solid rgba(148,163,184,.075);
+  border-radius: 11px;
+}
+
+.admin-project-form-heading {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  margin-bottom: 13px;
+  padding-bottom: 10px;
+  border-bottom: 1px solid rgba(148,163,184,.07);
+}
+
+.admin-project-form-heading span {
+  color: #55759f;
+  font: 700 9px monospace;
+  letter-spacing: 1px;
+}
+
+.admin-project-form-heading strong {
+  color: #d8e2ee;
+  font-size: 13px;
+}
+
+.admin-project-toggle-grid {
+  display: grid;
+  grid-template-columns: repeat(2,minmax(0,1fr));
+  gap: 9px;
+}
+
+.admin-project-toggle {
+  min-height: 64px;
+  align-items: flex-start;
+  padding: 11px 12px;
+  background: rgba(59,130,246,.025);
+  border: 1px solid rgba(96,165,250,.08);
+  border-radius: 9px;
+}
+
+.admin-project-toggle > span {
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.admin-project-toggle strong {
+  color: #cbd5e1;
+  font-size: 11px;
+}
+
+.admin-project-toggle small {
+  color: #65758b;
+  font-size: 9px;
+  line-height: 1.4;
+}
+
+.admin-project-tech-count {
+  display: inline-flex;
+  width: fit-content;
+  margin-bottom: 3px;
+  color: #6f84a1;
+  font: 700 9px monospace;
+  letter-spacing: .8px;
+}
+
+.admin-projects-refactor-skill-grid {
+  display: grid;
+  grid-template-columns: repeat(3,minmax(0,1fr));
+  gap: 8px;
+}
+
+.admin-projects-refactor-skill {
+  min-width: 0;
+  min-height: 42px;
+  justify-content: flex-start;
+  padding: 8px 10px;
+}
+
+.admin-projects-refactor-skill > span {
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+
+@media (max-width: 700px) {
+  .admin-project-toggle-grid,
+  .admin-projects-refactor-skill-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .admin-project-form-section {
+    padding: 12px;
+  }
+}
