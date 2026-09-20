@@ -97,25 +97,12 @@ function PortfolioPage() {
   }, []);
 
   /* =====================================================
-     APPLY SITE SETTINGS
+     PAGE META
   ===================================================== */
 
   useEffect(() => {
-    const settings =
-      portfolio?.settings || {};
-
-    const siteTitle =
-      settings.site_title ||
-      settings.siteTitle ||
-      "Suriyaprakash | Full-Stack Developer";
-
-    const siteDescription =
-      settings.site_description ||
-      settings.siteDescription ||
-      "Full-Stack Developer portfolio of Suriyaprakash.";
-
     document.title =
-      String(siteTitle);
+      "Suriyaprakash | Full-Stack Developer";
 
     let descriptionMeta =
       document.querySelector(
@@ -138,9 +125,9 @@ function PortfolioPage() {
 
     descriptionMeta.setAttribute(
       "content",
-      String(siteDescription)
+      "Full-Stack Developer portfolio of Suriyaprakash."
     );
-  }, [portfolio?.settings]);
+  }, []);
 
   /* =====================================================
      LOADING
@@ -218,10 +205,6 @@ function PortfolioPage() {
   const education =
     portfolio?.education ||
     [];
-
-  const settings =
-    portfolio?.settings ||
-    {};
 
   /* =====================================================
      PAGE
@@ -313,7 +296,6 @@ function PortfolioPage() {
 
         <Contact
           profile={profile}
-          settings={settings}
         />
       </main>
 
@@ -323,7 +305,6 @@ function PortfolioPage() {
 
       <Footer
         profile={profile}
-        settings={settings}
       />
 
     </div>
