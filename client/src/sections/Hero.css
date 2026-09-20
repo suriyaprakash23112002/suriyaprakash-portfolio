@@ -2572,3 +2572,43 @@ and (
     opacity: 0.5;
   }
 }
+
+
+/* =========================================================
+   MOBILE DESKTOP-SITE ORIENTATION FIX
+   Chrome's "Desktop site" on a phone often reports a
+   desktop-width CSS viewport while remaining portrait.
+   This removes the full-screen vertical centering that
+   creates the large empty area above the hero content.
+========================================================= */
+
+@media (min-width: 951px) and (orientation: portrait) {
+  .hero-section {
+    min-height: 720px !important;
+    height: auto !important;
+    align-items: flex-start !important;
+
+    padding:
+      104px 30px
+      56px !important;
+  }
+
+  .hero-container {
+    align-items: center !important;
+    margin-top: 0 !important;
+  }
+
+  .hero-content,
+  .hero-portrait-area {
+    align-self: center;
+  }
+
+  .hero-bottom-line {
+    bottom: 16px !important;
+  }
+}
+
+.hero-performance-mode .hero-cursor-dot,
+.hero-performance-mode .hero-cursor-ring {
+  display: none !important;
+}
