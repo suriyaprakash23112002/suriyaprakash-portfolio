@@ -91,10 +91,7 @@ function Hero({ profile, performanceMode = false }) {
         "(hover: hover) and (pointer: fine)"
       ).matches;
 
-    if (
-      !finePointer ||
-      performanceMode
-    ) {
+    if (!finePointer) {
       document.body.classList.remove(
         "hero-custom-cursor-enabled"
       );
@@ -172,7 +169,6 @@ function Hero({ profile, performanceMode = false }) {
   }, [
     cursorX,
     cursorY,
-    performanceMode,
   ]);
 
   const scrollToSection = (id) => {
