@@ -339,7 +339,7 @@
   font-weight: 650;
 }
 
-.admin-ui-field input,
+.admin-ui-field input:not([type="checkbox"]):not([type="radio"]),
 .admin-ui-field textarea,
 .admin-ui-field select,
 .admin-ui-search input {
@@ -351,7 +351,7 @@
   border-radius: 9px;
 }
 
-.admin-ui-field input,
+.admin-ui-field input:not([type="checkbox"]):not([type="radio"]),
 .admin-ui-field select {
   height: 42px;
   padding: 0 11px;
@@ -365,7 +365,37 @@
 }
 
 .admin-ui-field select {
+  appearance: none;
+  -webkit-appearance: none;
+  padding-right: 38px;
+  color: #dce4ed;
   color-scheme: dark;
+  background-color: #0a111b;
+  background-image:
+    linear-gradient(45deg, transparent 50%, #7f8da1 50%),
+    linear-gradient(135deg, #7f8da1 50%, transparent 50%);
+  background-position:
+    calc(100% - 16px) 17px,
+    calc(100% - 11px) 17px;
+  background-size: 5px 5px, 5px 5px;
+  background-repeat: no-repeat;
+  cursor: pointer;
+}
+
+.admin-ui-field select:hover {
+  border-color: rgba(96,165,250,.22);
+  background-color: #0c1420;
+}
+
+.admin-ui-field select option,
+.admin-ui-field select optgroup {
+  color: #dce4ed;
+  background: #0a111b;
+}
+
+.admin-ui-field select option:checked {
+  color: #ffffff;
+  background: #17335c;
 }
 
 .admin-ui-field input:focus,
@@ -385,10 +415,74 @@
   font-size: 12px;
 }
 
-.admin-ui-check input {
-  width: 16px;
-  height: 16px;
-  accent-color: var(--admin-blue);
+.admin-ui-check input[type="checkbox"],
+.admin-ui-check input[type="radio"],
+.admin-layout input[type="checkbox"],
+.admin-layout input[type="radio"] {
+  width: 16px !important;
+  height: 16px !important;
+  min-width: 16px;
+  min-height: 16px;
+  flex: 0 0 16px;
+  margin: 0;
+  padding: 0;
+  appearance: none;
+  -webkit-appearance: none;
+  display: inline-grid;
+  place-content: center;
+  vertical-align: middle;
+  background: #0a111b;
+  border: 1px solid rgba(148,163,184,.28);
+  border-radius: 4px;
+  box-shadow: none;
+  cursor: pointer;
+}
+
+.admin-layout input[type="radio"] {
+  border-radius: 50%;
+}
+
+.admin-layout input[type="checkbox"]::before,
+.admin-layout input[type="radio"]::before {
+  content: "";
+  width: 8px;
+  height: 8px;
+  transform: scale(0);
+  transition: transform .14s ease;
+  background: #ffffff;
+}
+
+.admin-layout input[type="checkbox"]::before {
+  clip-path: polygon(
+    14% 44%,
+    0 59%,
+    40% 100%,
+    100% 23%,
+    84% 8%,
+    39% 67%
+  );
+}
+
+.admin-layout input[type="radio"]::before {
+  border-radius: 50%;
+}
+
+.admin-layout input[type="checkbox"]:checked,
+.admin-layout input[type="radio"]:checked {
+  background: var(--admin-blue);
+  border-color: var(--admin-blue);
+  box-shadow: 0 0 0 3px rgba(59,130,246,.08);
+}
+
+.admin-layout input[type="checkbox"]:checked::before,
+.admin-layout input[type="radio"]:checked::before {
+  transform: scale(1);
+}
+
+.admin-layout input[type="checkbox"]:focus-visible,
+.admin-layout input[type="radio"]:focus-visible {
+  outline: 2px solid rgba(96,165,250,.45);
+  outline-offset: 2px;
 }
 
 .admin-ui-search {
@@ -659,4 +753,38 @@
     max-height: calc(100vh - 20px);
     border-radius: 16px 16px 10px 10px;
   }
+}
+
+
+/* =========================================================
+   ADMIN FORM SCROLLBARS
+========================================================= */
+
+.admin-ui-modal-body,
+.admin-ui-table-wrap {
+  scrollbar-width: thin;
+  scrollbar-color: #334155 #080e17;
+}
+
+.admin-ui-modal-body::-webkit-scrollbar,
+.admin-ui-table-wrap::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+.admin-ui-modal-body::-webkit-scrollbar-track,
+.admin-ui-table-wrap::-webkit-scrollbar-track {
+  background: #080e17;
+}
+
+.admin-ui-modal-body::-webkit-scrollbar-thumb,
+.admin-ui-table-wrap::-webkit-scrollbar-thumb {
+  background: #334155;
+  border: 2px solid #080e17;
+  border-radius: 999px;
+}
+
+.admin-ui-modal-body::-webkit-scrollbar-thumb:hover,
+.admin-ui-table-wrap::-webkit-scrollbar-thumb:hover {
+  background: #475569;
 }
