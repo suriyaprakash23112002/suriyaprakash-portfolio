@@ -11,7 +11,6 @@ export const getDashboard =
         experiences,
         careerEvents,
         education,
-        settings,
         profile,
       ] =
         await Promise.all([
@@ -33,8 +32,6 @@ export const getDashboard =
           prisma.careerJourney.count(),
 
           prisma.education.count(),
-
-          prisma.siteSetting.count(),
 
           prisma.profile.findUnique({
             where: {
@@ -84,7 +81,6 @@ export const getDashboard =
             experiences,
             careerEvents,
             education,
-            settings,
           },
 
           profile,
