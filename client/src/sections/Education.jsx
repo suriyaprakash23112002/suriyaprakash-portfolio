@@ -150,54 +150,7 @@ function Education({
     return [];
   };
 
-  /* =====================================================
-     EMPTY STATE
-  ===================================================== */
-
-  if (
-    activeEducation.length ===
-    0
-  ) {
     return (
-      <section
-        id="education"
-        className="education-section"
-      >
-        <div className="education-container">
-          <div className="education-section-label">
-            <span>07</span>
-
-            <div />
-
-            <strong>
-              EDUCATION
-            </strong>
-          </div>
-
-          <div className="education-empty">
-            <FiBookOpen />
-
-            <span>
-              ACADEMIC RECORD
-            </span>
-
-            <h3>
-              Education will
-              appear here.
-            </h3>
-
-            <p>
-              Add education details
-              through the admin
-              dashboard.
-            </p>
-          </div>
-        </div>
-      </section>
-    );
-  }
-
-  return (
     <section
       id="education"
       className="education-section"
@@ -268,14 +221,14 @@ function Education({
             <div className="education-status">
               <span />
 
-              ACADEMIC JOURNEY
+              ACADEMIC FOUNDATION
             </div>
 
             <h2>
-              Learning that shaped
+              Education behind
               <span>
                 {" "}
-                how I build.
+                my technical foundation.
               </span>
             </h2>
           </motion.div>
@@ -298,11 +251,11 @@ function Education({
               delay: 0.1,
             }}
           >
-            My academic background,
-            qualifications and the
-            learning foundations that
-            support my development
-            journey.
+            My academic journey and
+            the learning foundation
+            that supports how I
+            approach software
+            development.
           </motion.p>
         </div>
 
@@ -310,6 +263,27 @@ function Education({
             EDUCATION LIST
         ============================================ */}
 
+        {activeEducation.length === 0 ? (
+          <div className="education-empty">
+            <FiBookOpen />
+
+            <span>
+              ACADEMIC FOUNDATION
+            </span>
+
+            <h3>
+              Learning that supports
+              the way I build.
+            </h3>
+
+            <p>
+              My qualifications and
+              academic milestones will
+              appear here as part of my
+              development story.
+            </p>
+          </div>
+        ) : (
         <div className="education-list">
           {activeEducation.map(
             (
