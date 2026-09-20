@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import {
   FiGithub,
   FiLinkedin,
@@ -12,6 +12,23 @@ import "./Navbar.css";
 
 function Navbar({ profile }) {
   const [menuOpen, setMenuOpen] = useState(false);
+  const [scrolled, setScrolled] = useState(false);
+
+  useEffect(() => {
+    const handleScroll = () => {
+      setScrolled(window.scrollY > 24);
+    };
+
+    handleScroll();
+
+    window.addEventListener("scroll", handleScroll, {
+      passive: true,
+    });
+
+    return () => {
+      window.removeEventListener("scroll", handleScroll);
+    };
+  }, []);
 
   const navItems = [
     { label: "About", id: "about" },
@@ -36,7 +53,9 @@ function Navbar({ profile }) {
   };
 
   return (
-    <header className="navbar">
+    <header
+      className={`navbar ${scrolled ? "navbar-scrolled" : ""}`}
+    >
       <div className="navbar-container">
         {/* LEFT BRAND */}
         <div
