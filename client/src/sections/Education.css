@@ -1,154 +1,92 @@
 /* =========================================================
-   EDUCATION
+   EDUCATION — ACADEMIC TIMELINE
 ========================================================= */
 
 .education-section {
   position: relative;
-
   width: 100%;
-
-  box-sizing: border-box;
-
   overflow: hidden;
-
-  padding:
-    52px 36px
-    55px;
-
+  box-sizing: border-box;
+  padding: 58px 36px 64px;
   color: #f8fafc;
-
   background: #05080d;
-
-  font-family:
-    Arial,
-    Helvetica,
-    sans-serif;
+  font-family: Arial, Helvetica, sans-serif;
 }
 
-
-/* =========================================================
-   BACKGROUND
-========================================================= */
-
-.education-grid {
+.education-grid-bg {
   position: absolute;
-
   inset: 0;
-
   pointer-events: none;
-
   opacity: 0.22;
-
   background-image:
     linear-gradient(
+      rgba(255, 255, 255, 0.012)
+      1px,
+      transparent 1px
+    ),
+    linear-gradient(
       90deg,
-      rgba(
-        255,
-        255,
-        255,
-        0.015
-      )
+      rgba(255, 255, 255, 0.012)
       1px,
       transparent 1px
     );
-
-  background-size:
-    55px 55px;
+  background-size: 56px 56px;
 }
-
 
 .education-glow {
   position: absolute;
-
   pointer-events: none;
-
   border-radius: 50%;
-
-  filter:
-    blur(150px);
+  filter: blur(120px);
 }
-
 
 .education-glow-one {
-  width: 430px;
-  height: 430px;
-
-  left: -300px;
-  top: 25%;
-
+  width: 360px;
+  height: 360px;
+  left: -230px;
+  top: 24%;
   background:
-    rgba(
-      37,
-      99,
-      235,
-      0.065
-    );
+    rgba(37, 99, 235, 0.055);
 }
-
 
 .education-glow-two {
-  width: 450px;
-  height: 450px;
-
-  right: -300px;
-  bottom: -120px;
-
+  width: 420px;
+  height: 420px;
+  right: -260px;
+  bottom: 4%;
   background:
-    rgba(
-      14,
-      165,
-      233,
-      0.04
-    );
+    rgba(6, 182, 212, 0.035);
 }
-
-
-/* =========================================================
-   CONTAINER
-========================================================= */
 
 .education-container {
   position: relative;
-
   z-index: 2;
-
   width: 100%;
   max-width: 1380px;
-
   margin: 0 auto;
 }
 
 
 /* =========================================================
-   SECTION LABEL
+   LABEL + HEADER
 ========================================================= */
 
 .education-section-label {
   display: flex;
-
   align-items: center;
-
   gap: 11px;
-
-  margin-bottom: 29px;
+  margin-bottom: 31px;
 }
 
-
-.education-section-label
-> span {
+.education-section-label > span {
   color: #657287;
-
   font-family: monospace;
-
   font-size: 10px;
 }
 
-
-.education-section-label
-> div {
+.education-section-label > div {
   width: 42px;
   height: 1px;
-
   background:
     linear-gradient(
       90deg,
@@ -157,797 +95,637 @@
     );
 }
 
-
-.education-section-label
-> strong {
+.education-section-label > strong {
   color: #3b82f6;
-
   font-family: monospace;
-
   font-size: 11px;
-
   font-weight: 700;
-
-  letter-spacing:
-    2.4px;
+  letter-spacing: 2.4px;
 }
-
-
-/* =========================================================
-   HEADER
-========================================================= */
 
 .education-header {
   display: grid;
-
   grid-template-columns:
     minmax(0, 1fr)
-    330px;
-
+    minmax(250px, 350px);
   align-items: end;
-
-  gap: 65px;
-
-  margin-bottom: 43px;
+  gap: 60px;
+  margin-bottom: 42px;
 }
 
-
-.education-heading {
-  max-width: 790px;
+.education-header-copy {
+  min-width: 0;
 }
 
-
-.education-status {
+.education-kicker {
   width: fit-content;
-
   display: flex;
-
   align-items: center;
-
   gap: 8px;
-
-  margin-bottom: 15px;
-
-  color: #8692a5;
-
+  margin-bottom: 14px;
+  color: #8794a7;
   font-family: monospace;
-
   font-size: 9px;
-
   font-weight: 600;
-
-  letter-spacing:
-    1.2px;
+  letter-spacing: 1.25px;
 }
 
-
-.education-status
-> span {
-  position: relative;
-
+.education-kicker > span {
   width: 7px;
   height: 7px;
-
   background: #22c55e;
-
   border-radius: 50%;
-
   box-shadow:
-    0 0 10px
-    rgba(
-      34,
-      197,
-      94,
-      0.7
-    );
+    0 0 11px
+    rgba(34, 197, 94, 0.62);
 }
 
-
-.education-status
-> span::before {
-  content: "";
-
-  position: absolute;
-
-  inset: -4px;
-
-  border:
-    1px solid
-    rgba(
-      34,
-      197,
-      94,
-      0.25
-    );
-
-  border-radius: 50%;
-
-  animation:
-    educationPulse
-    1.8s
-    infinite;
-}
-
-
-@keyframes educationPulse {
-  from {
-    opacity: 1;
-
-    transform:
-      scale(0.7);
-  }
-
-  to {
-    opacity: 0;
-
-    transform:
-      scale(1.65);
-  }
-}
-
-
-.education-heading h2 {
-  max-width: 790px;
-
+.education-header h2 {
+  max-width: 830px;
   margin: 0;
-
   color: #f5f7fb;
-
   font-size:
     clamp(
       46px,
       5vw,
       74px
     );
-
   font-weight: 700;
-
-  line-height: 1.02;
-
-  letter-spacing:
-    -3.6px;
+  line-height: 1.01;
+  letter-spacing: -3.8px;
 }
 
-
-.education-heading h2
-span {
+.education-header h2 span {
   color: #667287;
-
   font-weight: 500;
 }
 
-
-.education-intro {
-  max-width: 320px;
-
-  margin: 0;
-
-  color: #7b889b;
-
-  font-size: 13px;
-
-  line-height: 1.75;
-}
-
-
-/* =========================================================
-   LIST
-========================================================= */
-
-.education-list {
-  border-top:
-    1px solid
-    rgba(
-      255,
-      255,
-      255,
-      0.07
-    );
-}
-
-
-/* =========================================================
-   ITEM
-========================================================= */
-
-.education-item {
-  position: relative;
-
-  display: grid;
-
-  grid-template-columns:
-    75px
-    minmax(
-      0,
-      1fr
-    )
-    minmax(
-      220px,
-      0.4fr
-    );
-
-  gap:
-    clamp(
-      28px,
-      5vw,
-      70px
-    );
-
-  align-items: start;
-
-  padding:
-    32px 0;
-
-  border-bottom:
-    1px solid
-    rgba(
-      255,
-      255,
-      255,
-      0.06
-    );
-}
-
-
-.education-item::before {
-  content: "";
-
-  position: absolute;
-
-  inset:
-    0 -18px;
-
-  z-index: -1;
-
-  opacity: 0;
-
-  background:
-    linear-gradient(
-      90deg,
-      transparent,
-      rgba(
-        59,
-        130,
-        246,
-        0.032
-      ),
-      transparent
-    );
-
-  transition:
-    opacity 0.3s ease;
-}
-
-
-.education-item:hover::before {
-  opacity: 1;
-}
-
-
-/* =========================================================
-   INDEX
-========================================================= */
-
-.education-index {
+.education-header-note {
+  min-width: 0;
   display: flex;
-
-  flex-direction: column;
-
   align-items: flex-start;
-
-  gap: 11px;
+  gap: 15px;
+  padding: 16px 0 3px;
 }
 
-
-.education-index
-> span {
-  color: #465469;
-
+.education-header-count {
+  color: #3b82f6;
   font-family: monospace;
-
-  font-size: 8px;
-
-  letter-spacing:
-    1px;
+  font-size: 27px;
+  font-weight: 700;
+  line-height: 1;
 }
 
-
-.education-index
-> div {
-  width: 41px;
-  height: 41px;
-
-  display: flex;
-
-  align-items: center;
-
-  justify-content: center;
-
-  color: #60a5fa;
-
-  background:
-    rgba(
-      59,
-      130,
-      246,
-      0.06
-    );
-
-  border:
-    1px solid
-    rgba(
-      96,
-      165,
-      250,
-      0.12
-    );
-
-  border-radius: 11px;
-
-  font-size: 16px;
-}
-
-
-/* =========================================================
-   MAIN
-========================================================= */
-
-.education-main {
+.education-header-note > div {
   min-width: 0;
 }
 
-
-.education-record-label {
+.education-header-note strong {
   display: block;
-
-  margin-bottom: 8px;
-
-  color: #4e6079;
-
+  color: #718198;
   font-family: monospace;
-
-  font-size: 7px;
-
-  font-weight: 600;
-
-  letter-spacing:
-    1.3px;
+  font-size: 8px;
+  letter-spacing: 1.2px;
 }
 
-
-.education-main h3 {
-  max-width: 720px;
-
-  margin: 0;
-
-  color: #f1f5fa;
-
-  font-size:
-    clamp(
-      22px,
-      2.5vw,
-      34px
-    );
-
-  font-weight: 600;
-
-  line-height: 1.15;
-
-  letter-spacing:
-    -1px;
-}
-
-
-.education-field {
-  margin:
-    8px 0 0;
-
-  color: #7295c5;
-
-  font-size: 11px;
-
-  font-weight: 500;
-}
-
-
-.education-description {
-  max-width: 720px;
-
-  margin:
-    14px 0 0;
-
-  color: #78869a;
-
-  font-size: 11px;
-
-  line-height: 1.75;
+.education-header-note p {
+  margin: 7px 0 0;
+  color: #778598;
+  font-size: 12px;
+  line-height: 1.65;
 }
 
 
 /* =========================================================
-   HIGHLIGHTS
+   TIMELINE
 ========================================================= */
 
-.education-highlights {
-  max-width: 720px;
-
+.education-timeline {
   display: flex;
-
   flex-direction: column;
-
-  gap: 8px;
-
-  margin-top: 16px;
+  gap: 14px;
 }
 
-
-.education-highlights
-> div {
+.education-record {
+  position: relative;
   display: grid;
-
   grid-template-columns:
-    5px
+    42px
     minmax(0, 1fr);
-
-  gap: 9px;
-
-  align-items: start;
+  min-width: 0;
 }
 
+.education-record-rail {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.education-record-number {
+  margin-top: 20px;
+  color: #4b5a70;
+  font-family: monospace;
+  font-size: 8px;
+  letter-spacing: 0.8px;
+}
+
+.education-record-dot {
+  position: relative;
+  z-index: 2;
+  width: 8px;
+  height: 8px;
+  margin-top: 12px;
+  background: #2563eb;
+  border: 3px solid #08101a;
+  border-radius: 50%;
+  box-shadow:
+    0 0 0 1px
+    rgba(59, 130, 246, 0.26);
+}
+
+.education-record-current
+.education-record-dot {
+  background: #22c55e;
+  box-shadow:
+    0 0 0 1px
+    rgba(34, 197, 94, 0.28),
+    0 0 12px
+    rgba(34, 197, 94, 0.12);
+}
+
+.education-record-line {
+  width: 1px;
+  flex: 1;
+  margin-top: 6px;
+  background:
+    linear-gradient(
+      to bottom,
+      rgba(59, 130, 246, 0.18),
+      transparent
+    );
+}
+
+.education-record-body {
+  min-width: 0;
+  display: grid;
+  grid-template-columns:
+    150px
+    minmax(0, 1fr)
+    minmax(235px, 0.46fr);
+  align-items: stretch;
+  overflow: hidden;
+  background:
+    linear-gradient(
+      135deg,
+      rgba(8, 14, 23, 0.82),
+      rgba(6, 12, 20, 0.6)
+    );
+  border:
+    1px solid
+    rgba(148, 163, 184, 0.08);
+  border-radius: 17px;
+  box-shadow:
+    0 18px 48px
+    rgba(0, 0, 0, 0.12);
+  transition:
+    border-color 0.25s ease,
+    transform 0.25s ease,
+    background 0.25s ease;
+}
+
+.education-record:hover
+.education-record-body {
+  transform: translateY(-2px);
+  border-color:
+    rgba(96, 165, 250, 0.15);
+  background:
+    linear-gradient(
+      135deg,
+      rgba(9, 17, 29, 0.9),
+      rgba(7, 15, 25, 0.7)
+    );
+}
+
+.education-record-current
+.education-record-body {
+  box-shadow:
+    inset 3px 0 0
+    rgba(37, 99, 235, 0.6),
+    0 18px 48px
+    rgba(0, 0, 0, 0.13);
+}
+
+
+/* =========================================================
+   YEARS
+========================================================= */
+
+.education-record-years {
+  min-height: 210px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  padding: 24px 16px;
+  background:
+    rgba(4, 9, 16, 0.34);
+  border-right:
+    1px solid
+    rgba(148, 163, 184, 0.055);
+}
+
+.education-record-years span {
+  color: #9aabbe;
+  font-family: monospace;
+  font-size: 12px;
+  font-weight: 700;
+}
+
+.education-record-years i {
+  width: 1px;
+  height: 30px;
+  background:
+    linear-gradient(
+      to bottom,
+      #2563eb,
+      rgba(37, 99, 235, 0.15)
+    );
+}
+
+
+/* =========================================================
+   MAIN CONTENT
+========================================================= */
+
+.education-record-main {
+  min-width: 0;
+  padding: 25px 28px;
+}
+
+.education-record-topline {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 14px;
+  margin-bottom: 8px;
+}
+
+.education-record-topline
+> span:first-child {
+  color: #52627a;
+  font-family: monospace;
+  font-size: 7px;
+  font-weight: 700;
+  letter-spacing: 1.1px;
+}
+
+.education-current-badge {
+  min-height: 24px;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 0 8px;
+  color: #86efac;
+  background:
+    rgba(34, 197, 94, 0.04);
+  border:
+    1px solid
+    rgba(34, 197, 94, 0.13);
+  border-radius: 999px;
+  font-family: monospace;
+  font-size: 6px;
+  font-weight: 700;
+  letter-spacing: 0.6px;
+}
+
+.education-current-badge i {
+  width: 5px;
+  height: 5px;
+  background: #22c55e;
+  border-radius: 50%;
+  box-shadow:
+    0 0 7px
+    rgba(34, 197, 94, 0.65);
+}
+
+.education-record-main h3 {
+  max-width: 720px;
+  margin: 0;
+  color: #f0f4f9;
+  font-size:
+    clamp(
+      22px,
+      2.1vw,
+      30px
+    );
+  font-weight: 650;
+  line-height: 1.12;
+  letter-spacing: -0.8px;
+}
+
+.education-field {
+  margin: 7px 0 0;
+  color: #7295c5;
+  font-size: 11px;
+  font-weight: 550;
+}
+
+.education-institution-row {
+  display: flex;
+  align-items: center;
+  gap: 11px;
+  margin-top: 18px;
+}
+
+.education-institution-mark {
+  width: 38px;
+  height: 38px;
+  flex: 0 0 auto;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #60a5fa;
+  background:
+    rgba(59, 130, 246, 0.055);
+  border:
+    1px solid
+    rgba(96, 165, 250, 0.11);
+  border-radius: 10px;
+  font-size: 15px;
+}
+
+.education-institution-row
+> div:last-child {
+  min-width: 0;
+}
+
+.education-institution-row span {
+  display: block;
+  margin-bottom: 3px;
+  color: #526178;
+  font-family: monospace;
+  font-size: 6px;
+  letter-spacing: 1px;
+}
+
+.education-institution-row strong {
+  display: block;
+  color: #d9e2ec;
+  font-size: 12px;
+  font-weight: 650;
+  line-height: 1.4;
+}
+
+.education-description {
+  max-width: 700px;
+  margin: 16px 0 0;
+  color: #78869a;
+  font-size: 10px;
+  line-height: 1.7;
+}
+
+.education-highlights {
+  display: grid;
+  grid-template-columns:
+    repeat(
+      2,
+      minmax(0, 1fr)
+    );
+  gap: 7px 12px;
+  margin-top: 15px;
+}
+
+.education-highlights > div {
+  min-width: 0;
+  display: grid;
+  grid-template-columns:
+    6px
+    minmax(0, 1fr);
+  align-items: start;
+  gap: 7px;
+}
 
 .education-highlights
 > div
 > span {
   width: 4px;
   height: 4px;
-
-  margin-top: 7px;
-
+  margin-top: 6px;
   background: #3b82f6;
-
   border-radius: 50%;
-
-  box-shadow:
-    0 0 7px
-    rgba(
-      59,
-      130,
-      246,
-      0.55
-    );
 }
-
 
 .education-highlights p {
   margin: 0;
-
-  color: #718095;
-
-  font-size: 10px;
-
-  line-height: 1.65;
+  color: #6f7f94;
+  font-size: 9px;
+  line-height: 1.55;
 }
 
 
 /* =========================================================
-   META
+   META / CGPA
 ========================================================= */
 
-.education-meta {
+.education-record-meta {
   min-width: 0;
-}
-
-
-.education-institution {
   display: flex;
-
   flex-direction: column;
+  justify-content: center;
+  padding: 24px;
+  background:
+    rgba(4, 9, 16, 0.22);
+  border-left:
+    1px solid
+    rgba(148, 163, 184, 0.055);
+}
 
-  gap: 5px;
-
+.education-meta-label {
   margin-bottom: 13px;
-}
-
-
-.education-institution
-span {
-  color: #4e5d72;
-
+  color: #526178;
   font-family: monospace;
-
   font-size: 7px;
-
-  letter-spacing:
-    1.2px;
+  font-weight: 700;
+  letter-spacing: 1.1px;
 }
 
+.education-meta-item {
+  display: grid;
+  grid-template-columns:
+    23px
+    minmax(0, 1fr);
+  align-items: start;
+  gap: 8px;
+  padding: 9px 0;
+  border-top:
+    1px solid
+    rgba(148, 163, 184, 0.045);
+}
 
-.education-institution
-strong {
-  color: #dce4ed;
+.education-meta-item > svg {
+  margin-top: 2px;
+  color: #4e7fbd;
+  font-size: 12px;
+}
 
-  font-size: 14px;
+.education-meta-item span,
+.education-cgpa span {
+  display: block;
+  color: #526178;
+  font-family: monospace;
+  font-size: 6px;
+  letter-spacing: 0.9px;
+}
 
+.education-meta-item strong {
+  display: block;
+  margin-top: 3px;
+  color: #aeb9c8;
+  font-size: 10px;
   font-weight: 600;
-
   line-height: 1.4;
 }
 
-
-.education-meta-row {
-  display: flex;
-
+.education-cgpa {
+  display: grid;
+  grid-template-columns:
+    32px
+    minmax(0, 1fr);
   align-items: center;
-
-  gap: 7px;
-
-  margin-top: 9px;
-
-  color: #6f7d91;
-
-  font-size: 9px;
-}
-
-
-.education-meta-row svg {
-  flex-shrink: 0;
-
-  color: #4e78b3;
-
-  font-size: 11px;
-}
-
-
-/* =========================================================
-   GRADE
-========================================================= */
-
-.education-grade {
-  width: fit-content;
-
-  display: flex;
-
-  align-items: center;
-
-  gap: 8px;
-
-  margin-top: 14px;
-
-  padding:
-    8px 10px;
-
+  gap: 9px;
+  margin-top: 12px;
+  padding: 11px;
   background:
-    rgba(
-      59,
-      130,
-      246,
-      0.045
+    linear-gradient(
+      135deg,
+      rgba(37, 99, 235, 0.08),
+      rgba(59, 130, 246, 0.025)
     );
-
   border:
     1px solid
-    rgba(
-      96,
-      165,
-      250,
-      0.1
-    );
-
-  border-radius: 9px;
+    rgba(96, 165, 250, 0.12);
+  border-radius: 10px;
 }
 
-
-.education-grade
-> svg {
+.education-cgpa > svg {
   color: #60a5fa;
-
-  font-size: 14px;
+  font-size: 16px;
 }
 
-
-.education-grade
-> div {
-  display: flex;
-
-  flex-direction: column;
-
-  gap: 2px;
+.education-cgpa strong {
+  display: block;
+  margin-top: 2px;
+  color: #e2e8f0;
+  font-size: 15px;
+  font-weight: 700;
 }
-
-
-.education-grade span {
-  color: #526177;
-
-  font-family: monospace;
-
-  font-size: 6px;
-
-  letter-spacing:
-    1px;
-}
-
-
-.education-grade strong {
-  color: #d9e2ed;
-
-  font-size: 10px;
-}
-
-
-/* =========================================================
-   LINK
-========================================================= */
 
 .education-link {
   width: fit-content;
-
   display: inline-flex;
-
   align-items: center;
-
   gap: 6px;
-
-  margin-top: 14px;
-
+  margin-top: 13px;
   color: #718096;
-
-  font-size: 9px;
-
-  font-weight: 600;
-
+  font-size: 8px;
+  font-weight: 650;
   text-decoration: none;
-
   transition:
-    color 0.25s ease;
+    color 0.2s ease,
+    transform 0.2s ease;
 }
-
-
-.education-link svg {
-  transition:
-    transform 0.25s ease;
-}
-
 
 .education-link:hover {
   color: #60a5fa;
-}
-
-
-.education-link:hover svg {
-  transform:
-    translate(
-      3px,
-      -3px
-    );
+  transform: translateY(-1px);
 }
 
 
 /* =========================================================
-   FOOTER
-========================================================= */
-
-.education-footer {
-  min-height: 58px;
-
-  display: flex;
-
-  align-items: center;
-
-  gap: 12px;
-
-  color: #4f5e73;
-
-  font-family: monospace;
-
-  font-size: 7px;
-
-  letter-spacing:
-    1.2px;
-}
-
-
-.education-footer
-> div {
-  height: 1px;
-
-  flex: 1;
-
-  background:
-    linear-gradient(
-      90deg,
-      rgba(
-        59,
-        130,
-        246,
-        0.18
-      ),
-      rgba(
-        255,
-        255,
-        255,
-        0.03
-      )
-    );
-}
-
-
-/* =========================================================
-   EMPTY
+   EMPTY + FOOTER
 ========================================================= */
 
 .education-empty {
-  min-height: 300px;
-
+  min-height: 320px;
   display: flex;
-
   flex-direction: column;
-
   align-items: center;
-
   justify-content: center;
-
   text-align: center;
-
-  border-top:
-    1px solid
-    rgba(
-      255,
-      255,
-      255,
-      0.06
+  background:
+    linear-gradient(
+      135deg,
+      rgba(8, 14, 23, 0.42),
+      rgba(5, 8, 13, 0.18)
     );
-
-  border-bottom:
+  border:
     1px solid
-    rgba(
-      255,
-      255,
-      255,
-      0.06
-    );
+    rgba(148, 163, 184, 0.07);
+  border-radius: 17px;
 }
 
-
-.education-empty
-> svg {
+.education-empty-icon {
+  width: 52px;
+  height: 52px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   color: #60a5fa;
-
-  font-size: 28px;
+  background:
+    rgba(59, 130, 246, 0.06);
+  border:
+    1px solid
+    rgba(96, 165, 250, 0.12);
+  border-radius: 13px;
+  font-size: 21px;
 }
 
-
-.education-empty
-> span {
-  margin-top: 12px;
-
-  color: #506078;
-
+.education-empty > span {
+  margin-top: 15px;
+  color: #52637a;
   font-family: monospace;
-
   font-size: 7px;
-
-  letter-spacing:
-    1.3px;
+  letter-spacing: 1.2px;
 }
-
 
 .education-empty h3 {
-  margin:
-    9px 0 0;
-
-  color: #eef2f7;
-
-  font-size: 20px;
+  margin: 8px 0 0;
+  color: #edf2f8;
+  font-size: 22px;
 }
 
-
 .education-empty p {
-  margin:
-    8px 0 0;
-
-  color: #718095;
-
+  max-width: 390px;
+  margin: 8px 0 0;
+  color: #708096;
   font-size: 10px;
+  line-height: 1.6;
+}
+
+.education-footer {
+  min-height: 62px;
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding-top: 15px;
+  color: #495870;
+  font-family: monospace;
+  font-size: 7px;
+  letter-spacing: 1.2px;
+}
+
+.education-footer > div {
+  height: 1px;
+  flex: 1;
+  background:
+    linear-gradient(
+      90deg,
+      rgba(59, 130, 246, 0.16),
+      rgba(255, 255, 255, 0.025),
+      transparent
+    );
 }
 
 
@@ -965,18 +743,19 @@ and
 ) {
   .education-section {
     padding:
-      40px 36px;
+      42px 36px
+      46px;
   }
 
   .education-section-label {
-    margin-bottom: 21px;
+    margin-bottom: 22px;
   }
 
   .education-header {
     margin-bottom: 30px;
   }
 
-  .education-heading h2 {
+  .education-header h2 {
     font-size:
       clamp(
         42px,
@@ -985,9 +764,14 @@ and
       );
   }
 
-  .education-item {
-    padding:
-      24px 0;
+  .education-record-years {
+    min-height: 185px;
+  }
+
+  .education-record-main,
+  .education-record-meta {
+    padding-top: 21px;
+    padding-bottom: 21px;
   }
 }
 
@@ -996,56 +780,64 @@ and
    TABLET
 ========================================================= */
 
-@media (
-  max-width: 950px
-) {
+@media (max-width: 1000px) {
   .education-section {
     padding:
-      42px 24px;
+      44px 24px
+      50px;
   }
 
   .education-header {
-    grid-template-columns:
-      1fr;
-
+    grid-template-columns: 1fr;
     gap: 18px;
   }
 
-  .education-intro {
-    max-width: 650px;
+  .education-header-note {
+    max-width: 520px;
   }
 
-  .education-item {
+  .education-record-body {
     grid-template-columns:
-      60px
-      minmax(
-        0,
-        1fr
+      110px
+      minmax(0, 1fr);
+  }
+
+  .education-record-meta {
+    grid-column:
+      1 / -1;
+    display: grid;
+    grid-template-columns:
+      repeat(
+        3,
+        minmax(0, 1fr)
       );
-
-    gap:
-      20px 24px;
+    gap: 10px;
+    align-items: stretch;
+    border-left: 0;
+    border-top:
+      1px solid
+      rgba(148, 163, 184, 0.055);
   }
 
-  .education-index {
-    grid-column: 1;
-
-    grid-row:
-      1 / span 2;
+  .education-meta-label {
+    grid-column:
+      1 / -1;
+    margin-bottom: 0;
   }
 
-  .education-main {
-    grid-column: 2;
-
-    grid-row: 1;
+  .education-meta-item {
+    border-top: 0;
+    padding: 8px;
+    background:
+      rgba(255, 255, 255, 0.012);
+    border:
+      1px solid
+      rgba(148, 163, 184, 0.045);
+    border-radius: 8px;
   }
 
-  .education-meta {
-    grid-column: 2;
-
-    grid-row: 2;
-
-    padding-top: 3px;
+  .education-cgpa {
+    margin-top: 0;
   }
 }
 
@@ -1054,12 +846,11 @@ and
    MOBILE
 ========================================================= */
 
-@media (
-  max-width: 650px
-) {
+@media (max-width: 650px) {
   .education-section {
     padding:
-      34px 18px;
+      34px 18px
+      40px;
   }
 
   .education-section-label {
@@ -1069,59 +860,67 @@ and
   .education-section-label
   > strong {
     font-size: 9px;
-
-    letter-spacing:
-      1.8px;
+    letter-spacing: 1.8px;
   }
 
-  .education-heading h2 {
+  .education-header h2 {
     font-size:
       clamp(
         36px,
         10.5vw,
         48px
       );
-
-    letter-spacing:
-      -2px;
+    letter-spacing: -2px;
   }
 
-  .education-intro {
-    font-size: 12px;
+  .education-header-note {
+    padding-top: 0;
   }
 
-  .education-item {
+  .education-header-count {
+    font-size: 23px;
+  }
+
+  .education-record {
     grid-template-columns:
-      1fr;
-
-    gap: 18px;
-
-    padding:
-      24px 0;
+      22px
+      minmax(0, 1fr);
   }
 
-  .education-index,
-  .education-main,
-  .education-meta {
-    grid-column: 1;
-    grid-row: auto;
+  .education-record-body {
+    grid-template-columns: 1fr;
+    border-radius: 14px;
   }
 
-  .education-index {
+  .education-record-number {
+    margin-top: 16px;
+    font-size: 7px;
+  }
+
+  .education-record-years {
+    min-height: auto;
     flex-direction: row;
-
-    align-items: center;
+    justify-content: flex-start;
+    gap: 8px;
+    padding:
+      13px 16px;
+    border-right: 0;
+    border-bottom:
+      1px solid
+      rgba(148, 163, 184, 0.055);
   }
 
-  .education-index
-  > div {
-    width: 34px;
-    height: 34px;
-
-    font-size: 13px;
+  .education-record-years i {
+    width: 24px;
+    height: 1px;
   }
 
-  .education-main h3 {
+  .education-record-main {
+    padding:
+      19px 16px;
+  }
+
+  .education-record-main h3 {
     font-size:
       clamp(
         21px,
@@ -1130,26 +929,29 @@ and
       );
   }
 
-  .education-description {
-    font-size: 11px;
+  .education-institution-row {
+    margin-top: 15px;
+  }
+
+  .education-highlights {
+    grid-template-columns: 1fr;
+  }
+
+  .education-record-meta {
+    grid-column: auto;
+    grid-template-columns: 1fr;
+    gap: 8px;
+    padding:
+      16px;
+  }
+
+  .education-meta-label {
+    grid-column: auto;
   }
 
   .education-footer {
-    align-items:
-      flex-start;
-
-    flex-direction: column;
-
     gap: 8px;
-
-    padding-top: 16px;
-  }
-
-  .education-footer
-  > div {
-    width: 100%;
-
-    flex: none;
+    font-size: 6px;
   }
 }
 
@@ -1158,20 +960,23 @@ and
    SMALL MOBILE
 ========================================================= */
 
-@media (
-  max-width: 390px
-) {
+@media (max-width: 390px) {
   .education-section {
     padding:
-      30px 15px;
+      30px 15px
+      36px;
   }
 
-  .education-heading h2 {
-    font-size: 33px;
+  .education-record {
+    grid-template-columns:
+      18px
+      minmax(0, 1fr);
   }
 
-  .education-main h3 {
-    font-size: 21px;
+  .education-record-main,
+  .education-record-meta {
+    padding-left: 13px;
+    padding-right: 13px;
   }
 }
 
@@ -1184,14 +989,8 @@ and
   prefers-reduced-motion:
   reduce
 ) {
-  .education-status
-  > span::before {
-    animation: none;
-  }
-
-  .education-item::before,
-  .education-link,
-  .education-link svg {
+  .education-record-body,
+  .education-link {
     transition: none;
   }
 }
