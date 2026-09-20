@@ -340,7 +340,7 @@ function Hero({ profile, performanceMode = false }) {
               delay: 0.08,
             }}
           >
-            FULL-STACK DEVELOPER
+            {profile?.headline || "FULL-STACK DEVELOPER"}
           </motion.span>
 
           <motion.h1
@@ -801,7 +801,7 @@ function Hero({ profile, performanceMode = false }) {
                       </span>
 
                       <strong>
-                        Full-Stack Developer
+                        {profile?.headline || "Full-Stack Developer"}
                       </strong>
                     </div>
 
