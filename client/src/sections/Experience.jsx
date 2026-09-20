@@ -12,6 +12,7 @@ import "./Experience.css";
 
 function Experience({
   experiences = [],
+  performanceMode = false,
 }) {
   /* =====================================================
      HELPERS
