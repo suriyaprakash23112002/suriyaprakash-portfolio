@@ -37,12 +37,14 @@ function TechStack({
      FLATTEN SKILLS FROM DATABASE
   ===================================================== */
 
+  const activeCategories =
+    skillCategories.filter(
+      (category) =>
+        category?.isActive !== false
+    );
+
   const rawSkills =
-    skillCategories
-      .filter(
-        (category) =>
-          category?.isActive !== false
-      )
+    activeCategories
       .flatMap((category) =>
         (category?.skills || [])
           .filter(
@@ -53,6 +55,8 @@ function TechStack({
             ...skill,
             category:
               category?.name || "",
+            categoryDescription:
+              category?.description || "",
           }))
       );
 
@@ -76,9 +80,13 @@ function TechStack({
   ===================================================== */
 
   const getSkillIcon = (
-    name = ""
+    skill = {}
   ) => {
-    const value = name
+    const value = String(
+      skill?.icon ||
+      skill?.name ||
+      ""
+    )
       .toLowerCase()
       .trim();
 
@@ -369,6 +377,19 @@ function TechStack({
               databases and production
               ready applications.
             </p>
+
+            {activeCategories.length > 0 && (
+              <div className="skills-category-summary">
+                {activeCategories.map((category) => (
+                  <div key={category.id || category.name}>
+                    <strong>{category.name}</strong>
+                    {category.description && (
+                      <span>{category.description}</span>
+                    )}
+                  </div>
+                ))}
+              </div>
+            )}
 
             {/* SIMPLE WORKFLOW */}
 
@@ -691,7 +712,7 @@ function TechStack({
                               0.4,
 
                           repeat:
-                            Infinity,
+                            performanceMode ? 0 : Infinity,
 
                           ease:
                             "easeInOut",
@@ -706,13 +727,34 @@ function TechStack({
                       >
                         <div className="skills-node-icon">
                           {getSkillIcon(
-                            skill.name
+                            skill
                           )}
                         </div>
 
-                        <span>
-                          {skill.name}
-                        </span>
+                        <div className="skills-node-copy">
+                          <span>
+                            {skill.name}
+                          </span>
+
+                          {(skill.isFeatured ||
+                            skill.proficiency != null ||
+                            skill.yearsExperience != null) && (
+                            <small>
+                              {skill.isFeatured && "Featured"}
+                              {skill.isFeatured &&
+                                (skill.proficiency != null ||
+                                  skill.yearsExperience != null) &&
+                                " · "}
+                              {skill.proficiency != null &&
+                                `${skill.proficiency}%`}
+                              {skill.proficiency != null &&
+                                skill.yearsExperience != null &&
+                                " · "}
+                              {skill.yearsExperience != null &&
+                                `${skill.yearsExperience} yr${Number(skill.yearsExperience) === 1 ? "" : "s"}`}
+                            </small>
+                          )}
+                        </div>
                       </motion.div>
                     </div>
                   );
