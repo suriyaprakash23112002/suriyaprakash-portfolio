@@ -1,6 +1,5 @@
 import { useEffect, useState } from "react";
 import {
-  FiActivity,
   FiArrowUpRight,
   FiBookOpen,
   FiBriefcase,
@@ -71,13 +70,6 @@ function AdminDashboard() {
       text: "Professional records",
       icon: <FiBriefcase />,
       path: "/admin/experience",
-    },
-    {
-      label: "Career",
-      value: counts.careerEvents ?? 0,
-      text: "Journey milestones",
-      icon: <FiActivity />,
-      path: "/admin/career",
     },
     {
       label: "Education",
