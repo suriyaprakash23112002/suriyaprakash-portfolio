@@ -6,6 +6,8 @@ import {
   FiCode,
 } from "react-icons/fi";
 
+import profileImage from "../assets/sample.png";
+
 import "./Footer.css";
 
 function Footer({
@@ -183,22 +185,26 @@ function Footer({
           <div className="footer-brand">
             <button
               type="button"
-              className="footer-logo"
-              onClick={
-                scrollToTop
-              }
+              className="footer-profile-button"
+              onClick={scrollToTop}
               aria-label="Back to top"
             >
-              SP
+              <span className="footer-profile-ring" />
+
+              <img
+                src={profile?.profileImageUrl || profileImage}
+                alt={profile?.fullName || "Suriyaprakash"}
+                className="footer-profile-image"
+              />
             </button>
 
             <div className="footer-brand-copy">
               <strong>
-                Suriyaprakash
+                {profile?.fullName || "Suriyaprakash"}
               </strong>
 
               <span>
-                FULL-STACK DEVELOPER
+                {profile?.headline || "FULL-STACK DEVELOPER"}
               </span>
             </div>
           </div>
@@ -282,7 +288,7 @@ function Footer({
             </span>
 
             <strong>
-              Suriyaprakash
+              {profile?.fullName || "Suriyaprakash"}
             </strong>
 
             <span>
