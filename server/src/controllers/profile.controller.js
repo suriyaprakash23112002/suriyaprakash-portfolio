@@ -25,6 +25,7 @@ export const getProfile = async (req, res) => {
         whatsappUrl: true,
         resumeUrl: true,
         profileImageUrl: true,
+        heroImageUrl: true,
         availableForWork: true,
         availabilityText: true,
         updatedAt: true,
@@ -73,6 +74,7 @@ export const updateProfile = async (req, res) => {
       whatsappUrl,
       resumeUrl,
       profileImageUrl,
+      heroImageUrl,
       availableForWork,
       availabilityText,
     } = req.body;
@@ -126,6 +128,9 @@ export const updateProfile = async (req, res) => {
         profileImageUrl:
           profileImageUrl?.trim() || null,
 
+        heroImageUrl:
+          heroImageUrl?.trim() || null,
+
         availableForWork:
           typeof availableForWork === "boolean"
             ? availableForWork
@@ -173,6 +178,9 @@ export const updateProfile = async (req, res) => {
 
         profileImageUrl:
           profileImageUrl?.trim() || null,
+
+        heroImageUrl:
+          heroImageUrl?.trim() || null,
 
         availableForWork:
           typeof availableForWork === "boolean"
