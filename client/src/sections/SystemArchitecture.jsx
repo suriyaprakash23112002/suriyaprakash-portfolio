@@ -131,7 +131,6 @@ function SystemArchitecture({
       className="architecture-section"
     >
       <div className="architecture-background-grid" />
-      <div className="architecture-background-beam" />
       <div className="architecture-glow architecture-glow-left" />
       <div className="architecture-glow architecture-glow-right" />
 
