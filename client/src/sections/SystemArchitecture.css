@@ -1,3 +1,7 @@
+/* =========================================================
+   SYSTEM ARCHITECTURE
+========================================================= */
+
 .architecture-section {
   position: relative;
   width: 100%;
@@ -12,42 +16,47 @@
     sans-serif;
 }
 
+.architecture-section *,
+.architecture-section *::before,
+.architecture-section *::after {
+  box-sizing: border-box;
+}
+
 .architecture-background-grid {
   position: absolute;
   inset: 0;
-  opacity: 0.34;
+  pointer-events: none;
+  opacity: 0.22;
   background-image:
-    linear-gradient(rgba(96, 165, 250, 0.04) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(96, 165, 250, 0.04) 1px, transparent 1px);
-  background-size: 56px 56px;
-  mask-image: linear-gradient(
-    to bottom,
-    transparent,
-    #000 12%,
-    #000 88%,
-    transparent
-  );
+    linear-gradient(
+      90deg,
+      rgba(255, 255, 255, 0.015) 1px,
+      transparent 1px
+    );
+  background-size: 55px 55px;
 }
 
 .architecture-glow {
   position: absolute;
-  width: 560px;
-  height: 560px;
-  border-radius: 50%;
-  filter: blur(135px);
   pointer-events: none;
+  border-radius: 50%;
+  filter: blur(150px);
 }
 
 .architecture-glow-left {
-  left: -280px;
-  bottom: -250px;
-  background: rgba(6, 182, 212, 0.08);
+  width: 430px;
+  height: 430px;
+  left: -290px;
+  top: 20%;
+  background: rgba(37, 99, 235, 0.07);
 }
 
 .architecture-glow-right {
-  top: -190px;
-  right: -220px;
-  background: rgba(37, 99, 235, 0.14);
+  width: 470px;
+  height: 470px;
+  right: -300px;
+  bottom: -120px;
+  background: rgba(14, 165, 233, 0.045);
 }
 
 .architecture-container {
@@ -58,6 +67,11 @@
   margin: 0 auto;
 }
 
+
+/* =========================================================
+   SECTION LABEL
+========================================================= */
+
 .architecture-section-label {
   display: flex;
   align-items: center;
@@ -66,33 +80,35 @@
   margin-bottom: 29px;
 }
 
-.architecture-section-label span,
-.architecture-section-label strong {
-  font-family: monospace;
-}
-
-.architecture-section-label span {
+.architecture-section-label > span {
   color: #657287;
+  font-family: monospace;
   font-size: 10px;
 }
 
-.architecture-section-label strong {
+.architecture-section-label > div {
+  width: 42px;
+  height: 1px;
+  flex-shrink: 0;
+  background: linear-gradient(
+    90deg,
+    #2563eb,
+    transparent
+  );
+}
+
+.architecture-section-label > strong {
   color: #3b82f6;
+  font-family: monospace;
   font-size: 11px;
   font-weight: 700;
   letter-spacing: 2.4px;
 }
 
-.architecture-section-label div {
-  width: 42px;
-  height: 1px;
-  background:
-    linear-gradient(
-      90deg,
-      #2563eb,
-      transparent
-    );
-}
+
+/* =========================================================
+   HEADER
+========================================================= */
 
 .architecture-header {
   display: grid;
@@ -104,6 +120,11 @@
   margin-bottom: 40px;
 }
 
+.architecture-heading {
+  min-width: 0;
+  max-width: 790px;
+}
+
 .architecture-live-label {
   width: fit-content;
   display: inline-flex;
@@ -112,25 +133,20 @@
   margin-bottom: 15px;
   color: #8692a5;
   font-family: monospace;
-  font-size: 9px;
+  font-size: 10px;
   font-weight: 600;
   letter-spacing: 1.2px;
 }
 
 .architecture-live-label i {
-  width: 8px;
-  height: 8px;
+  width: 7px;
+  height: 7px;
   flex-shrink: 0;
   background: #22c55e;
   border-radius: 50%;
   box-shadow:
-    0 0 0 5px rgba(34, 197, 94, 0.06),
-    0 0 15px rgba(34, 197, 94, 0.68);
-  animation: architecturePulse 2s ease-in-out infinite;
-}
-
-.architecture-heading {
-  max-width: 790px;
+    0 0 10px rgba(34, 197, 94, 0.7);
+  animation: architecturePulse 1.8s infinite;
 }
 
 .architecture-heading h2 {
@@ -144,19 +160,19 @@
 }
 
 .architecture-heading h2 span {
-  color: #6d7d94;
+  color: #667287;
   font-weight: 500;
 }
 
 .architecture-intro {
-  padding-bottom: 0;
+  min-width: 0;
 }
 
 .architecture-intro > p {
   max-width: 320px;
   margin: 0;
   color: #7b889b;
-  font-size: 13px;
+  font-size: 14px;
   line-height: 1.75;
 }
 
@@ -171,6 +187,7 @@
 .architecture-intro-meta > span,
 .architecture-intro-meta > code {
   min-height: 34px;
+  max-width: 100%;
   display: inline-flex;
   align-items: center;
   gap: 7px;
@@ -191,10 +208,18 @@
   color: #93c5fd;
   background: rgba(37, 99, 235, 0.08);
   border: 1px solid rgba(96, 165, 250, 0.13);
+  overflow-wrap: anywhere;
 }
+
+
+/* =========================================================
+   WORKBENCH
+========================================================= */
 
 .architecture-workbench {
   position: relative;
+  width: 100%;
+  min-width: 0;
   overflow: hidden;
   background:
     radial-gradient(
@@ -228,10 +253,13 @@
 }
 
 .architecture-workbench-topbar {
+  position: relative;
+  z-index: 2;
   min-height: 52px;
   display: grid;
   grid-template-columns: 1fr auto 1fr;
   align-items: center;
+  gap: 12px;
   padding: 0 18px;
   background: rgba(255, 255, 255, 0.018);
   border-bottom: 1px solid rgba(148, 163, 184, 0.09);
@@ -261,6 +289,7 @@
 }
 
 .architecture-file {
+  min-width: 0;
   display: flex;
   align-items: center;
   gap: 7px;
@@ -268,7 +297,14 @@
   font: 700 11px monospace;
 }
 
+.architecture-file span {
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+
 .architecture-file svg {
+  flex-shrink: 0;
   color: #60a5fa;
 }
 
@@ -285,13 +321,20 @@
 .architecture-workbench-status span {
   width: 7px;
   height: 7px;
+  flex-shrink: 0;
   background: #22c55e;
   border-radius: 50%;
   box-shadow: 0 0 10px rgba(34, 197, 94, 0.62);
 }
 
+
+/* =========================================================
+   REQUEST MAP
+========================================================= */
+
 .architecture-map {
   position: relative;
+  min-width: 0;
   overflow: hidden;
   padding: 22px;
   border-bottom: 1px solid rgba(148, 163, 184, 0.08);
@@ -324,6 +367,7 @@
 }
 
 .architecture-map-caption > div:first-child {
+  min-width: 0;
   display: flex;
   flex-direction: column;
   gap: 4px;
@@ -342,6 +386,7 @@
 
 .architecture-map-badge {
   min-height: 32px;
+  flex-shrink: 0;
   display: inline-flex;
   align-items: center;
   gap: 7px;
@@ -363,6 +408,8 @@
 .architecture-flow {
   position: relative;
   z-index: 2;
+  width: 100%;
+  min-width: 0;
   display: flex;
   align-items: stretch;
   gap: 0;
@@ -370,13 +417,14 @@
 
 .architecture-stage-wrap {
   min-width: 0;
-  flex: 1;
+  flex: 1 1 0;
   display: flex;
   align-items: center;
 }
 
 .architecture-stage {
   width: 100%;
+  min-width: 0;
   min-height: 225px;
   display: flex;
   flex-direction: column;
@@ -413,6 +461,7 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
+  gap: 10px;
 }
 
 .architecture-stage-top > span {
@@ -425,6 +474,7 @@
   height: 39px;
   display: grid;
   place-items: center;
+  flex-shrink: 0;
   color: #60a5fa;
   background: rgba(59, 130, 246, 0.075);
   border: 1px solid rgba(96, 165, 250, 0.12);
@@ -433,6 +483,7 @@
 }
 
 .architecture-stage-copy {
+  min-width: 0;
   margin-top: 24px;
 }
 
@@ -447,7 +498,9 @@
   margin: 7px 0 0;
   color: #e6edf6;
   font-size: 15px;
+  line-height: 1.15;
   letter-spacing: -0.25px;
+  overflow-wrap: anywhere;
 }
 
 .architecture-stage-copy p {
@@ -455,13 +508,17 @@
   color: #7f8da1;
   font-size: 12px;
   line-height: 1.58;
+  overflow-wrap: anywhere;
 }
 
 .architecture-stage > code {
+  max-width: 100%;
   margin-top: auto;
   padding-top: 15px;
   color: #86a9d8;
   font-size: 11px;
+  line-height: 1.35;
+  overflow-wrap: anywhere;
 }
 
 .architecture-link {
@@ -498,17 +555,27 @@
   font-size: 13px;
 }
 
+
+/* =========================================================
+   RUNTIME
+========================================================= */
+
 .architecture-runtime {
   position: relative;
   z-index: 2;
+  width: 100%;
+  min-width: 0;
   display: grid;
-  grid-template-columns: 1.15fr 0.85fr;
+  grid-template-columns:
+    minmax(0, 1.15fr)
+    minmax(0, 0.85fr);
   gap: 12px;
   padding: 12px;
 }
 
 .architecture-terminal,
 .architecture-system-overview {
+  width: 100%;
   min-width: 0;
   overflow: hidden;
   background: #04080d;
@@ -529,6 +596,7 @@
 
 .architecture-terminal-header > div,
 .architecture-terminal-header > strong {
+  min-width: 0;
   display: flex;
   align-items: center;
   gap: 7px;
@@ -540,10 +608,12 @@
 }
 
 .architecture-terminal-header > div svg {
+  flex-shrink: 0;
   color: #60a5fa;
 }
 
 .architecture-terminal-header > strong {
+  flex-shrink: 0;
   color: #6f8378;
   font: 700 10px monospace;
 }
@@ -567,7 +637,11 @@
 .architecture-terminal-row {
   min-height: 39px;
   display: grid;
-  grid-template-columns: 60px 78px minmax(0, 1fr) 18px;
+  grid-template-columns:
+    60px
+    78px
+    minmax(0, 1fr)
+    18px;
   align-items: center;
   gap: 8px;
   padding: 0 9px;
@@ -587,6 +661,7 @@
 }
 
 .architecture-terminal-row > code {
+  min-width: 0;
   overflow: hidden;
   color: #aab8c8;
   font-size: 12px;
@@ -595,6 +670,7 @@
 }
 
 .architecture-terminal-row > svg {
+  flex-shrink: 0;
   color: #22c55e;
   font-size: 13px;
 }
@@ -639,12 +715,14 @@
 
 .architecture-overview-stats {
   display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
+  grid-template-columns:
+    repeat(2, minmax(0, 1fr));
   gap: 8px;
   margin-top: 14px;
 }
 
 .architecture-overview-stats > div {
+  min-width: 0;
   min-height: 100px;
   padding: 12px;
   background:
@@ -679,10 +757,12 @@
   margin-top: 8px;
   color: #718096;
   font-size: 11px;
+  line-height: 1.35;
 }
 
 .architecture-overview-route {
   position: relative;
+  min-width: 0;
   min-height: 62px;
   display: flex;
   align-items: center;
@@ -718,21 +798,28 @@
 }
 
 .architecture-overview-route strong {
-  overflow: hidden;
   color: #9fb2cb;
   font: 700 11px monospace;
-  white-space: nowrap;
-  text-overflow: ellipsis;
+  line-height: 1.4;
+  white-space: normal;
+  overflow-wrap: anywhere;
 }
+
+
+/* =========================================================
+   PRINCIPLES
+========================================================= */
 
 .architecture-principles {
   display: grid;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
+  grid-template-columns:
+    repeat(3, minmax(0, 1fr));
   gap: 10px;
   margin-top: 14px;
 }
 
 .architecture-principles article {
+  min-width: 0;
   min-height: 92px;
   display: flex;
   align-items: center;
@@ -762,6 +849,7 @@
 }
 
 .architecture-principles article > span {
+  min-width: 0;
   display: flex;
   flex-direction: column;
   gap: 5px;
@@ -778,39 +866,49 @@
   line-height: 1.5;
 }
 
+
+/* =========================================================
+   ANIMATION
+========================================================= */
+
 @keyframes architecturePulse {
-  0%,
-  100% {
-    transform: scale(0.9);
-    opacity: 0.65;
-  }
-
-  50% {
-    transform: scale(1.08);
+  from {
     opacity: 1;
+    transform: scale(0.7);
+  }
+
+  to {
+    opacity: 0;
+    transform: scale(1.65);
   }
 }
 
-  50% {
-    transform: translateY(12px);
-    opacity: 0.5;
-  }
-}
 
-@media (max-width: 1080px) {
+/* =========================================================
+   TABLET
+========================================================= */
+
+@media (max-width: 1100px) {
+  .architecture-section {
+    padding:
+      50px 28px
+      56px;
+  }
+
   .architecture-header {
     grid-template-columns: 1fr;
-    gap: 24px;
+    gap: 22px;
   }
 
   .architecture-intro > p {
-    max-width: 720px;
+    max-width: 700px;
   }
 
   .architecture-flow {
     display: grid;
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-    gap: 10px;
+    grid-template-columns:
+      repeat(2, minmax(0, 1fr));
+    gap: 12px;
   }
 
   .architecture-stage-wrap {
@@ -821,39 +919,49 @@
     display: none;
   }
 
+  .architecture-stage {
+    height: 100%;
+    min-height: 220px;
+  }
+
   .architecture-runtime {
     grid-template-columns: 1fr;
   }
+
+  .architecture-principles {
+    grid-template-columns:
+      repeat(2, minmax(0, 1fr));
+  }
 }
 
-@media (max-width: 760px) {
+@media (max-width: 820px) {
   .architecture-section {
-    padding: 44px 20px 50px;
+    padding:
+      46px 22px
+      52px;
+  }
+
+  .architecture-section-label {
+    margin-bottom: 24px;
   }
 
   .architecture-heading h2 {
-    font-size: clamp(38px, 11vw, 56px);
-    letter-spacing: -2.4px;
+    max-width: 680px;
+    font-size:
+      clamp(
+        42px,
+        8.5vw,
+        62px
+      );
+    letter-spacing: -3px;
+  }
+
+  .architecture-workbench {
+    border-radius: 16px;
   }
 
   .architecture-map {
-    padding: 15px;
-  }
-
-  .architecture-flow {
-    grid-template-columns: 1fr;
-  }
-
-  .architecture-stage {
-    min-height: 0;
-  }
-
-  .architecture-stage-copy {
-    margin-top: 18px;
-  }
-
-  .architecture-terminal-row {
-    grid-template-columns: 52px 70px minmax(0, 1fr) 16px;
+    padding: 18px;
   }
 
   .architecture-principles {
@@ -861,30 +969,75 @@
   }
 }
 
-@media (max-width: 520px) {
+
+/* =========================================================
+   MOBILE
+========================================================= */
+
+@media (max-width: 640px) {
   .architecture-section {
-    padding: 42px 15px 46px;
+    padding:
+      42px 15px
+      46px;
   }
 
   .architecture-section-label {
-    grid-template-columns: auto 38px auto;
+    gap: 9px;
+    margin-bottom: 21px;
   }
 
-  .architecture-section-label span,
-  .architecture-section-label strong {
+  .architecture-section-label > div {
+    width: 32px;
+  }
+
+  .architecture-section-label > strong {
     font-size: 10px;
+    letter-spacing: 1.8px;
+  }
+
+  .architecture-live-label {
+    margin-bottom: 12px;
+    font-size: 9px;
   }
 
   .architecture-heading h2 {
-    font-size: clamp(34px, 12vw, 48px);
+    max-width: 100%;
+    font-size:
+      clamp(
+        36px,
+        11.5vw,
+        50px
+      );
+    line-height: 1.01;
+    letter-spacing: -2.4px;
   }
 
   .architecture-intro > p {
+    max-width: 100%;
     font-size: 14px;
+    line-height: 1.7;
+  }
+
+  .architecture-intro-meta {
+    align-items: stretch;
+    flex-direction: column;
+  }
+
+  .architecture-intro-meta > span,
+  .architecture-intro-meta > code {
+    width: fit-content;
+    min-height: 32px;
+    font-size: 10px;
+  }
+
+  .architecture-workbench {
+    border-radius: 14px;
   }
 
   .architecture-workbench-topbar {
-    grid-template-columns: 1fr auto;
+    min-height: 48px;
+    grid-template-columns:
+      auto 1fr;
     padding: 0 13px;
   }
 
@@ -892,35 +1045,176 @@
     display: none;
   }
 
+  .architecture-workbench-status {
+    justify-self: end;
+    font-size: 9px;
+  }
+
+  .architecture-map {
+    padding: 14px;
+  }
+
   .architecture-map-caption {
     align-items: flex-start;
     flex-direction: column;
+    gap: 10px;
+    margin-bottom: 14px;
+  }
+
+  .architecture-map-badge {
+    min-height: 29px;
+  }
+
+  .architecture-flow {
+    grid-template-columns: 1fr;
+    gap: 10px;
+  }
+
+  .architecture-stage {
+    min-height: 0;
+    padding: 15px;
+  }
+
+  .architecture-stage-copy {
+    margin-top: 15px;
+  }
+
+  .architecture-stage-copy h3 {
+    font-size: 16px;
+  }
+
+  .architecture-stage-copy p {
+    font-size: 13px;
+    line-height: 1.55;
+  }
+
+  .architecture-stage > code {
+    margin-top: 14px;
+    padding-top: 0;
+    font-size: 11px;
+  }
+
+  .architecture-runtime {
+    grid-template-columns: 1fr;
+    gap: 10px;
+    padding: 10px;
+  }
+
+  .architecture-terminal-header {
+    min-height: 41px;
+    padding: 0 11px;
+  }
+
+  .architecture-terminal-body {
+    min-height: 0;
+    padding: 10px;
   }
 
   .architecture-terminal-row {
-    min-height: 52px;
-    grid-template-columns: 56px minmax(0, 1fr) 16px;
+    min-height: 50px;
+    grid-template-columns:
+      72px
+      minmax(0, 1fr)
+      16px;
     gap: 7px;
+    padding: 5px 6px;
   }
 
-  .architecture-terminal-row > strong {
+  .architecture-terminal-row > span {
     display: none;
   }
 
+  .architecture-terminal-row > strong {
+    color: #6f8fb8;
+    font-size: 10px;
+  }
+
   .architecture-terminal-row > code {
+    font-size: 11px;
     white-space: normal;
-    line-height: 1.35;
+    line-height: 1.4;
+    overflow-wrap: anywhere;
+  }
+
+  .architecture-system-overview {
+    padding: 12px;
   }
 
   .architecture-overview-stats {
-    grid-template-columns: 1fr 1fr;
+    grid-template-columns:
+      repeat(2, minmax(0, 1fr));
   }
 
-  .architecture-overview-route strong {
-    white-space: normal;
-    line-height: 1.35;
+  .architecture-overview-stats > div {
+    min-height: 94px;
+    padding: 10px;
+  }
+
+  .architecture-overview-stats strong {
+    font-size: 21px;
+  }
+
+  .architecture-overview-route {
+    align-items: flex-start;
+  }
+
+  .architecture-principles {
+    gap: 8px;
+  }
+
+  .architecture-principles article {
+    min-height: 0;
+    padding: 12px;
   }
 }
+
+@media (max-width: 420px) {
+  .architecture-section {
+    padding:
+      40px 12px
+      44px;
+  }
+
+  .architecture-heading h2 {
+    font-size:
+      clamp(
+        34px,
+        11vw,
+        44px
+      );
+    letter-spacing: -2px;
+  }
+
+  .architecture-map,
+  .architecture-runtime {
+    padding-left: 10px;
+    padding-right: 10px;
+  }
+
+  .architecture-overview-stats {
+    grid-template-columns: 1fr;
+  }
+
+  .architecture-overview-stats > div {
+    min-height: 84px;
+  }
+
+  .architecture-terminal-row {
+    grid-template-columns:
+      68px
+      minmax(0, 1fr)
+      15px;
+  }
+
+  .architecture-principles article {
+    align-items: flex-start;
+  }
+}
+
+
+/* =========================================================
+   REDUCED MOTION
+========================================================= */
 
 @media (prefers-reduced-motion: reduce) {
   .architecture-section *,
@@ -929,28 +1223,5 @@
     animation-duration: 0.01ms !important;
     animation-iteration-count: 1 !important;
     scroll-behavior: auto !important;
-  }
-}
-
-
-@media (max-width: 900px) {
-  .architecture-header {
-    grid-template-columns: 1fr;
-    gap: 22px;
-  }
-
-  .architecture-intro > p {
-    max-width: 650px;
-  }
-}
-
-@media (max-width: 600px) {
-  .architecture-section-label {
-    margin-bottom: 22px;
-  }
-
-  .architecture-heading h2 {
-    font-size: clamp(39px, 12vw, 58px);
-    letter-spacing: -2.7px;
   }
 }
