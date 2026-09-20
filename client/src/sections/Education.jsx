@@ -1,11 +1,11 @@
 import { motion } from "framer-motion";
 
 import {
+  FiArrowUpRight,
+  FiAward,
   FiBookOpen,
   FiCalendar,
   FiMapPin,
-  FiAward,
-  FiArrowUpRight,
 } from "react-icons/fi";
 
 import "./Education.css";
@@ -13,42 +13,12 @@ import "./Education.css";
 function Education({
   education = [],
 }) {
-  /* =====================================================
-     ACTIVE EDUCATION
-  ===================================================== */
-
   const activeEducation =
     education.filter(
       (item) =>
-        item?.isActive !== false
+        item?.isActive !== false &&
+        item?.isVisible !== false
     );
-
-  /* =====================================================
-     HELPERS
-  ===================================================== */
-
-  const formatDate = (value) => {
-    if (!value) return "";
-
-    const date =
-      new Date(value);
-
-    if (
-      Number.isNaN(
-        date.getTime()
-      )
-    ) {
-      return value;
-    }
-
-    return date.toLocaleDateString(
-      "en-US",
-      {
-        month: "short",
-        year: "numeric",
-      }
-    );
-  };
 
   const getInstitution = (
     item
@@ -92,24 +62,20 @@ function Education({
     item?.details ||
     "";
 
-  const getGrade = (
+  const getCgpa = (
     item
   ) =>
-    item?.grade ||
     item?.cgpa ||
-    item?.percentage ||
+    item?.grade ||
     "";
 
-  const getStartDate = (
+  const getStartYear = (
     item
   ) =>
     item?.startYear ||
-    formatDate(
-      item?.startDate ||
-        item?.fromDate
-    );
+    "";
 
-  const getEndDate = (
+  const getEndYear = (
     item
   ) => {
     if (
@@ -121,10 +87,7 @@ function Education({
 
     return (
       item?.endYear ||
-      formatDate(
-        item?.endDate ||
-          item?.toDate
-      ) || ""
+      ""
     );
   };
 
@@ -136,7 +99,9 @@ function Education({
         item?.highlights
       )
     ) {
-      return item.highlights;
+      return item.highlights.filter(
+        Boolean
+      );
     }
 
     if (
@@ -144,35 +109,29 @@ function Education({
         item?.achievements
       )
     ) {
-      return item.achievements;
+      return item.achievements.filter(
+        Boolean
+      );
     }
 
     return [];
   };
 
-    return (
+  return (
     <section
       id="education"
       className="education-section"
     >
-      {/* BACKGROUND */}
-
-      <div className="education-grid" />
-
+      <div className="education-grid-bg" />
       <div className="education-glow education-glow-one" />
-
       <div className="education-glow education-glow-two" />
 
       <div className="education-container">
-        {/* ============================================
-            SECTION LABEL
-        ============================================ */}
-
         <motion.div
           className="education-section-label"
           initial={{
             opacity: 0,
-            y: 15,
+            y: 12,
           }}
           whileInView={{
             opacity: 1,
@@ -181,63 +140,20 @@ function Education({
           viewport={{
             once: true,
           }}
-          transition={{
-            duration: 0.5,
-          }}
         >
-          <span>
-            06
-          </span>
-
+          <span>06</span>
           <div />
-
           <strong>
             EDUCATION
           </strong>
         </motion.div>
 
-        {/* ============================================
-            HEADER
-        ============================================ */}
-
         <div className="education-header">
           <motion.div
-            className="education-heading"
+            className="education-header-copy"
             initial={{
               opacity: 0,
-              x: -30,
-            }}
-            whileInView={{
-              opacity: 1,
-              x: 0,
-            }}
-            viewport={{
-              once: true,
-            }}
-            transition={{
-              duration: 0.7,
-            }}
-          >
-            <div className="education-status">
-              <span />
-
-              ACADEMIC FOUNDATION
-            </div>
-
-            <h2>
-              Education behind
-              <span>
-                {" "}
-                my technical foundation.
-              </span>
-            </h2>
-          </motion.div>
-
-          <motion.p
-            className="education-intro"
-            initial={{
-              opacity: 0,
-              y: 20,
+              y: 24,
             }}
             whileInView={{
               opacity: 1,
@@ -248,299 +164,381 @@ function Education({
             }}
             transition={{
               duration: 0.6,
-              delay: 0.1,
             }}
           >
-            My academic journey and
-            the learning foundation
-            that supports how I
-            approach software
-            development.
-          </motion.p>
+            <div className="education-kicker">
+              <span />
+              ACADEMIC FOUNDATION
+            </div>
+
+            <h2>
+              Learning that
+              <span>
+                {" "}
+                supports how I build.
+              </span>
+            </h2>
+          </motion.div>
+
+          <motion.div
+            className="education-header-note"
+            initial={{
+              opacity: 0,
+              y: 18,
+            }}
+            whileInView={{
+              opacity: 1,
+              y: 0,
+            }}
+            viewport={{
+              once: true,
+            }}
+            transition={{
+              duration: 0.55,
+              delay: 0.08,
+            }}
+          >
+            <span className="education-header-count">
+              {String(
+                activeEducation.length
+              ).padStart(
+                2,
+                "0"
+              )}
+            </span>
+
+            <div>
+              <strong>
+                QUALIFICATIONS
+              </strong>
+
+              <p>
+                Academic milestones
+                that support my
+                software-development
+                foundation.
+              </p>
+            </div>
+          </motion.div>
         </div>
 
-        {/* ============================================
-            EDUCATION LIST
-        ============================================ */}
-
-        {activeEducation.length === 0 ? (
+        {activeEducation.length ===
+        0 ? (
           <div className="education-empty">
-            <FiBookOpen />
+            <div className="education-empty-icon">
+              <FiBookOpen />
+            </div>
 
             <span>
-              ACADEMIC FOUNDATION
+              ACADEMIC RECORD
             </span>
 
             <h3>
-              Learning that supports
-              the way I build.
+              Education will appear
+              here.
             </h3>
 
             <p>
-              My qualifications and
-              academic milestones will
-              appear here as part of my
-              development story.
+              Add visible education
+              records from the admin
+              dashboard to populate
+              this section.
             </p>
           </div>
         ) : (
-        <div className="education-list">
-          {activeEducation.map(
-            (
-              item,
-              index
-            ) => {
-              const institution =
-                getInstitution(
-                  item
-                );
+          <div className="education-timeline">
+            {activeEducation.map(
+              (
+                item,
+                index
+              ) => {
+                const institution =
+                  getInstitution(
+                    item
+                  );
 
-              const degree =
-                getDegree(
-                  item
-                );
+                const degree =
+                  getDegree(
+                    item
+                  );
 
-              const field =
-                getField(
-                  item
-                );
+                const field =
+                  getField(
+                    item
+                  );
 
-              const location =
-                getLocation(
-                  item
-                );
+                const location =
+                  getLocation(
+                    item
+                  );
 
-              const description =
-                getDescription(
-                  item
-                );
+                const description =
+                  getDescription(
+                    item
+                  );
 
-              const grade =
-                getGrade(
-                  item
-                );
+                const cgpa =
+                  getCgpa(
+                    item
+                  );
 
-              const startDate =
-                getStartDate(
-                  item
-                );
+                const startYear =
+                  getStartYear(
+                    item
+                  );
 
-              const endDate =
-                getEndDate(
-                  item
-                );
+                const endYear =
+                  getEndYear(
+                    item
+                  );
 
-              const highlights =
-                getHighlights(
-                  item
-                );
+                const highlights =
+                  getHighlights(
+                    item
+                  );
 
-              return (
-                <motion.article
-                  className="education-item"
-                  key={
-                    item?.id ||
-                    `${institution}-${degree}-${index}`
-                  }
-                  initial={{
-                    opacity: 0,
-                    y: 30,
-                  }}
-                  whileInView={{
-                    opacity: 1,
-                    y: 0,
-                  }}
-                  viewport={{
-                    once: true,
-                    amount: 0.2,
-                  }}
-                  transition={{
-                    duration: 0.65,
-                    delay:
-                      index * 0.07,
-                  }}
-                >
-                  {/* INDEX */}
+                const current =
+                  Boolean(
+                    item?.isCurrent ||
+                    item?.currentlyStudying
+                  );
 
-                  <div className="education-index">
-                    <span>
-                      {String(
-                        index + 1
-                      ).padStart(
-                        2,
-                        "0"
-                      )}
-                    </span>
-
-                    <div>
-                      <FiBookOpen />
-                    </div>
-                  </div>
-
-                  {/* MAIN */}
-
-                  <div className="education-main">
-                    <span className="education-record-label">
-                      QUALIFICATION
-                    </span>
-
-                    <h3>
-                      {degree}
-                    </h3>
-
-                    {field && (
-                      <p className="education-field">
-                        {field}
-                      </p>
-                    )}
-
-                    {description && (
-                      <p className="education-description">
-                        {
-                          description
-                        }
-                      </p>
-                    )}
-
-                    {highlights.length >
-                      0 && (
-                      <div className="education-highlights">
-                        {highlights
-                          .slice(
-                            0,
-                            4
-                          )
-                          .map(
-                            (
-                              highlight,
-                              highlightIndex
-                            ) => (
-                              <div
-                                key={`${highlight}-${highlightIndex}`}
-                              >
-                                <span />
-
-                                <p>
-                                  {
-                                    highlight
-                                  }
-                                </p>
-                              </div>
-                            )
-                          )}
-                      </div>
-                    )}
-                  </div>
-
-                  {/* META */}
-
-                  <div className="education-meta">
-                    <div className="education-institution">
-                      <span>
-                        INSTITUTION
+                return (
+                  <motion.article
+                    className={`education-record ${
+                      current
+                        ? "education-record-current"
+                        : ""
+                    }`}
+                    key={
+                      item?.id ||
+                      `${institution}-${degree}-${index}`
+                    }
+                    initial={{
+                      opacity: 0,
+                      y: 26,
+                    }}
+                    whileInView={{
+                      opacity: 1,
+                      y: 0,
+                    }}
+                    viewport={{
+                      once: true,
+                      amount: 0.15,
+                    }}
+                    transition={{
+                      duration: 0.58,
+                      delay:
+                        index *
+                        0.06,
+                    }}
+                  >
+                    <div className="education-record-rail">
+                      <span className="education-record-number">
+                        {String(
+                          index + 1
+                        ).padStart(
+                          2,
+                          "0"
+                        )}
                       </span>
 
-                      <strong>
-                        {
-                          institution
-                        }
-                      </strong>
+                      <span className="education-record-dot" />
+
+                      <span className="education-record-line" />
                     </div>
 
-                    {location && (
-                      <div className="education-meta-row">
-                        <FiMapPin />
+                    <div className="education-record-body">
+                      <div className="education-record-years">
+                        <span>
+                          {startYear ||
+                            "—"}
+                        </span>
+
+                        <i />
 
                         <span>
-                          {
-                            location
-                          }
+                          {endYear ||
+                            "—"}
                         </span>
                       </div>
-                    )}
 
-                    {(startDate ||
-                      endDate) && (
-                      <div className="education-meta-row">
-                        <FiCalendar />
-
-                        <span>
-                          {startDate}
-                          {startDate &&
-                          endDate
-                            ? " — "
-                            : ""}
-                          {endDate}
-                        </span>
-                      </div>
-                    )}
-
-                    {grade && (
-                      <div className="education-grade">
-                        <FiAward />
-
-                        <div>
+                      <div className="education-record-main">
+                        <div className="education-record-topline">
                           <span>
-                            RESULT
+                            QUALIFICATION
                           </span>
 
-                          <strong>
-                            {
-                              grade
-                            }
-                          </strong>
+                          {current && (
+                            <span className="education-current-badge">
+                              <i />
+                              CURRENT
+                            </span>
+                          )}
                         </div>
+
+                        <h3>
+                          {degree}
+                        </h3>
+
+                        {field && (
+                          <p className="education-field">
+                            {field}
+                          </p>
+                        )}
+
+                        <div className="education-institution-row">
+                          <div className="education-institution-mark">
+                            <FiBookOpen />
+                          </div>
+
+                          <div>
+                            <span>
+                              INSTITUTION
+                            </span>
+
+                            <strong>
+                              {
+                                institution
+                              }
+                            </strong>
+                          </div>
+                        </div>
+
+                        {description && (
+                          <p className="education-description">
+                            {
+                              description
+                            }
+                          </p>
+                        )}
+
+                        {highlights.length >
+                          0 && (
+                          <div className="education-highlights">
+                            {highlights
+                              .slice(
+                                0,
+                                4
+                              )
+                              .map(
+                                (
+                                  highlight,
+                                  highlightIndex
+                                ) => (
+                                  <div
+                                    key={`${highlight}-${highlightIndex}`}
+                                  >
+                                    <span />
+
+                                    <p>
+                                      {
+                                        highlight
+                                      }
+                                    </p>
+                                  </div>
+                                )
+                              )}
+                          </div>
+                        )}
                       </div>
-                    )}
 
-                    {item?.institutionUrl && (
-                      <a
-                        href={
-                          item.institutionUrl
-                        }
-                        target="_blank"
-                        rel="noreferrer"
-                        className="education-link"
-                      >
-                        Visit institution
+                      <aside className="education-record-meta">
+                        <div className="education-meta-label">
+                          ACADEMIC DETAILS
+                        </div>
 
-                        <FiArrowUpRight />
-                      </a>
-                    )}
-                  </div>
-                </motion.article>
-              );
-            }
-          )}
-        </div>
+                        {location && (
+                          <div className="education-meta-item">
+                            <FiMapPin />
+
+                            <div>
+                              <span>
+                                LOCATION
+                              </span>
+
+                              <strong>
+                                {
+                                  location
+                                }
+                              </strong>
+                            </div>
+                          </div>
+                        )}
+
+                        {(startYear ||
+                          endYear) && (
+                          <div className="education-meta-item">
+                            <FiCalendar />
+
+                            <div>
+                              <span>
+                                PERIOD
+                              </span>
+
+                              <strong>
+                                {startYear}
+                                {startYear &&
+                                endYear
+                                  ? " — "
+                                  : ""}
+                                {endYear}
+                              </strong>
+                            </div>
+                          </div>
+                        )}
+
+                        {cgpa && (
+                          <div className="education-cgpa">
+                            <FiAward />
+
+                            <div>
+                              <span>
+                                CGPA
+                              </span>
+
+                              <strong>
+                                {
+                                  cgpa
+                                }
+                              </strong>
+                            </div>
+                          </div>
+                        )}
+
+                        {item?.institutionUrl && (
+                          <a
+                            href={
+                              item.institutionUrl
+                            }
+                            target="_blank"
+                            rel="noreferrer"
+                            className="education-link"
+                          >
+                            Institution
+                            <FiArrowUpRight />
+                          </a>
+                        )}
+                      </aside>
+                    </div>
+                  </motion.article>
+                );
+              }
+            )}
+          </div>
         )}
 
-        {/* ============================================
-            FOOTER
-        ============================================ */}
-
-        <motion.div
-          className="education-footer"
-          initial={{
-            opacity: 0,
-          }}
-          whileInView={{
-            opacity: 1,
-          }}
-          viewport={{
-            once: true,
-          }}
-        >
+        <div className="education-footer">
           <span>
-            CONTINUOUS LEARNING
+            LEARN / BUILD / IMPROVE
           </span>
 
           <div />
 
           <span>
-            BUILD • LEARN • IMPROVE
+            ACADEMIC FOUNDATION
           </span>
-        </motion.div>
+        </div>
       </div>
     </section>
   );
