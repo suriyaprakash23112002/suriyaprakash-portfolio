@@ -16,97 +16,9 @@ import "./Contact.css";
 
 function Contact({
   profile,
-  settings = {},
 }) {
   const [copied, setCopied] =
     useState(false);
-
-  /* =====================================================
-     SETTINGS HELPER
-  ===================================================== */
-
-  const getSetting = (
-    ...possibleKeys
-  ) => {
-    /*
-      Supports settings as:
-
-      {
-        whatsapp: "...",
-        email: "..."
-      }
-
-      OR
-
-      [
-        {
-          key: "whatsapp",
-          value: "..."
-        }
-      ]
-    */
-
-    if (
-      Array.isArray(settings)
-    ) {
-      for (
-        const key of possibleKeys
-      ) {
-        const found =
-          settings.find(
-            (item) =>
-              item?.key
-                ?.toLowerCase() ===
-                key.toLowerCase() ||
-              item?.name
-                ?.toLowerCase() ===
-                key.toLowerCase()
-          );
-
-        if (found) {
-          return (
-            found?.value ||
-            found?.settingValue ||
-            ""
-          );
-        }
-      }
-
-      return "";
-    }
-
-    if (
-      settings &&
-      typeof settings === "object"
-    ) {
-      for (
-        const key of possibleKeys
-      ) {
-        if (
-          settings[key] !==
-          undefined
-        ) {
-          const value =
-            settings[key];
-
-          if (
-            typeof value ===
-            "object"
-          ) {
-            return (
-              value?.value ||
-              value?.settingValue ||
-              ""
-            );
-          }
-
-          return value || "";
-        }
-      }
-    }
-
-    return "";
-  };
 
   /* =====================================================
      CONTACT DATA
@@ -114,45 +26,23 @@ function Contact({
 
   const email =
     profile?.email ||
-    profile?.contactEmail ||
-    getSetting(
-      "email",
-      "contactEmail",
-      "contact_email"
-    ) ||
     "suriyaprakashkumaran567@gmail.com";
 
   const directWhatsappUrl =
     profile?.whatsappUrl ||
-    getSetting(
-      "whatsappUrl",
-      "whatsapp_url"
-    );
+    "";
 
   const rawWhatsapp =
     profile?.phone ||
-    getSetting(
-      "whatsapp",
-      "whatsappNumber",
-      "whatsapp_number",
-      "phone"
-    );
+    "";
 
   const githubUrl =
     profile?.githubUrl ||
-    getSetting(
-      "github",
-      "githubUrl",
-      "github_url"
-    );
+    "https://github.com/suriyaprakash23112002";
 
   const linkedinUrl =
     profile?.linkedinUrl ||
-    getSetting(
-      "linkedin",
-      "linkedinUrl",
-      "linkedin_url"
-    );
+    "https://www.linkedin.com/in/suriyaprakash-k-20821b352";
 
   /* =====================================================
      WHATSAPP
