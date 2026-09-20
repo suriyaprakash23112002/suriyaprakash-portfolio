@@ -1538,3 +1538,58 @@ and
     transition: none;
   }
 }
+
+/* Dynamic project metadata from Admin Projects */
+.project-admin-meta {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 12px;
+}
+
+.project-admin-meta > span {
+  min-height: 24px;
+  display: inline-flex;
+  align-items: center;
+  padding: 0 8px;
+  color: #8190a5;
+  background: rgba(255, 255, 255, 0.018);
+  border: 1px solid rgba(148, 163, 184, 0.08);
+  border-radius: 7px;
+  font: 700 8px/1 monospace;
+  letter-spacing: .7px;
+  text-transform: uppercase;
+}
+
+.project-admin-meta .project-current-badge {
+  color: #86efac;
+  border-color: rgba(34, 197, 94, 0.18);
+  background: rgba(34, 197, 94, 0.055);
+}
+
+.project-full-description,
+.project-list-details {
+  color: #748297 !important;
+  font-size: 11px !important;
+  line-height: 1.65 !important;
+}
+
+.project-full-description {
+  margin-top: 12px !important;
+}
+
+.project-list-details {
+  margin-top: 8px !important;
+}
+
+.project-admin-meta-list {
+  margin-top: 8px;
+}
+
+@media (max-width: 700px) {
+  .project-full-description,
+  .project-list-details {
+    font-size: 10px !important;
+  }
+}
