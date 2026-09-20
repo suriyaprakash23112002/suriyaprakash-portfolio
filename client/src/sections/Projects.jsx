@@ -2,85 +2,73 @@ import { motion } from "framer-motion";
 
 import {
   FiArrowUpRight,
-  FiGithub,
-  FiExternalLink,
+  FiCalendar,
   FiCode,
+  FiExternalLink,
+  FiGithub,
   FiLayers,
 } from "react-icons/fi";
 
 import "./Projects.css";
 
-function Projects({ projects = [], performanceMode = false }) {
-  /* =====================================================
-     ACTIVE PROJECTS
-  ===================================================== */
-
-  const activeProjects = projects.filter(
-    (project) =>
-      project?.isActive !== false &&
-      project?.status !== "ARCHIVED"
-  );
-
-  /* =====================================================
-     HELPERS
-  ===================================================== */
-
-  const getProjectImage = (project) => {
-    return (
-      project?.thumbnailUrl ||
-      project?.imageUrl ||
-      project?.coverImage ||
-      project?.projectImages?.[0]?.imageUrl ||
-      project?.projectImages?.[0]?.url ||
-      project?.images?.[0]?.imageUrl ||
-      project?.images?.[0]?.url ||
-      ""
+function Projects({
+  projects = [],
+  performanceMode = false,
+}) {
+  const activeProjects =
+    projects.filter(
+      (project) =>
+        project?.isActive !== false &&
+        project?.status !== "ARCHIVED"
     );
-  };
 
-  const getShortDescription = (project) =>
+  const getProjectImage = (
+    project
+  ) =>
+    project?.thumbnailUrl ||
+    project?.imageUrl ||
+    project?.coverImage ||
+    project?.coverImageUrl ||
+    project?.projectImages?.find(
+      (image) => image?.isCover
+    )?.imageUrl ||
+    project?.projectImages?.find(
+      (image) => image?.isCover
+    )?.url ||
+    project?.images?.find(
+      (image) => image?.isCover
+    )?.imageUrl ||
+    project?.images?.find(
+      (image) => image?.isCover
+    )?.url ||
+    project?.projectImages?.[0]
+      ?.imageUrl ||
+    project?.projectImages?.[0]?.url ||
+    project?.images?.[0]?.imageUrl ||
+    project?.images?.[0]?.url ||
+    "";
+
+  const getTitle = (project) =>
+    project?.title ||
+    project?.name ||
+    "Project";
+
+  const getShortDescription = (
+    project
+  ) =>
     project?.shortDescription ||
     project?.summary ||
     project?.description ||
     "A full-stack project built with modern web technologies.";
 
-  const getFullDescription = (project) =>
+  const getFullDescription = (
+    project
+  ) =>
     project?.description || "";
 
-  const formatProjectDate = (value) => {
-    if (!value) return "";
-
-    const date = new Date(value);
-
-    if (Number.isNaN(date.getTime())) {
-      return "";
-    }
-
-    return date.toLocaleDateString("en-US", {
-      month: "short",
-      year: "numeric",
-    });
-  };
-
-  const getProjectPeriod = (project) => {
-    const start = formatProjectDate(project?.startedAt);
-
-    if (project?.isCurrent) {
-      return start
-        ? `${start} — Present`
-        : "Current project";
-    }
-
-    const end = formatProjectDate(project?.completedAt);
-
-    if (start && end) {
-      return `${start} — ${end}`;
-    }
-
-    return start || end || "";
-  };
-
-  const getTechnologies = (project) => {
+  const getTechnologies = (
+    project
+  ) => {
     const technologies =
       project?.technologies ||
       project?.projectTechnologies ||
@@ -88,7 +76,9 @@ function Projects({ projects = [], performanceMode = false }) {
 
     return technologies
       .map((item) => {
-        if (typeof item === "string") {
+        if (
+          typeof item === "string"
+        ) {
           return item;
         }
 
@@ -103,64 +93,164 @@ function Projects({ projects = [], performanceMode = false }) {
       .filter(Boolean);
   };
 
-  const getLiveUrl = (project) => {
-    return (
-      project?.liveUrl ||
-      project?.demoUrl ||
-      project?.projectUrl ||
-      ""
+  const getLiveUrl = (
+    project
+  ) =>
+    project?.liveUrl ||
+    project?.demoUrl ||
+    project?.projectUrl ||
+    "";
+
+  const getGithubUrl = (
+    project
+  ) =>
+    project?.githubUrl ||
+    project?.repositoryUrl ||
+    project?.repoUrl ||
+    "";
+
+  const formatDate = (value) => {
+    if (!value) return "";
+
+    const date = new Date(value);
+
+    if (
+      Number.isNaN(
+        date.getTime()
+      )
+    ) {
+      return "";
+    }
+
+    return date.toLocaleDateString(
+      "en-US",
+      {
+        month: "short",
+        year: "numeric",
+      }
     );
   };
 
-  const getGithubUrl = (project) => {
-    return (
-      project?.githubUrl ||
-      project?.repositoryUrl ||
-      project?.repoUrl ||
-      ""
-    );
-  };
+  const getProjectPeriod = (
+    project
+  ) => {
+    const start =
+      formatDate(
+        project?.startedAt
+      );
 
-  const scrollNumber = (index) =>
-    String(index + 1).padStart(2, "0");
+    if (project?.isCurrent) {
+      return start
+        ? `${start} — Present`
+        : "Current project";
+    }
+
+    const end =
+      formatDate(
+        project?.completedAt
+      );
+
+    if (start && end) {
+      return `${start} — ${end}`;
+    }
+
+    return start || end || "";
+  };
 
   const featuredProject =
     activeProjects.find(
       (project) =>
-        project?.isFeatured === true ||
-        project?.featured === true
-    ) || activeProjects[0];
+        project?.isFeatured ===
+          true ||
+        project?.featured ===
+          true
+    ) ||
+    activeProjects[0] ||
+    null;
 
-  const otherProjects = featuredProject
-    ? activeProjects.filter(
-        (project) =>
-          project !== featuredProject
-      )
-    : [];
+  const remainingProjects =
+    featuredProject
+      ? activeProjects.filter(
+          (project) =>
+            project !==
+            featuredProject
+        )
+      : [];
+
+  const renderLinks = (
+    project,
+    compact = false
+  ) => {
+    const liveUrl =
+      getLiveUrl(project);
+
+    const githubUrl =
+      getGithubUrl(project);
+
+    if (
+      !liveUrl &&
+      !githubUrl
+    ) {
+      return null;
+    }
+
+    return (
+      <div
+        className={
+          compact
+            ? "project-card-links project-card-links-compact"
+            : "project-card-links"
+        }
+      >
+        {liveUrl && (
+          <a
+            href={liveUrl}
+            target="_blank"
+            rel="noreferrer"
+            className="project-card-link project-card-link-primary"
+          >
+            <span>
+              Live project
+            </span>
+
+            <FiArrowUpRight />
+          </a>
+        )}
+
+        {githubUrl && (
+          <a
+            href={githubUrl}
+            target="_blank"
+            rel="noreferrer"
+            className="project-card-link"
+          >
+            <FiGithub />
+
+            <span>
+              Source
+            </span>
+          </a>
+        )}
+      </div>
+    );
+  };
 
   return (
     <section
       id="projects"
       className="projects-section"
     >
-      {/* BACKGROUND */}
-
-      <div className="projects-grid" />
+      <div className="projects-grid-bg" />
 
       <div className="projects-glow projects-glow-one" />
-
       <div className="projects-glow projects-glow-two" />
 
       <div className="projects-container">
-        {/* ============================================
-            SECTION LABEL
-        ============================================ */}
-
         <motion.div
           className="projects-section-label"
           initial={{
             opacity: 0,
-            y: 15,
+            y: 12,
           }}
           whileInView={{
             opacity: 1,
@@ -168,9 +258,6 @@ function Projects({ projects = [], performanceMode = false }) {
           }}
           viewport={{
             once: true,
-          }}
-          transition={{
-            duration: 0.5,
           }}
         >
           <span>
@@ -184,48 +271,12 @@ function Projects({ projects = [], performanceMode = false }) {
           </strong>
         </motion.div>
 
-        {/* ============================================
-            HEADER
-        ============================================ */}
-
         <div className="projects-header">
           <motion.div
-            className="projects-heading"
+            className="projects-header-copy"
             initial={{
               opacity: 0,
-              x: -30,
-            }}
-            whileInView={{
-              opacity: 1,
-              x: 0,
-            }}
-            viewport={{
-              once: true,
-            }}
-            transition={{
-              duration: 0.7,
-            }}
-          >
-            <div className="projects-status">
-              <span />
-
-              DEVELOPMENT WORK
-            </div>
-
-            <h2>
-              Projects built from
-              <span>
-                {" "}
-                idea to deployment.
-              </span>
-            </h2>
-          </motion.div>
-
-          <motion.p
-            className="projects-intro"
-            initial={{
-              opacity: 0,
-              y: 20,
+              y: 24,
             }}
             whileInView={{
               opacity: 1,
@@ -236,416 +287,29 @@ function Projects({ projects = [], performanceMode = false }) {
             }}
             transition={{
               duration: 0.6,
-              delay: 0.1,
             }}
           >
-            A selection of applications
-            where I worked across
-            frontend interfaces, backend
-            APIs, databases and
-            deployment.
-          </motion.p>
-        </div>
+            <div className="projects-kicker">
+              <span />
 
-        {/* ============================================
-            PROJECTS
-        ============================================ */}
-
-        {featuredProject ? (
-          <div className="projects-showcase">
-            {/* ========================================
-                FEATURED PROJECT
-            ======================================== */}
-
-            <motion.article
-              className="project-featured"
-              initial={{
-                opacity: 0,
-                y: 35,
-              }}
-              whileInView={{
-                opacity: 1,
-                y: 0,
-              }}
-              viewport={{
-                once: true,
-                amount: 0.2,
-              }}
-              transition={{
-                duration: 0.75,
-              }}
-            >
-              {/* IMAGE */}
-
-              <div className="project-featured-media">
-                {getProjectImage(
-                  featuredProject
-                ) ? (
-                  <img
-                    src={getProjectImage(
-                      featuredProject
-                    )}
-                    alt={
-                      featuredProject?.title ||
-                      featuredProject?.name ||
-                      "Project"
-                    }
-                  />
-                ) : (
-                  <div className="project-image-fallback">
-                    <motion.div
-                      animate={{
-                        rotate: [
-                          0,
-                          4,
-                          0,
-                          -4,
-                          0,
-                        ],
-                      }}
-                      transition={{
-                        duration: 5,
-                        repeat: performanceMode ? 0 : Infinity,
-                      }}
-                    >
-                      <FiCode />
-                    </motion.div>
-
-                    <span>
-                      FULL-STACK PROJECT
-                    </span>
-                  </div>
-                )}
-
-                <div className="project-featured-overlay" />
-
-                <div className="project-featured-top">
-                  <span>
-                    FEATURED PROJECT
-                  </span>
-
-                  <span>
-                    01
-                  </span>
-                </div>
-
-                <div className="project-featured-bottom">
-                  <div>
-                    <span>
-                      CASE STUDY
-                    </span>
-
-                    <strong>
-                      {featuredProject?.title ||
-                        featuredProject?.name ||
-                        "Project"}
-                    </strong>
-                  </div>
-
-                  <FiArrowUpRight />
-                </div>
-              </div>
-
-              {/* FEATURED CONTENT */}
-
-              <div className="project-featured-content">
-                <div className="project-featured-heading">
-                  <div>
-                    <span>
-                      PROJECT / 01
-                    </span>
-
-                    <h3>
-                      {featuredProject?.title ||
-                        featuredProject?.name ||
-                        "Project"}
-                    </h3>
-                  </div>
-
-                  <div className="project-featured-index">
-                    <FiLayers />
-                  </div>
-                </div>
-
-                <p>
-                  {getShortDescription(
-                    featuredProject
-                  )}
-                </p>
-
-                {(featuredProject?.isCurrent ||
-                  getProjectPeriod(featuredProject)) && (
-                  <div className="project-admin-meta">
-                    {featuredProject?.isCurrent && (
-                      <span className="project-current-badge">
-                        CURRENT BUILD
-                      </span>
-                    )}
-
-                    {getProjectPeriod(featuredProject) && (
-                      <span>
-                        {getProjectPeriod(featuredProject)}
-                      </span>
-                    )}
-                  </div>
-                )}
-
-                {getFullDescription(featuredProject) &&
-                  getFullDescription(featuredProject) !==
-                    getShortDescription(featuredProject) && (
-                    <p className="project-full-description">
-                      {getFullDescription(featuredProject)}
-                    </p>
-                  )}
-
-                {getTechnologies(
-                  featuredProject
-                ).length > 0 && (
-                  <div className="project-technologies">
-                    {getTechnologies(
-                      featuredProject
-                    )
-                      .slice(0, 7)
-                      .map(
-                        (
-                          technology,
-                          index
-                        ) => (
-                          <span
-                            key={`${technology}-${index}`}
-                          >
-                            {technology}
-                          </span>
-                        )
-                      )}
-                  </div>
-                )}
-
-                <div className="project-featured-actions">
-                  {getLiveUrl(
-                    featuredProject
-                  ) && (
-                    <a
-                      href={getLiveUrl(
-                        featuredProject
-                      )}
-                      target="_blank"
-                      rel="noreferrer"
-                      className="project-live-button"
-                    >
-                      View Project
-
-                      <FiArrowUpRight />
-                    </a>
-                  )}
-
-                  {getGithubUrl(
-                    featuredProject
-                  ) && (
-                    <a
-                      href={getGithubUrl(
-                        featuredProject
-                      )}
-                      target="_blank"
-                      rel="noreferrer"
-                      className="project-github-button"
-                    >
-                      <FiGithub />
-
-                      Source
-                    </a>
-                  )}
-                </div>
-              </div>
-            </motion.article>
-
-            {/* ========================================
-                OTHER PROJECTS
-            ======================================== */}
-
-            <div className="projects-list">
-              <div className="projects-list-header">
-                <span>
-                  MORE WORK
-                </span>
-
-                <span>
-                  {String(
-                    otherProjects.length
-                  ).padStart(2, "0")}
-                </span>
-              </div>
-
-              {otherProjects.length >
-              0 ? (
-                otherProjects.map(
-                  (project, index) => (
-                    <motion.article
-                      className="project-list-item"
-                      key={
-                        project.id ||
-                        project.title ||
-                        index
-                      }
-                      initial={{
-                        opacity: 0,
-                        x: 25,
-                      }}
-                      whileInView={{
-                        opacity: 1,
-                        x: 0,
-                      }}
-                      viewport={{
-                        once: true,
-                      }}
-                      transition={{
-                        duration: 0.55,
-                        delay:
-                          index * 0.07,
-                      }}
-                    >
-                      <div className="project-list-number">
-                        {scrollNumber(
-                          index + 1
-                        )}
-                      </div>
-
-                      <div className="project-list-content">
-                        <div className="project-list-title">
-                          <h3>
-                            {project?.title ||
-                              project?.name ||
-                              "Project"}
-                          </h3>
-
-                          {(getLiveUrl(
-                            project
-                          ) ||
-                            getGithubUrl(
-                              project
-                            )) && (
-                            <FiArrowUpRight />
-                          )}
-                        </div>
-
-                        <p>
-                          {getShortDescription(
-                            project
-                          )}
-                        </p>
-
-                        {(project?.isCurrent ||
-                          getProjectPeriod(project)) && (
-                          <div className="project-admin-meta project-admin-meta-list">
-                            {project?.isCurrent && (
-                              <span className="project-current-badge">
-                                CURRENT
-                              </span>
-                            )}
-
-                            {getProjectPeriod(project) && (
-                              <span>
-                                {getProjectPeriod(project)}
-                              </span>
-                            )}
-                          </div>
-                        )}
-
-                        {getFullDescription(project) &&
-                          getFullDescription(project) !==
-                            getShortDescription(project) && (
-                            <p className="project-list-details">
-                              {getFullDescription(project)}
-                            </p>
-                          )}
-
-                        {getTechnologies(
-                          project
-                        ).length > 0 && (
-                          <div className="project-list-tech">
-                            {getTechnologies(
-                              project
-                            )
-                              .slice(0, 4)
-                              .map(
-                                (
-                                  technology,
-                                  techIndex
-                                ) => (
-                                  <span
-                                    key={`${technology}-${techIndex}`}
-                                  >
-                                    {
-                                      technology
-                                    }
-                                  </span>
-                                )
-                              )}
-                          </div>
-                        )}
-
-                        <div className="project-list-links">
-                          {getLiveUrl(
-                            project
-                          ) && (
-                            <a
-                              href={getLiveUrl(
-                                project
-                              )}
-                              target="_blank"
-                              rel="noreferrer"
-                            >
-                              Live
-
-                              <FiExternalLink />
-                            </a>
-                          )}
-
-                          {getGithubUrl(
-                            project
-                          ) && (
-                            <a
-                              href={getGithubUrl(
-                                project
-                              )}
-                              target="_blank"
-                              rel="noreferrer"
-                            >
-                              GitHub
-
-                              <FiGithub />
-                            </a>
-                          )}
-                        </div>
-                      </div>
-                    </motion.article>
-                  )
-                )
-              ) : (
-                <div className="projects-list-empty">
-                  <span>
-                    01
-                  </span>
-
-                  <p>
-                    More projects will
-                    appear here as they
-                    are added.
-                  </p>
-                </div>
-              )}
+              BUILD / SHIP / IMPROVE
             </div>
-          </div>
-        ) : (
-          /* ===========================================
-             EMPTY STATE
-          =========================================== */
+
+            <h2>
+              Products I’ve
+              <span>
+                {" "}
+                taken from idea to
+                interface.
+              </span>
+            </h2>
+          </motion.div>
 
           <motion.div
-            className="projects-empty"
+            className="projects-header-note"
             initial={{
               opacity: 0,
-              y: 25,
+              y: 18,
             }}
             whileInView={{
               opacity: 1,
@@ -654,7 +318,36 @@ function Projects({ projects = [], performanceMode = false }) {
             viewport={{
               once: true,
             }}
+            transition={{
+              duration: 0.55,
+              delay: 0.08,
+            }}
           >
+            <span className="projects-header-count">
+              {String(
+                activeProjects.length
+              ).padStart(
+                2,
+                "0"
+              )}
+            </span>
+
+            <div>
+              <strong>
+                PUBLISHED BUILDS
+              </strong>
+
+              <p>
+                Full-stack work covering
+                UI, APIs, data and
+                deployment.
+              </p>
+            </div>
+          </motion.div>
+        </div>
+
+        {!featuredProject ? (
+          <div className="projects-empty">
             <div className="projects-empty-icon">
               <FiCode />
             </div>
@@ -664,18 +357,362 @@ function Projects({ projects = [], performanceMode = false }) {
             </span>
 
             <h3>
-              Projects are being
-              prepared.
+              Projects will appear
+              here.
             </h3>
 
             <p>
-              Published projects will
-              appear here automatically
-              from the portfolio admin
-              dashboard.
+              Publish projects from the
+              admin dashboard to show
+              them in this section.
             </p>
-          </motion.div>
+          </div>
+        ) : (
+          <div className="projects-content">
+            <motion.article
+              className="project-spotlight"
+              initial={{
+                opacity: 0,
+                y: 28,
+              }}
+              whileInView={{
+                opacity: 1,
+                y: 0,
+              }}
+              viewport={{
+                once: true,
+                amount: 0.15,
+              }}
+              transition={{
+                duration: 0.65,
+              }}
+            >
+              <div className="project-spotlight-media">
+                {getProjectImage(
+                  featuredProject
+                ) ? (
+                  <img
+                    src={getProjectImage(
+                      featuredProject
+                    )}
+                    alt={
+                      getTitle(
+                        featuredProject
+                      )
+                    }
+                  />
+                ) : (
+                  <div className="project-media-fallback">
+                    <div className="project-media-fallback-icon">
+                      <FiCode />
+                    </div>
+
+                    <span>
+                      FULL-STACK PROJECT
+                    </span>
+                  </div>
+                )}
+
+                <div className="project-spotlight-overlay" />
+
+                <div className="project-spotlight-badges">
+                  <span>
+                    FEATURED
+                  </span>
+
+                  {featuredProject?.isCurrent && (
+                    <span className="project-live-badge">
+                      <i />
+                      CURRENT
+                    </span>
+                  )}
+                </div>
+
+                <div className="project-spotlight-media-bottom">
+                  <span>
+                    PROJECT / 01
+                  </span>
+
+                  <FiLayers />
+                </div>
+              </div>
+
+              <div className="project-spotlight-content">
+                <div className="project-spotlight-heading">
+                  <div>
+                    <span>
+                      CASE STUDY
+                    </span>
+
+                    <h3>
+                      {getTitle(
+                        featuredProject
+                      )}
+                    </h3>
+                  </div>
+
+                  {getProjectPeriod(
+                    featuredProject
+                  ) && (
+                    <div className="project-period">
+                      <FiCalendar />
+
+                      <span>
+                        {getProjectPeriod(
+                          featuredProject
+                        )}
+                      </span>
+                    </div>
+                  )}
+                </div>
+
+                <p className="project-spotlight-summary">
+                  {getShortDescription(
+                    featuredProject
+                  )}
+                </p>
+
+                {getFullDescription(
+                  featuredProject
+                ) &&
+                  getFullDescription(
+                    featuredProject
+                  ) !==
+                    getShortDescription(
+                      featuredProject
+                    ) && (
+                    <p className="project-spotlight-description">
+                      {getFullDescription(
+                        featuredProject
+                      )}
+                    </p>
+                  )}
+
+                {getTechnologies(
+                  featuredProject
+                ).length >
+                  0 && (
+                  <div className="project-stack">
+                    <span>
+                      STACK
+                    </span>
+
+                    <div>
+                      {getTechnologies(
+                        featuredProject
+                      )
+                        .slice(
+                          0,
+                          9
+                        )
+                        .map(
+                          (
+                            technology,
+                            index
+                          ) => (
+                            <span
+                              key={`${technology}-${index}`}
+                            >
+                              {
+                                technology
+                              }
+                            </span>
+                          )
+                        )}
+                    </div>
+                  </div>
+                )}
+
+                {renderLinks(
+                  featuredProject
+                )}
+              </div>
+            </motion.article>
+
+            {remainingProjects.length >
+              0 && (
+              <div className="projects-library">
+                <div className="projects-library-heading">
+                  <span>
+                    MORE PROJECTS
+                  </span>
+
+                  <span>
+                    {String(
+                      remainingProjects.length
+                    ).padStart(
+                      2,
+                      "0"
+                    )}
+                  </span>
+                </div>
+
+                <div className="projects-library-grid">
+                  {remainingProjects.map(
+                    (
+                      project,
+                      index
+                    ) => (
+                      <motion.article
+                        className="project-card"
+                        key={
+                          project?.id ||
+                          getTitle(
+                            project
+                          ) ||
+                          index
+                        }
+                        initial={{
+                          opacity: 0,
+                          y: 22,
+                        }}
+                        whileInView={{
+                          opacity: 1,
+                          y: 0,
+                        }}
+                        viewport={{
+                          once: true,
+                          amount: 0.12,
+                        }}
+                        transition={{
+                          duration: 0.52,
+                          delay:
+                            index *
+                            0.05,
+                        }}
+                      >
+                        <div className="project-card-media">
+                          {getProjectImage(
+                            project
+                          ) ? (
+                            <img
+                              src={getProjectImage(
+                                project
+                              )}
+                              alt={
+                                getTitle(
+                                  project
+                                )
+                              }
+                            />
+                          ) : (
+                            <div className="project-card-fallback">
+                              <FiCode />
+                            </div>
+                          )}
+
+                          <div className="project-card-media-shade" />
+
+                          <span className="project-card-index">
+                            {String(
+                              index + 2
+                            ).padStart(
+                              2,
+                              "0"
+                            )}
+                          </span>
+
+                          {project?.isCurrent && (
+                            <span className="project-card-current">
+                              <i />
+                              CURRENT
+                            </span>
+                          )}
+                        </div>
+
+                        <div className="project-card-body">
+                          <div className="project-card-title-row">
+                            <h3>
+                              {getTitle(
+                                project
+                              )}
+                            </h3>
+
+                            {(getLiveUrl(
+                              project
+                            ) ||
+                              getGithubUrl(
+                                project
+                              )) && (
+                              <FiExternalLink />
+                            )}
+                          </div>
+
+                          {getProjectPeriod(
+                            project
+                          ) && (
+                            <div className="project-card-period">
+                              <FiCalendar />
+
+                              <span>
+                                {getProjectPeriod(
+                                  project
+                                )}
+                              </span>
+                            </div>
+                          )}
+
+                          <p>
+                            {getShortDescription(
+                              project
+                            )}
+                          </p>
+
+                          {getTechnologies(
+                            project
+                          ).length >
+                            0 && (
+                            <div className="project-card-tech">
+                              {getTechnologies(
+                                project
+                              )
+                                .slice(
+                                  0,
+                                  5
+                                )
+                                .map(
+                                  (
+                                    technology,
+                                    techIndex
+                                  ) => (
+                                    <span
+                                      key={`${technology}-${techIndex}`}
+                                    >
+                                      {
+                                        technology
+                                      }
+                                    </span>
+                                  )
+                                )}
+                            </div>
+                          )}
+
+                          {renderLinks(
+                            project,
+                            true
+                          )}
+                        </div>
+                      </motion.article>
+                    )
+                  )}
+                </div>
+              </div>
+            )}
+          </div>
         )}
+
+        <div className="projects-footer">
+          <span>
+            FRONTEND / BACKEND /
+            DATA
+          </span>
+
+          <div />
+
+          <span>
+            BUILD • SHIP • LEARN
+          </span>
+        </div>
       </div>
     </section>
   );
