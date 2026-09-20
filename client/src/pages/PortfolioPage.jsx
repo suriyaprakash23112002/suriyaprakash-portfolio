@@ -293,6 +293,7 @@ function PortfolioPage() {
 
         <About
           profile={profile}
+          performanceMode={performanceMode}
         />
 
         {/* ===============================================
@@ -303,6 +304,7 @@ function PortfolioPage() {
           skillCategories={
             skillCategories
           }
+          performanceMode={performanceMode}
         />
 
         {/* ===============================================
@@ -312,6 +314,7 @@ function PortfolioPage() {
         <SystemArchitecture
           skillCategories={skillCategories}
           projects={projects}
+          performanceMode={performanceMode}
         />
 
         {/* ===============================================
@@ -322,6 +325,7 @@ function PortfolioPage() {
           projects={
             projects
           }
+          performanceMode={performanceMode}
         />
 
         {/* ===============================================
@@ -332,6 +336,7 @@ function PortfolioPage() {
           experiences={
             experiences
           }
+          performanceMode={performanceMode}
         />
 
         {/* ===============================================
@@ -350,6 +355,7 @@ function PortfolioPage() {
 
         <Contact
           profile={profile}
+          performanceMode={performanceMode}
         />
       </main>
 
