@@ -75,6 +75,7 @@ model Profile {
 
   resumeUrl       String?
   profileImageUrl String?
+  heroImageUrl    String?
 
   availableForWork Boolean @default(true)
   availabilityText String?
