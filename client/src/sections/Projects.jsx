@@ -174,7 +174,7 @@ function Projects({ projects = [], performanceMode = false }) {
           }}
         >
           <span>
-            05
+            04
           </span>
 
           <div />
