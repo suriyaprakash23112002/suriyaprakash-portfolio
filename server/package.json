@@ -5,7 +5,8 @@
   "main": "src/server.js",
   "scripts": {
     "dev": "tsx watch src/server.js",
-    "start": "tsx src/server.js"
+    "start": "tsx src/server.js",
+    "postinstall": "prisma generate --schema prisma/schema.prisma"
   },
   "keywords": [],
   "author": "",
