@@ -186,7 +186,7 @@ function Education({
           }}
         >
           <span>
-            07
+            06
           </span>
 
           <div />
