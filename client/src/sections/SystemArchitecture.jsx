@@ -21,6 +21,7 @@ import "./SystemArchitecture.css";
 function SystemArchitecture({
   skillCategories = [],
   projects = [],
+  performanceMode = false,
 }) {
   const activeSkills = skillCategories
     .filter((category) => category?.isActive !== false)
@@ -223,7 +224,7 @@ function SystemArchitecture({
               }}
               transition={{
                 duration: 4.8,
-                repeat: Infinity,
+                repeat: performanceMode ? 0 : Infinity,
                 ease: "linear",
               }}
             />
@@ -284,7 +285,7 @@ function SystemArchitecture({
                           }}
                           transition={{
                             duration: 1.9,
-                            repeat: Infinity,
+                            repeat: performanceMode ? 0 : Infinity,
                             delay: index * 0.18,
                             ease: "easeInOut",
                           }}
@@ -337,7 +338,7 @@ function SystemArchitecture({
                   animate={{ opacity: [0, 1, 0] }}
                   transition={{
                     duration: 1,
-                    repeat: Infinity,
+                    repeat: performanceMode ? 0 : Infinity,
                   }}
                 >
                   <span>$</span>
