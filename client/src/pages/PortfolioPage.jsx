@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { MotionConfig } from "framer-motion";
 
 import Navbar from "../components/Navbar";
 import Footer from "../components/Footer";
@@ -26,6 +27,47 @@ function PortfolioPage() {
 
   const [error, setError] =
     useState("");
+
+  const [performanceMode, setPerformanceMode] =
+    useState(false);
+
+  useEffect(() => {
+    const pointerQuery = window.matchMedia(
+      "(hover: none), (pointer: coarse)"
+    );
+
+    const updatePerformanceMode = () => {
+      setPerformanceMode(
+        pointerQuery.matches ||
+          window.innerWidth <= 900
+      );
+    };
+
+    updatePerformanceMode();
+
+    pointerQuery.addEventListener?.(
+      "change",
+      updatePerformanceMode
+    );
+
+    window.addEventListener(
+      "resize",
+      updatePerformanceMode,
+      { passive: true }
+    );
+
+    return () => {
+      pointerQuery.removeEventListener?.(
+        "change",
+        updatePerformanceMode
+      );
+
+      window.removeEventListener(
+        "resize",
+        updatePerformanceMode
+      );
+    };
+  }, []);
 
   /* =====================================================
      LOAD PORTFOLIO
@@ -209,7 +251,20 @@ function PortfolioPage() {
   ===================================================== */
 
   return (
-    <div className="portfolio-page">
+    <MotionConfig
+      reducedMotion={
+        performanceMode
+          ? "always"
+          : "user"
+      }
+    >
+      <div
+        className={`portfolio-page ${
+          performanceMode
+            ? "portfolio-performance-mode"
+            : ""
+        }`}
+      >
       {/* =================================================
           NAVBAR
       ================================================= */}
@@ -229,6 +284,7 @@ function PortfolioPage() {
 
         <Hero
           profile={profile}
+          performanceMode={performanceMode}
         />
 
         {/* ===============================================
@@ -305,7 +361,8 @@ function PortfolioPage() {
         profile={profile}
       />
 
-    </div>
+      </div>
+    </MotionConfig>
   );
 }
 
