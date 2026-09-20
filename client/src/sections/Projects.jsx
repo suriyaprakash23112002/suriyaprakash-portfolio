@@ -10,7 +10,7 @@ import {
 
 import "./Projects.css";
 
-function Projects({ projects = [] }) {
+function Projects({ projects = [], performanceMode = false }) {
   /* =====================================================
      ACTIVE PROJECTS
   ===================================================== */
@@ -272,7 +272,7 @@ function Projects({ projects = [] }) {
                       }}
                       transition={{
                         duration: 5,
-                        repeat: Infinity,
+                        repeat: performanceMode ? 0 : Infinity,
                       }}
                     >
                       <FiCode />
