@@ -16,6 +16,7 @@ function Navbar({ profile }) {
   const navItems = [
     { label: "About", id: "about" },
     { label: "Skills", id: "skills" },
+    { label: "Architecture", id: "architecture" },
     { label: "Projects", id: "projects" },
     { label: "Experience", id: "experience" },
     { label: "Education", id: "education" },
