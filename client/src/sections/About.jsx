@@ -1,502 +1,128 @@
 import { motion } from "framer-motion";
-
-import {
-  SiReact,
-  SiJavascript,
-  SiNodedotjs,
-  SiExpress,
-  SiPostgresql,
-  SiPrisma,
-  SiGit,
-  SiGithub,
-  SiVercel,
-  SiPython,
-} from "react-icons/si";
-
-import {
-  FiCode,
-  FiServer,
-  FiDatabase,
-  FiCloud,
-} from "react-icons/fi";
-
+import { FiArrowUpRight, FiCheck, FiCode, FiLayout, FiServer, FiUploadCloud } from "react-icons/fi";
 import "./About.css";
 
-function About({ profile, performanceMode = false }) {
-  const capabilities = [
+function About({ profile }) {
+  const services = [
     {
-      label: "Frontend",
-      detail: "Interfaces & interactions",
+      icon: <FiLayout />,
+      title: "Business websites",
+      text: "Clean, responsive websites that present your brand clearly and guide visitors toward action.",
+      points: ["Responsive UI", "Clear content structure", "Fast loading"],
+    },
+    {
       icon: <FiCode />,
+      title: "Web applications",
+      text: "Custom interfaces, dashboards and product experiences built around your actual workflow.",
+      points: ["React interfaces", "Admin dashboards", "Reusable components"],
     },
     {
-      label: "Backend",
-      detail: "APIs & application logic",
       icon: <FiServer />,
+      title: "Backend & data",
+      text: "Reliable APIs, authentication and database structures that support real application features.",
+      points: ["Node.js / Express", "Prisma / PostgreSQL", "API integration"],
     },
     {
-      label: "Database",
-      detail: "Data & architecture",
-      icon: <FiDatabase />,
-    },
-    {
-      label: "Deployment",
-      detail: "Production & delivery",
-      icon: <FiCloud />,
+      icon: <FiUploadCloud />,
+      title: "Launch & support",
+      text: "From environment setup to production deployment, I help move the build into a usable live product.",
+      points: ["Vercel deployment", "Environment setup", "Post-launch fixes"],
     },
   ];
 
-  const technologies = [
-    {
-      name: "React",
-      icon: <SiReact />,
-      className: "about-tech-react",
-    },
-    {
-      name: "JavaScript",
-      icon: <SiJavascript />,
-      className: "about-tech-javascript",
-    },
-    {
-      name: "Node.js",
-      icon: <SiNodedotjs />,
-      className: "about-tech-node",
-    },
-    {
-      name: "PostgreSQL",
-      icon: <SiPostgresql />,
-      className: "about-tech-postgres",
-    },
-    {
-      name: "Prisma",
-      icon: <SiPrisma />,
-      className: "about-tech-prisma",
-    },
-    {
-      name: "Express",
-      icon: <SiExpress />,
-      className: "about-tech-express",
-    },
-  ];
-
-  const tickerItems = [
-    {
-      name: "React",
-      icon: <SiReact />,
-    },
-    {
-      name: "JavaScript",
-      icon: <SiJavascript />,
-    },
-    {
-      name: "Node.js",
-      icon: <SiNodedotjs />,
-    },
-    {
-      name: "Express",
-      icon: <SiExpress />,
-    },
-    {
-      name: "PostgreSQL",
-      icon: <SiPostgresql />,
-    },
-    {
-      name: "Prisma",
-      icon: <SiPrisma />,
-    },
-    {
-      name: "Python",
-      icon: <SiPython />,
-    },
-    {
-      name: "Git",
-      icon: <SiGit />,
-    },
-    {
-      name: "GitHub",
-      icon: <SiGithub />,
-    },
-    {
-      name: "Vercel",
-      icon: <SiVercel />,
-    },
+  const process = [
+    ["01", "Discover", "Understand the goal, users and scope."],
+    ["02", "Design", "Shape a clear structure and interaction flow."],
+    ["03", "Build", "Develop frontend, backend and data layers."],
+    ["04", "Launch", "Test, deploy and hand over cleanly."],
   ];
 
   return (
-    <section
-      id="about"
-      className="about-section"
-    >
-      <div className="about-grid" />
-
-      <div className="about-glow about-glow-left" />
-      <div className="about-glow about-glow-right" />
-
+    <section id="about" className="about-section">
       <div className="about-container">
-        {/* SECTION LABEL */}
-
         <motion.div
-          className="about-section-label"
-          initial={{
-            opacity: 0,
-            y: 14,
-          }}
-          whileInView={{
-            opacity: 1,
-            y: 0,
-          }}
-          viewport={{
-            once: true,
-          }}
-          transition={{
-            duration: 0.5,
-          }}
+          className="about-heading"
+          initial={{ opacity: 0, y: 22 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, amount: 0.2 }}
+          transition={{ duration: 0.55 }}
         >
-          <span>02</span>
-
-          <div />
-
-          <strong>
-            ABOUT ME
-          </strong>
+          <span className="about-label">02 — SERVICES</span>
+          <h2>
+            One developer.
+            <span> From idea to launch.</span>
+          </h2>
+          <p>
+            {profile?.longBio ||
+              "I work across design-minded frontend development, backend APIs, databases and deployment, so clients can move from an idea to a finished web product without juggling multiple developers."}
+          </p>
         </motion.div>
 
-        <div className="about-main">
-          {/* LEFT */}
-
-          <motion.div
-            className="about-content"
-            initial={{
-              opacity: 0,
-              x: -30,
-            }}
-            whileInView={{
-              opacity: 1,
-              x: 0,
-            }}
-            viewport={{
-              once: true,
-              amount: 0.2,
-            }}
-            transition={{
-              duration: 0.7,
-            }}
-          >
-            <div className="about-live">
-              <span />
-
-              DEVELOPMENT SYSTEM ACTIVE
-            </div>
-
-            <h2>
-              I turn ideas into
-              <span>
-                {" "}
-                complete digital
-                experiences.
-              </span>
-            </h2>
-
-            <p className="about-primary-text">
-              {profile?.longBio ||
-                "I work across frontend development, backend APIs, databases and deployment to build complete web applications."}
-            </p>
-
-            <p className="about-secondary-text">
-              {profile?.shortBio ||
-                "I enjoy working through the complete development cycle — designing responsive interfaces, connecting APIs, structuring data and taking applications into production."}
-            </p>
-
-            {/* NEW CAPABILITY RAIL */}
-
-            <motion.div
-              className="about-capability-rail"
-              initial={{
-                opacity: 0,
-                y: 20,
-              }}
-              whileInView={{
-                opacity: 1,
-                y: 0,
-              }}
-              viewport={{
-                once: true,
-              }}
-              transition={{
-                duration: 0.65,
-                delay: 0.15,
-              }}
+        <div className="about-services">
+          {services.map((service, index) => (
+            <motion.article
+              className="about-service-card"
+              key={service.title}
+              initial={{ opacity: 0, y: 22 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true, amount: 0.2 }}
+              transition={{ duration: 0.5, delay: index * 0.05 }}
             >
-
-              {capabilities.map(
-                (item, index) => (
-                  <motion.div
-                    key={item.label}
-                    className="about-capability-item"
-                    initial={{
-                      opacity: 0,
-                      y: 15,
-                    }}
-                    whileInView={{
-                      opacity: 1,
-                      y: 0,
-                    }}
-                    viewport={{
-                      once: true,
-                    }}
-                    transition={{
-                      delay:
-                        0.15 +
-                        index * 0.08,
-                    }}
-                    whileHover={{
-                      y: -4,
-                    }}
-                  >
-                    <div className="about-capability-icon">
-                      {item.icon}
-                    </div>
-
-                    <div className="about-capability-copy">
-                      <strong>
-                        {item.label}
-                      </strong>
-
-                      <span>
-                        {item.detail}
-                      </span>
-                    </div>
-                  </motion.div>
-                )
-              )}
-            </motion.div>
-          </motion.div>
-
-          {/* RIGHT LIVE SYSTEM */}
-
-          <motion.div
-            className="about-tech-system"
-            initial={{
-              opacity: 0,
-              scale: 0.92,
-            }}
-            whileInView={{
-              opacity: 1,
-              scale: 1,
-            }}
-            viewport={{
-              once: true,
-            }}
-            transition={{
-              duration: 0.8,
-            }}
-          >
-            <div className="about-tech-stage">
-              <div className="about-orbit-anchor about-orbit-anchor-one">
-                <motion.div
-                  className="about-orbit about-orbit-one"
-                  animate={{
-                    rotate: 360,
-                  }}
-                  transition={{
-                    duration: 38,
-                    repeat: performanceMode ? 0 : Infinity,
-                    ease: "linear",
-                  }}
-                />
+              <div className="about-service-top">
+                <div className="about-service-icon">{service.icon}</div>
+                <span>{String(index + 1).padStart(2, "0")}</span>
               </div>
 
-              <div className="about-orbit-anchor about-orbit-anchor-two">
-                <motion.div
-                  className="about-orbit about-orbit-two"
-                  animate={{
-                    rotate: -360,
-                  }}
-                  transition={{
-                    duration: 28,
-                    repeat: performanceMode ? 0 : Infinity,
-                    ease: "linear",
-                  }}
-                />
+              <h3>{service.title}</h3>
+              <p>{service.text}</p>
+
+              <div className="about-service-points">
+                {service.points.map((point) => (
+                  <span key={point}>
+                    <FiCheck />
+                    {point}
+                  </span>
+                ))}
               </div>
-
-              <div className="about-orbit-anchor about-orbit-anchor-three">
-                <motion.div
-                  className="about-orbit about-orbit-three"
-                  animate={{
-                    rotate: 360,
-                  }}
-                  transition={{
-                    duration: 18,
-                    repeat: performanceMode ? 0 : Infinity,
-                    ease: "linear",
-                  }}
-                />
-              </div>
-
-              <motion.div
-                className="about-scan"
-                animate={{
-                  y: [
-                    -120,
-                    120,
-                    -120,
-                  ],
-
-                  opacity: [
-                    0,
-                    0.7,
-                    0,
-                  ],
-                }}
-                transition={{
-                  duration: 4.5,
-                  repeat: performanceMode ? 0 : Infinity,
-                  ease: "easeInOut",
-                }}
-              />
-
-              <motion.div
-                className="about-core"
-                animate={{
-                  boxShadow: [
-                    "0 0 25px rgba(37,99,235,0.08)",
-                    "0 0 60px rgba(37,99,235,0.22)",
-                    "0 0 25px rgba(37,99,235,0.08)",
-                  ],
-                }}
-                transition={{
-                  duration: 3,
-                  repeat: performanceMode ? 0 : Infinity,
-                }}
-              >
-                <motion.div
-                  className="about-core-icon"
-                  animate={{
-                    rotate: [
-                      0,
-                      4,
-                      0,
-                      -4,
-                      0,
-                    ],
-                  }}
-                  transition={{
-                    duration: 5,
-                    repeat: performanceMode ? 0 : Infinity,
-                  }}
-                >
-                  <FiCode />
-                </motion.div>
-
-                <span>
-                  FULL STACK
-                </span>
-
-                <strong>
-                  BUILD
-                </strong>
-
-                <div className="about-core-status">
-                  <span />
-                  ACTIVE
-                </div>
-              </motion.div>
-
-              {technologies.map(
-                (item, index) => (
-                  <motion.div
-                    key={item.name}
-                    className={`about-floating-tech ${item.className}`}
-                    animate={{
-                      y: [
-                        0,
-                        index % 2 === 0
-                          ? -8
-                          : 8,
-                        0,
-                      ],
-
-                      rotate: [
-                        0,
-                        index % 2 === 0
-                          ? 2
-                          : -2,
-                        0,
-                      ],
-                    }}
-                    transition={{
-                      duration:
-                        3.5 +
-                        index * 0.4,
-
-                      repeat: performanceMode ? 0 : Infinity,
-
-                      ease:
-                        "easeInOut",
-                    }}
-                    whileHover={{
-                      scale: 1.12,
-                    }}
-                  >
-                    <div>
-                      {item.icon}
-                    </div>
-
-                    <span>
-                      {item.name}
-                    </span>
-                  </motion.div>
-                )
-              )}
-            </div>
-          </motion.div>
+            </motion.article>
+          ))}
         </div>
 
-        {/* TECHNOLOGY TICKER */}
-
-        <div className="about-ticker">
-          <div className="about-ticker-title">
-            <span />
-
-            TECH STACK
+        <motion.div
+          className="about-process"
+          initial={{ opacity: 0, y: 22 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, amount: 0.2 }}
+          transition={{ duration: 0.55 }}
+        >
+          <div className="about-process-title">
+            <span>HOW I WORK</span>
+            <h3>A simple, transparent process.</h3>
           </div>
 
-          <div className="about-ticker-window">
-            <motion.div
-              className="about-ticker-track"
-              animate={{
-                x: [
-                  "0%",
-                  "-50%",
-                ],
-              }}
-              transition={{
-                duration: 25,
-                repeat: performanceMode ? 0 : Infinity,
-                ease: "linear",
-              }}
-            >
-              {[
-                ...tickerItems,
-                ...tickerItems,
-              ].map(
-                (item, index) => (
-                  <div
-                    className="about-ticker-item"
-                    key={`${item.name}-${index}`}
-                  >
-                    <span>
-                      {item.icon}
-                    </span>
-
-                    {item.name}
-                  </div>
-                )
-              )}
-            </motion.div>
+          <div className="about-process-steps">
+            {process.map(([number, title, text]) => (
+              <div className="about-process-step" key={number}>
+                <span>{number}</span>
+                <strong>{title}</strong>
+                <p>{text}</p>
+              </div>
+            ))}
           </div>
-        </div>
+
+          <button
+            type="button"
+            className="about-process-cta"
+            onClick={() =>
+              document.getElementById("contact")?.scrollIntoView({
+                behavior: "smooth",
+              })
+            }
+          >
+            Tell me about your project
+            <FiArrowUpRight />
+          </button>
+        </motion.div>
       </div>
     </section>
   );
