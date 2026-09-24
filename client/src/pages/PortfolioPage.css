@@ -174,8 +174,6 @@ textarea {
 .portfolio-cursor-ring {
   width: 28px;
   height: 28px;
-  margin:
-    -14px 0 0 -14px;
   border:
     1px solid
     rgba(124, 157, 255, 0.72);
@@ -183,7 +181,6 @@ textarea {
   transition:
     width 0.16s ease,
     height 0.16s ease,
-    margin 0.16s ease,
     opacity 0.16s ease,
     background 0.16s ease;
 }
@@ -195,8 +192,6 @@ textarea {
 .portfolio-cursor-ring.portfolio-cursor-active {
   width: 44px;
   height: 44px;
-  margin:
-    -22px 0 0 -22px;
   background:
     rgba(79, 124, 255, 0.08);
 }
