@@ -3,7 +3,12 @@ import {
   useRef,
   useState,
 } from "react";
-import { MotionConfig } from "framer-motion";
+import {
+  MotionConfig,
+  motion,
+  useMotionValue,
+  useSpring,
+} from "framer-motion";
 
 import Navbar from "../components/Navbar";
 import Footer from "../components/Footer";
@@ -21,66 +26,52 @@ import { getPortfolio } from "../services/portfolioService";
 import "./PortfolioPage.css";
 
 function PortfolioPage() {
-  const [portfolio, setPortfolio] =
-    useState(null);
-  const [loading, setLoading] =
-    useState(true);
-  const [error, setError] =
-    useState("");
+  const [portfolio, setPortfolio] = useState(null);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState("");
 
-  const cursorDotRef =
-    useRef(null);
-  const cursorRingRef =
-    useRef(null);
+  const ringRef = useRef(null);
+  const dotRef = useRef(null);
+
+  const pointerX = useMotionValue(-100);
+  const pointerY = useMotionValue(-100);
+
+  const ringX = useSpring(pointerX, {
+    stiffness: 420,
+    damping: 34,
+    mass: 0.45,
+  });
+
+  const ringY = useSpring(pointerY, {
+    stiffness: 420,
+    damping: 34,
+    mass: 0.45,
+  });
 
   useEffect(() => {
-    const finePointer =
-      window.matchMedia(
-        "(hover: hover) and (pointer: fine)"
-      );
-
-    if (!finePointer.matches) {
-      return undefined;
-    }
-
-    const dot =
-      cursorDotRef.current;
-    const ring =
-      cursorRingRef.current;
-
-    if (!dot || !ring) {
-      return undefined;
-    }
-
-    document.body.classList.add(
-      "freelance-cursor-enabled"
+    const pointerQuery = window.matchMedia(
+      "(hover: hover) and (pointer: fine)"
     );
 
-    let frame = null;
-    let x = -100;
-    let y = -100;
+    if (!pointerQuery.matches) {
+      return undefined;
+    }
 
-    const paint = () => {
-      dot.style.transform =
-        `translate3d(${x}px, ${y}px, 0) translate(-50%, -50%)`;
+    const ring = ringRef.current;
+    const dot = dotRef.current;
 
-      ring.style.transform =
-        `translate3d(${x}px, ${y}px, 0) translate(-50%, -50%)`;
+    if (!ring || !dot) {
+      return undefined;
+    }
 
-      frame = null;
-    };
+    document.body.classList.add("portfolio-custom-cursor");
 
-    const move = (event) => {
-      x = event.clientX;
-      y = event.clientY;
+    const handleMove = (event) => {
+      pointerX.set(event.clientX);
+      pointerY.set(event.clientY);
 
-      dot.classList.add(
-        "portfolio-cursor-visible"
-      );
-
-      ring.classList.add(
-        "portfolio-cursor-visible"
-      );
+      ring.classList.add("portfolio-cursor-visible");
+      dot.classList.add("portfolio-cursor-visible");
 
       const target =
         event.target instanceof Element
@@ -91,119 +82,64 @@ function PortfolioPage() {
         "portfolio-cursor-active",
         Boolean(
           target?.closest(
-            "a, button, [data-cursor]"
+            "a, button, [data-cursor='active']"
           )
         )
       );
-
-      if (!frame) {
-        frame =
-          requestAnimationFrame(
-            paint
-          );
-      }
     };
 
     const hide = () => {
-      dot.classList.remove(
-        "portfolio-cursor-visible"
-      );
-
-      ring.classList.remove(
-        "portfolio-cursor-visible"
-      );
+      ring.classList.remove("portfolio-cursor-visible");
+      dot.classList.remove("portfolio-cursor-visible");
     };
 
-    window.addEventListener(
-      "mousemove",
-      move,
-      { passive: true }
-    );
+    window.addEventListener("mousemove", handleMove, {
+      passive: true,
+    });
 
-    document.addEventListener(
-      "mouseleave",
-      hide
-    );
+    document.addEventListener("mouseleave", hide);
 
     return () => {
-      document.body.classList.remove(
-        "freelance-cursor-enabled"
-      );
-
-      window.removeEventListener(
-        "mousemove",
-        move
-      );
-
-      document.removeEventListener(
-        "mouseleave",
-        hide
-      );
-
-      if (frame) {
-        cancelAnimationFrame(
-          frame
-        );
-      }
+      document.body.classList.remove("portfolio-custom-cursor");
+      window.removeEventListener("mousemove", handleMove);
+      document.removeEventListener("mouseleave", hide);
     };
-  }, []);
+  }, [pointerX, pointerY]);
 
   useEffect(() => {
-    const loadPortfolio =
-      async ({
-        silent = false,
-      } = {}) => {
-        try {
-          if (!silent) {
-            setLoading(true);
-          }
-
-          setError("");
-
-          const response =
-            await getPortfolio();
-
-          setPortfolio(
-            response?.portfolio ||
-              null
-          );
-        } catch (err) {
-          console.error(
-            "Portfolio loading error:",
-            err
-          );
-
-          if (!silent) {
-            setError(
-              "Unable to load portfolio."
-            );
-          }
-        } finally {
-          if (!silent) {
-            setLoading(false);
-          }
+    const loadPortfolio = async ({ silent = false } = {}) => {
+      try {
+        if (!silent) {
+          setLoading(true);
         }
-      };
 
-    const handlePortfolioUpdate = (
-      event
-    ) => {
-      if (
-        event.key ===
-        "portfolio_profile_updated_at"
-      ) {
-        loadPortfolio({
-          silent: true,
-        });
+        setError("");
+
+        const response = await getPortfolio();
+
+        setPortfolio(response?.portfolio || null);
+      } catch (err) {
+        console.error("Portfolio loading error:", err);
+
+        if (!silent) {
+          setError("Unable to load the portfolio right now.");
+        }
+      } finally {
+        if (!silent) {
+          setLoading(false);
+        }
+      }
+    };
+
+    const handlePortfolioUpdate = (event) => {
+      if (event.key === "portfolio_profile_updated_at") {
+        loadPortfolio({ silent: true });
       }
     };
 
     loadPortfolio();
 
-    window.addEventListener(
-      "storage",
-      handlePortfolioUpdate
-    );
+    window.addEventListener("storage", handlePortfolioUpdate);
 
     return () => {
       window.removeEventListener(
@@ -217,70 +153,48 @@ function PortfolioPage() {
     document.title =
       "Suriyaprakash | Freelance Full-Stack Developer";
 
-    let descriptionMeta =
-      document.querySelector(
-        'meta[name="description"]'
-      );
+    let description = document.querySelector(
+      'meta[name="description"]'
+    );
 
-    if (!descriptionMeta) {
-      descriptionMeta =
-        document.createElement(
-          "meta"
-        );
-
-      descriptionMeta.setAttribute(
-        "name",
-        "description"
-      );
-
-      document.head.appendChild(
-        descriptionMeta
-      );
+    if (!description) {
+      description = document.createElement("meta");
+      description.setAttribute("name", "description");
+      document.head.appendChild(description);
     }
 
-    descriptionMeta.setAttribute(
+    description.setAttribute(
       "content",
-      "Freelance full-stack developer portfolio of Suriyaprakash — websites, web applications, dashboards, APIs and deployment."
+      "Freelance full-stack developer building clean websites, web applications, APIs and production-ready digital experiences."
     );
   }, []);
 
   if (loading) {
     return (
-      <div className="portfolio-page-loading">
-        <span className="portfolio-loading-mark">
-          SP
-        </span>
+      <div className="portfolio-loading">
+        <div className="portfolio-loading-mark">SP</div>
 
-        <div className="portfolio-loading-line">
+        <div className="portfolio-loading-track">
           <span />
         </div>
 
-        <p>
-          Preparing the portfolio
-        </p>
+        <p>Loading experience</p>
       </div>
     );
   }
 
   if (error) {
     return (
-      <div className="portfolio-page-error">
-        <span>
-          SOMETHING WENT WRONG
-        </span>
+      <div className="portfolio-error">
+        <span>PORTFOLIO UNAVAILABLE</span>
 
-        <h1>
-          The portfolio could not
-          load.
-        </h1>
+        <h1>Something didn&apos;t load correctly.</h1>
 
         <p>{error}</p>
 
         <button
           type="button"
-          onClick={() =>
-            window.location.reload()
-          }
+          onClick={() => window.location.reload()}
         >
           Try again
         </button>
@@ -288,78 +202,49 @@ function PortfolioPage() {
     );
   }
 
-  const profile =
-    portfolio?.profile || null;
-
+  const profile = portfolio?.profile || null;
   const skillCategories =
-    portfolio?.skillCategories ||
-    [];
-
-  const projects =
-    portfolio?.projects || [];
-
-  const experiences =
-    portfolio?.experiences || [];
-
-  const education =
-    portfolio?.education || [];
+    portfolio?.skillCategories || [];
+  const projects = portfolio?.projects || [];
+  const experiences = portfolio?.experiences || [];
+  const education = portfolio?.education || [];
 
   return (
     <MotionConfig reducedMotion="user">
       <div className="portfolio-page">
-        <div
-          ref={cursorRingRef}
+        <motion.div
+          ref={ringRef}
           className="portfolio-cursor-ring"
+          style={{
+            x: ringX,
+            y: ringY,
+          }}
           aria-hidden="true"
         />
 
-        <div
-          ref={cursorDotRef}
+        <motion.div
+          ref={dotRef}
           className="portfolio-cursor-dot"
+          style={{
+            x: pointerX,
+            y: pointerY,
+          }}
           aria-hidden="true"
         />
 
-        <Navbar
-          profile={profile}
-        />
+        <Navbar profile={profile} />
 
-        <main className="portfolio-main">
-          <Hero
-            profile={profile}
-          />
-
-          <About
-            profile={profile}
-          />
-
-          <Projects
-            projects={projects}
-          />
-
-          <TechStack
-            skillCategories={
-              skillCategories
-            }
-          />
-
-          <Experience
-            experiences={
-              experiences
-            }
-          />
-
-          <Education
-            education={education}
-          />
-
-          <Contact
-            profile={profile}
-          />
+        <main>
+          <Hero profile={profile} />
+          <About profile={profile} />
+          <Projects projects={projects} />
+          <TechStack skillCategories={skillCategories} />
+          <Experience experiences={experiences} />
+          <Education education={education} />
+          <Contact profile={profile} />
         </main>
 
-        <Footer
-          profile={profile}
-        />
+        <Footer profile={profile} />
       </div>
     </MotionConfig>
   );

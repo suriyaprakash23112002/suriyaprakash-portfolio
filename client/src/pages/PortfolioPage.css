@@ -1,37 +1,42 @@
+:root {
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
+}
+
 html {
   scroll-behavior: smooth;
+  background: #f6f6f2;
 }
 
 body {
   margin: 0;
-  background: #0b0b0c;
+  background: #f6f6f2;
 }
 
 button,
-a,
-input,
-textarea {
-  font: inherit;
+a {
+  -webkit-tap-highlight-color: transparent;
 }
 
 .portfolio-page {
-  --portfolio-bg: #0b0b0c;
-  --portfolio-panel: #121214;
-  --portfolio-panel-soft: #171719;
-  --portfolio-text: #f4f3ef;
-  --portfolio-muted: #9b9b9f;
-  --portfolio-line: rgba(255, 255, 255, 0.1);
-  --portfolio-line-strong: rgba(255, 255, 255, 0.16);
-  --portfolio-accent: #4f7cff;
-  --portfolio-accent-soft: rgba(79, 124, 255, 0.12);
-  --portfolio-radius: 24px;
+  --ink: #171717;
+  --muted: #6d6d69;
+  --soft-muted: #92928d;
+  --paper: #f6f6f2;
+  --surface: #ffffff;
+  --surface-soft: #efefe9;
+  --line: #deded7;
+  --line-strong: #cfcfc7;
+  --accent: #255cf4;
+  --accent-soft: #e9efff;
+  --dark: #111214;
+  --dark-soft: #1a1b1e;
 
-  width: 100%;
   min-width: 320px;
   min-height: 100vh;
   overflow-x: hidden;
-  color: var(--portfolio-text);
-  background: var(--portfolio-bg);
+  color: var(--ink);
+  background: var(--paper);
   font-family:
     Inter,
     ui-sans-serif,
@@ -40,15 +45,6 @@ textarea {
     BlinkMacSystemFont,
     "Segoe UI",
     sans-serif;
-  text-rendering: optimizeLegibility;
-}
-
-.portfolio-main {
-  width: 100%;
-}
-
-.portfolio-main > section {
-  scroll-margin-top: 96px;
 }
 
 .portfolio-page *,
@@ -57,132 +53,139 @@ textarea {
   box-sizing: border-box;
 }
 
-.portfolio-page button,
-.portfolio-page a {
-  -webkit-tap-highlight-color: transparent;
-}
-
 .portfolio-page img {
+  display: block;
   max-width: 100%;
 }
 
-.portfolio-page-loading,
-.portfolio-page-error {
+.portfolio-page main > section {
+  scroll-margin-top: 92px;
+}
+
+.portfolio-loading,
+.portfolio-error {
   min-height: 100vh;
   display: grid;
   place-items: center;
   align-content: center;
   gap: 16px;
   padding: 28px;
-  color: #f4f3ef;
-  background: #0b0b0c;
+  color: #171717;
+  background: #f6f6f2;
   text-align: center;
 }
 
 .portfolio-loading-mark {
-  font-size: 18px;
+  width: 52px;
+  height: 52px;
+  display: grid;
+  place-items: center;
+  color: #fff;
+  background: #171717;
+  border-radius: 50%;
+  font-size: 14px;
   font-weight: 800;
-  letter-spacing: -0.5px;
 }
 
-.portfolio-loading-line {
-  width: 160px;
+.portfolio-loading-track {
+  width: 180px;
   height: 2px;
   overflow: hidden;
-  background: rgba(255, 255, 255, 0.08);
+  background: #dfdfd9;
 }
 
-.portfolio-loading-line span {
-  width: 52%;
+.portfolio-loading-track span {
+  width: 45%;
   height: 100%;
   display: block;
-  background: #4f7cff;
-  animation:
-    portfolioLoading 0.9s
-    ease-in-out infinite alternate;
+  background: #255cf4;
+  animation: portfolioLoading 0.9s ease-in-out infinite alternate;
 }
 
-.portfolio-page-loading p {
+.portfolio-loading p {
   margin: 0;
-  color: #737378;
-  font-size: 11px;
+  color: #777771;
+  font-size: 10px;
+  font-weight: 700;
   letter-spacing: 0.12em;
   text-transform: uppercase;
 }
 
 @keyframes portfolioLoading {
   from {
-    transform:
-      translateX(-80%);
+    transform: translateX(-95%);
   }
 
   to {
-    transform:
-      translateX(175%);
+    transform: translateX(220%);
   }
 }
 
-.portfolio-page-error > span {
-  color: #7f8a9f;
-  font-size: 10px;
-  font-weight: 700;
-  letter-spacing: 0.16em;
+.portfolio-error > span {
+  color: #255cf4;
+  font-size: 9px;
+  font-weight: 800;
+  letter-spacing: 0.14em;
 }
 
-.portfolio-page-error h1 {
-  max-width: 560px;
+.portfolio-error h1 {
+  max-width: 600px;
   margin: 0;
-  font-size:
-    clamp(34px, 6vw, 64px);
-  line-height: 0.98;
-  letter-spacing: -0.05em;
+  font-size: clamp(34px, 5vw, 60px);
+  line-height: 1;
+  letter-spacing: -0.055em;
 }
 
-.portfolio-page-error p {
+.portfolio-error p {
   margin: 0;
-  color: #929299;
+  color: #777771;
+  font-size: 13px;
 }
 
-.portfolio-page-error button {
+.portfolio-error button {
   min-height: 44px;
-  padding: 0 18px;
+  padding: 0 17px;
   color: #fff;
-  background: #4f7cff;
+  background: #171717;
   border: 0;
   border-radius: 999px;
-  cursor: pointer;
+  font-size: 11px;
+  font-weight: 700;
 }
 
-.portfolio-cursor-dot,
-.portfolio-cursor-ring {
+.portfolio-cursor-ring,
+.portfolio-cursor-dot {
   position: fixed;
   top: 0;
   left: 0;
-  z-index: 99999;
+  z-index: 10000;
   pointer-events: none;
   opacity: 0;
   will-change: transform;
 }
 
+.portfolio-cursor-ring {
+  width: 34px;
+  height: 34px;
+  margin: -17px 0 0 -17px;
+  border: 1.25px solid rgba(37, 92, 244, 0.78);
+  border-radius: 50%;
+  transition:
+    width 0.18s ease,
+    height 0.18s ease,
+    margin 0.18s ease,
+    border-color 0.18s ease,
+    background 0.18s ease,
+    opacity 0.15s ease;
+}
+
 .portfolio-cursor-dot {
   width: 5px;
   height: 5px;
-  background: #fff;
+  margin: -2.5px 0 0 -2.5px;
+  background: #255cf4;
   border-radius: 50%;
-}
-
-.portfolio-cursor-ring {
-  width: 28px;
-  height: 28px;
-  border:
-    1px solid
-    rgba(124, 157, 255, 0.72);
-  border-radius: 50%;
-  transition:
-    width 0.16s ease,
-    height 0.16s ease,
-    opacity 0.16s ease,
-    background 0.16s ease;
+  transition: opacity 0.15s ease;
 }
 
 .portfolio-cursor-visible {
@@ -190,20 +193,21 @@ textarea {
 }
 
 .portfolio-cursor-ring.portfolio-cursor-active {
-  width: 44px;
-  height: 44px;
-  background:
-    rgba(79, 124, 255, 0.08);
+  width: 50px;
+  height: 50px;
+  margin: -25px 0 0 -25px;
+  border-color: rgba(37, 92, 244, 0.44);
+  background: rgba(37, 92, 244, 0.07);
 }
 
-body.freelance-cursor-enabled,
-body.freelance-cursor-enabled * {
+body.portfolio-custom-cursor,
+body.portfolio-custom-cursor * {
   cursor: none !important;
 }
 
 @media (hover: none), (pointer: coarse) {
-  .portfolio-cursor-dot,
-  .portfolio-cursor-ring {
+  .portfolio-cursor-ring,
+  .portfolio-cursor-dot {
     display: none;
   }
 }
@@ -213,15 +217,13 @@ body.freelance-cursor-enabled * {
     scroll-behavior: auto;
   }
 
-  .portfolio-loading-line span {
+  .portfolio-loading-track span {
     animation: none;
-    transform: none;
   }
 
   .portfolio-page *,
   .portfolio-page *::before,
   .portfolio-page *::after {
-    scroll-behavior: auto !important;
     transition-duration: 0.01ms !important;
     animation-duration: 0.01ms !important;
     animation-iteration-count: 1 !important;

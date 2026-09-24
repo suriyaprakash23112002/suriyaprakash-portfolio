@@ -10,10 +10,12 @@ import {
   FiMapPin,
   FiMessageCircle,
 } from "react-icons/fi";
+
 import "./Contact.css";
 
 function Contact({ profile }) {
-  const [copied, setCopied] = useState(false);
+  const [copied, setCopied] =
+    useState(false);
 
   const email =
     profile?.email ||
@@ -23,7 +25,10 @@ function Contact({ profile }) {
     profile?.phone || "";
 
   const whatsappNumber =
-    String(phone).replace(/D/g, "");
+    String(phone).replace(
+      /D/g,
+      ""
+    );
 
   const whatsappUrl =
     profile?.whatsappUrl ||
@@ -44,73 +49,130 @@ function Contact({ profile }) {
     profile?.linkedinUrl ||
     "https://www.linkedin.com/in/suriyaprakash-k-20821b352";
 
-  const copyEmail = async () => {
-    try {
-      await navigator.clipboard.writeText(email);
-      setCopied(true);
-      window.setTimeout(() => setCopied(false), 1600);
-    } catch (error) {
-      console.error("Unable to copy email:", error);
-    }
-  };
+  const copyEmail =
+    async () => {
+      try {
+        await navigator.clipboard.writeText(
+          email
+        );
+
+        setCopied(true);
+
+        window.setTimeout(
+          () =>
+            setCopied(
+              false
+            ),
+          1600
+        );
+      } catch (error) {
+        console.error(
+          "Unable to copy email:",
+          error
+        );
+      }
+    };
 
   const channels = [
     {
       label: "Email",
       value: email,
-      href: "mailto:" + email,
+      href:
+        "mailto:" +
+        email,
       icon: <FiMail />,
     },
+
     whatsappUrl && {
       label: "WhatsApp",
-      value: phone || "Start a chat",
+      value:
+        phone ||
+        "Start a chat",
       href: whatsappUrl,
-      icon: <FiMessageCircle />,
+      icon:
+        <FiMessageCircle />,
     },
+
     githubUrl && {
       label: "GitHub",
-      value: "View repositories",
+      value:
+        "View repositories",
       href: githubUrl,
       icon: <FiGithub />,
     },
+
     linkedinUrl && {
       label: "LinkedIn",
-      value: "Connect professionally",
+      value:
+        "Connect professionally",
       href: linkedinUrl,
-      icon: <FiLinkedin />,
+      icon:
+        <FiLinkedin />,
     },
   ].filter(Boolean);
 
   return (
-    <section id="contact" className="contact-section">
+    <section
+      id="contact"
+      className="contact-section"
+    >
       <div className="contact-container">
         <motion.div
-          className="contact-intro"
-          initial={{ opacity: 0, y: 22 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true, amount: 0.2 }}
-          transition={{ duration: 0.55 }}
+          className="contact-copy"
+          initial={{
+            opacity: 0,
+            y: 24,
+          }}
+          whileInView={{
+            opacity: 1,
+            y: 0,
+          }}
+          viewport={{
+            once: true,
+            amount: 0.2,
+          }}
+          transition={{
+            duration: 0.56,
+          }}
         >
-          <span>07 — CONTACT</span>
+          <span className="contact-label">
+            07 / CONTACT
+          </span>
+
           <h2>
-            Have a project in mind?
-            <em> Let’s make it real.</em>
+            Have a project?
+            <span>
+              {" "}
+              Let&apos;s talk.
+            </span>
           </h2>
+
           <p>
-            Tell me what you are trying to build, what is already in place,
-            and where you need help. I can support the project from interface
-            and backend development through deployment.
+            Tell me what you want to
+            build, what you already
+            have, and where you need
+            help. I can support the
+            project from development
+            through launch.
           </p>
 
-          <div className="contact-cta-row">
-            <a href={"mailto:" + email} className="contact-primary">
+          <div className="contact-actions">
+            <a
+              href={
+                "mailto:" +
+                email
+              }
+              className="contact-primary"
+            >
               Start a project
               <FiArrowUpRight />
             </a>
 
             {whatsappUrl && (
               <a
-                href={whatsappUrl}
+                href={
+                  whatsappUrl
+                }
                 target="_blank"
                 rel="noreferrer"
                 className="contact-secondary"
@@ -121,12 +183,17 @@ function Contact({ profile }) {
             )}
           </div>
 
-          <div className="contact-availability">
+          <div className="contact-status">
             <span />
+
             <div>
-              <small>AVAILABILITY</small>
+              <small>
+                AVAILABILITY
+              </small>
+
               <strong>
-                {profile?.availableForWork === false
+                {profile?.availableForWork ===
+                false
                   ? "Currently unavailable"
                   : profile?.availabilityText ||
                     "Open to freelance projects"}
@@ -136,60 +203,126 @@ function Contact({ profile }) {
         </motion.div>
 
         <motion.div
-          className="contact-card"
-          initial={{ opacity: 0, y: 24 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true, amount: 0.2 }}
-          transition={{ duration: 0.58, delay: 0.06 }}
+          className="contact-panel"
+          initial={{
+            opacity: 0,
+            y: 28,
+          }}
+          whileInView={{
+            opacity: 1,
+            y: 0,
+          }}
+          viewport={{
+            once: true,
+            amount: 0.2,
+          }}
+          transition={{
+            duration: 0.6,
+            delay: 0.05,
+          }}
         >
-          <div className="contact-card-head">
-            <span>DIRECT CONTACT</span>
-            <strong>Choose what works for you.</strong>
+          <div className="contact-panel-head">
+            <span>
+              DIRECT CONTACT
+            </span>
+
+            <strong>
+              Choose what is easiest.
+            </strong>
           </div>
 
           <div className="contact-channels">
-            {channels.map((channel) => (
-              <div className="contact-channel" key={channel.label}>
-                <a
-                  href={channel.href}
-                  target={channel.label === "Email" ? undefined : "_blank"}
-                  rel={channel.label === "Email" ? undefined : "noreferrer"}
+            {channels.map(
+              (channel) => (
+                <div
+                  className="contact-channel"
+                  key={
+                    channel.label
+                  }
                 >
-                  <div className="contact-channel-icon">{channel.icon}</div>
-
-                  <div className="contact-channel-copy">
-                    <span>{channel.label}</span>
-                    <strong>{channel.value}</strong>
-                  </div>
-
-                  <FiArrowUpRight />
-                </a>
-
-                {channel.label === "Email" && (
-                  <button
-                    type="button"
-                    onClick={copyEmail}
-                    aria-label="Copy email"
-                    className="contact-copy"
+                  <a
+                    href={
+                      channel.href
+                    }
+                    target={
+                      channel.label ===
+                      "Email"
+                        ? undefined
+                        : "_blank"
+                    }
+                    rel={
+                      channel.label ===
+                      "Email"
+                        ? undefined
+                        : "noreferrer"
+                    }
                   >
-                    {copied ? <FiCheck /> : <FiCopy />}
-                  </button>
-                )}
-              </div>
-            ))}
+                    <div className="contact-channel-icon">
+                      {
+                        channel.icon
+                      }
+                    </div>
+
+                    <div className="contact-channel-copy">
+                      <span>
+                        {
+                          channel.label
+                        }
+                      </span>
+
+                      <strong>
+                        {
+                          channel.value
+                        }
+                      </strong>
+                    </div>
+
+                    <FiArrowUpRight />
+                  </a>
+
+                  {channel.label ===
+                    "Email" && (
+                    <button
+                      type="button"
+                      className="contact-copy-button"
+                      onClick={
+                        copyEmail
+                      }
+                      aria-label="Copy email"
+                    >
+                      {copied ? (
+                        <FiCheck />
+                      ) : (
+                        <FiCopy />
+                      )}
+                    </button>
+                  )}
+                </div>
+              )
+            )}
           </div>
 
-          <div className="contact-card-bottom">
+          <div className="contact-panel-bottom">
             {profile?.location ? (
               <div>
                 <FiMapPin />
-                <span>{profile.location}</span>
+
+                <span>
+                  {
+                    profile.location
+                  }
+                </span>
               </div>
             ) : (
-              <span>Remote collaboration welcome</span>
+              <span>
+                Remote collaboration
+                welcome
+              </span>
             )}
 
-            <span>READY TO DISCUSS</span>
+            <span>
+              READY TO DISCUSS
+            </span>
           </div>
         </motion.div>
       </div>

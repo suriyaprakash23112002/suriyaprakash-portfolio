@@ -1,5 +1,12 @@
 import { motion } from "framer-motion";
-import { FiArrowUpRight, FiCheck, FiCode, FiLayout, FiServer, FiUploadCloud } from "react-icons/fi";
+import {
+  FiArrowUpRight,
+  FiCode,
+  FiDatabase,
+  FiLayout,
+  FiServer,
+} from "react-icons/fi";
+
 import "./About.css";
 
 function About({ profile }) {
@@ -7,119 +14,218 @@ function About({ profile }) {
     {
       icon: <FiLayout />,
       title: "Business websites",
-      text: "Clean, responsive websites that present your brand clearly and guide visitors toward action.",
-      points: ["Responsive UI", "Clear content structure", "Fast loading"],
+      text: "Clear, responsive websites that make your brand look professional and make it easy for visitors to take action.",
     },
     {
       icon: <FiCode />,
-      title: "Web applications",
-      text: "Custom interfaces, dashboards and product experiences built around your actual workflow.",
-      points: ["React interfaces", "Admin dashboards", "Reusable components"],
+      title: "Custom web apps",
+      text: "Dashboards, portals and interactive web products built around your workflow instead of a generic template.",
     },
     {
       icon: <FiServer />,
-      title: "Backend & data",
-      text: "Reliable APIs, authentication and database structures that support real application features.",
-      points: ["Node.js / Express", "Prisma / PostgreSQL", "API integration"],
+      title: "Backend & APIs",
+      text: "Authentication, business logic and API integrations that connect the interface to real application features.",
     },
     {
-      icon: <FiUploadCloud />,
-      title: "Launch & support",
-      text: "From environment setup to production deployment, I help move the build into a usable live product.",
-      points: ["Vercel deployment", "Environment setup", "Post-launch fixes"],
+      icon: <FiDatabase />,
+      title: "Database & launch",
+      text: "Structured data, production setup and deployment so the finished product is ready to use and maintain.",
     },
   ];
 
   const process = [
-    ["01", "Discover", "Understand the goal, users and scope."],
-    ["02", "Design", "Shape a clear structure and interaction flow."],
-    ["03", "Build", "Develop frontend, backend and data layers."],
-    ["04", "Launch", "Test, deploy and hand over cleanly."],
+    {
+      number: "01",
+      title: "Understand",
+      text: "We define the goal, users and scope.",
+    },
+    {
+      number: "02",
+      title: "Plan",
+      text: "I turn the idea into a clear build path.",
+    },
+    {
+      number: "03",
+      title: "Build",
+      text: "Frontend, backend and data come together.",
+    },
+    {
+      number: "04",
+      title: "Launch",
+      text: "I test, deploy and hand over the project.",
+    },
   ];
 
+  const goToContact = () => {
+    document
+      .getElementById("contact")
+      ?.scrollIntoView({
+        behavior: "smooth",
+        block: "start",
+      });
+  };
+
   return (
-    <section id="about" className="about-section">
+    <section
+      id="about"
+      className="about-section"
+    >
       <div className="about-container">
         <motion.div
-          className="about-heading"
-          initial={{ opacity: 0, y: 22 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true, amount: 0.2 }}
-          transition={{ duration: 0.55 }}
+          className="about-header"
+          initial={{
+            opacity: 0,
+            y: 24,
+          }}
+          whileInView={{
+            opacity: 1,
+            y: 0,
+          }}
+          viewport={{
+            once: true,
+            amount: 0.2,
+          }}
+          transition={{
+            duration: 0.56,
+          }}
         >
-          <span className="about-label">02 — SERVICES</span>
-          <h2>
-            One developer.
-            <span> From idea to launch.</span>
-          </h2>
-          <p>
-            {profile?.longBio ||
-              "I work across design-minded frontend development, backend APIs, databases and deployment, so clients can move from an idea to a finished web product without juggling multiple developers."}
-          </p>
+          <span className="about-label">
+            02 / SERVICES
+          </span>
+
+          <div className="about-heading-row">
+            <h2>
+              What I can build
+              <span>
+                {" "}
+                for your business.
+              </span>
+            </h2>
+
+            <p>
+              {profile?.longBio ||
+                "I work across the full development process, from interface and user experience to backend APIs, databases and deployment."}
+            </p>
+          </div>
         </motion.div>
 
         <div className="about-services">
-          {services.map((service, index) => (
-            <motion.article
-              className="about-service-card"
-              key={service.title}
-              initial={{ opacity: 0, y: 22 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true, amount: 0.2 }}
-              transition={{ duration: 0.5, delay: index * 0.05 }}
-            >
-              <div className="about-service-top">
-                <div className="about-service-icon">{service.icon}</div>
-                <span>{String(index + 1).padStart(2, "0")}</span>
-              </div>
+          {services.map(
+            (
+              service,
+              index
+            ) => (
+              <motion.article
+                className="about-service"
+                key={service.title}
+                initial={{
+                  opacity: 0,
+                  y: 22,
+                }}
+                whileInView={{
+                  opacity: 1,
+                  y: 0,
+                }}
+                viewport={{
+                  once: true,
+                  amount: 0.2,
+                }}
+                transition={{
+                  duration: 0.48,
+                  delay:
+                    index * 0.05,
+                }}
+              >
+                <div className="about-service-top">
+                  <div>
+                    {
+                      service.icon
+                    }
+                  </div>
 
-              <h3>{service.title}</h3>
-              <p>{service.text}</p>
-
-              <div className="about-service-points">
-                {service.points.map((point) => (
-                  <span key={point}>
-                    <FiCheck />
-                    {point}
+                  <span>
+                    {String(
+                      index + 1
+                    ).padStart(
+                      2,
+                      "0"
+                    )}
                   </span>
-                ))}
-              </div>
-            </motion.article>
-          ))}
+                </div>
+
+                <h3>
+                  {service.title}
+                </h3>
+
+                <p>
+                  {service.text}
+                </p>
+              </motion.article>
+            )
+          )}
         </div>
 
         <motion.div
           className="about-process"
-          initial={{ opacity: 0, y: 22 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true, amount: 0.2 }}
-          transition={{ duration: 0.55 }}
+          initial={{
+            opacity: 0,
+            y: 24,
+          }}
+          whileInView={{
+            opacity: 1,
+            y: 0,
+          }}
+          viewport={{
+            once: true,
+            amount: 0.18,
+          }}
+          transition={{
+            duration: 0.56,
+          }}
         >
-          <div className="about-process-title">
-            <span>HOW I WORK</span>
-            <h3>A simple, transparent process.</h3>
+          <div className="about-process-heading">
+            <span>
+              HOW WE WORK
+            </span>
+
+            <h3>
+              Simple process.
+              Clear communication.
+            </h3>
           </div>
 
           <div className="about-process-steps">
-            {process.map(([number, title, text]) => (
-              <div className="about-process-step" key={number}>
-                <span>{number}</span>
-                <strong>{title}</strong>
-                <p>{text}</p>
-              </div>
-            ))}
+            {process.map(
+              (step) => (
+                <div
+                  key={
+                    step.number
+                  }
+                  className="about-process-step"
+                >
+                  <span>
+                    {step.number}
+                  </span>
+
+                  <strong>
+                    {step.title}
+                  </strong>
+
+                  <p>
+                    {step.text}
+                  </p>
+                </div>
+              )
+            )}
           </div>
 
           <button
             type="button"
-            className="about-process-cta"
-            onClick={() =>
-              document.getElementById("contact")?.scrollIntoView({
-                behavior: "smooth",
-              })
+            onClick={
+              goToContact
             }
           >
-            Tell me about your project
+            Discuss a project
             <FiArrowUpRight />
           </button>
         </motion.div>

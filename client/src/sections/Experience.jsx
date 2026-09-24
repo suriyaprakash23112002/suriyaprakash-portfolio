@@ -1,102 +1,147 @@
 import { motion } from "framer-motion";
 import {
-  FiArrowUpRight,
   FiBriefcase,
   FiCalendar,
   FiMapPin,
 } from "react-icons/fi";
+
 import "./Experience.css";
 
-function Experience({ experiences = [] }) {
+function Experience({
+  experiences = [],
+}) {
   const items = experiences.filter(
     (experience) =>
       experience?.isActive !== false &&
       experience?.isVisible !== false
   );
 
-  const roleOf = (item) =>
+  const getRole = (item) =>
     item?.role ||
     item?.position ||
     item?.title ||
     item?.jobTitle ||
     "Full-Stack Developer";
 
-  const companyOf = (item) =>
+  const getCompany = (item) =>
     item?.company ||
     item?.companyName ||
     item?.organization ||
     "Company";
 
-  const locationOf = (item) =>
-    item?.location ||
-    item?.companyLocation ||
-    "";
-
-  const descriptionOf = (item) =>
+  const getDescription = (item) =>
     item?.description ||
     item?.summary ||
     "";
 
-  const typeOf = (item) =>
-    item?.employmentType ||
-    item?.type ||
+  const getLocation = (item) =>
+    item?.location ||
+    item?.companyLocation ||
     "";
 
-  const technologiesOf = (item) =>
-    (item?.technologies || item?.skills || [])
+  const getTechnologies = (item) =>
+    (
+      item?.technologies ||
+      item?.skills ||
+      []
+    )
       .map((value) =>
         typeof value === "string"
           ? value
-          : value?.name || value?.skill?.name || ""
+          : value?.name ||
+            value?.skill?.name ||
+            ""
       )
       .filter(Boolean);
 
   const formatDate = (value) => {
-    if (!value) return "";
-    const date = new Date(value);
-    if (Number.isNaN(date.getTime())) return String(value);
+    if (!value) {
+      return "";
+    }
 
-    return date.toLocaleDateString("en-US", {
-      month: "short",
-      year: "numeric",
-    });
+    const date = new Date(value);
+
+    if (
+      Number.isNaN(
+        date.getTime()
+      )
+    ) {
+      return String(value);
+    }
+
+    return date.toLocaleDateString(
+      "en-US",
+      {
+        month: "short",
+        year: "numeric",
+      }
+    );
   };
 
-  const periodOf = (item) => {
+  const getPeriod = (item) => {
     const start =
       item?.startYear ||
-      formatDate(item?.startDate || item?.fromDate);
+      formatDate(
+        item?.startDate ||
+          item?.fromDate
+      );
 
     const end =
       item?.isCurrent
         ? "Present"
         : item?.endYear ||
-          formatDate(item?.endDate || item?.toDate);
+          formatDate(
+            item?.endDate ||
+              item?.toDate
+          );
 
-    return [start, end].filter(Boolean).join(" — ");
+    return [start, end]
+      .filter(Boolean)
+      .join(" — ");
   };
 
   return (
-    <section id="experience" className="experience-section">
+    <section
+      id="experience"
+      className="experience-section"
+    >
       <div className="experience-container">
         <motion.div
-          className="experience-heading"
-          initial={{ opacity: 0, y: 22 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true, amount: 0.2 }}
-          transition={{ duration: 0.55 }}
+          className="experience-header"
+          initial={{
+            opacity: 0,
+            y: 24,
+          }}
+          whileInView={{
+            opacity: 1,
+            y: 0,
+          }}
+          viewport={{
+            once: true,
+            amount: 0.2,
+          }}
+          transition={{
+            duration: 0.56,
+          }}
         >
-          <span>05 — EXPERIENCE</span>
+          <span>
+            05 / EXPERIENCE
+          </span>
 
           <div className="experience-heading-row">
             <h2>
-              Practical experience.
-              <em> Real delivery.</em>
+              Experience that
+              <span>
+                {" "}
+                shaped how I build.
+              </span>
             </h2>
 
             <p>
-              The environments where I learned to turn requirements
-              into working interfaces, APIs and production features.
+              Real project work,
+              collaboration and
+              production problem solving
+              behind the portfolio.
             </p>
           </div>
         </motion.div>
@@ -104,88 +149,159 @@ function Experience({ experiences = [] }) {
         {items.length === 0 ? (
           <div className="experience-empty">
             <FiBriefcase />
-            <span>Experience will appear here.</span>
+            <span>
+              Experience will appear
+              here.
+            </span>
           </div>
         ) : (
           <div className="experience-list">
-            {items.map((item, index) => {
-              const technologies = technologiesOf(item);
+            {items.map(
+              (
+                item,
+                index
+              ) => {
+                const technologies =
+                  getTechnologies(
+                    item
+                  );
 
-              return (
-                <motion.article
-                  className="experience-item"
-                  key={item?.id || companyOf(item) + index}
-                  initial={{ opacity: 0, y: 20 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  viewport={{ once: true, amount: 0.18 }}
-                  transition={{ duration: 0.48, delay: index * 0.05 }}
-                >
-                  <div className="experience-index">
-                    {String(index + 1).padStart(2, "0")}
-                  </div>
-
-                  <div className="experience-core">
-                    <div className="experience-kicker">
-                      <span>{companyOf(item)}</span>
-
-                      {item?.isCurrent && (
-                        <small>
-                          <i />
-                          CURRENT
-                        </small>
+                return (
+                  <motion.article
+                    className="experience-row"
+                    key={
+                      item?.id ||
+                      getCompany(
+                        item
+                      ) +
+                        "-" +
+                        index
+                    }
+                    initial={{
+                      opacity: 0,
+                      y: 20,
+                    }}
+                    whileInView={{
+                      opacity: 1,
+                      y: 0,
+                    }}
+                    viewport={{
+                      once: true,
+                      amount: 0.18,
+                    }}
+                    transition={{
+                      duration: 0.48,
+                      delay:
+                        index *
+                        0.04,
+                    }}
+                  >
+                    <div className="experience-number">
+                      {String(
+                        index + 1
+                      ).padStart(
+                        2,
+                        "0"
                       )}
                     </div>
 
-                    <h3>{roleOf(item)}</h3>
+                    <div className="experience-main">
+                      <div className="experience-company-line">
+                        <strong>
+                          {getCompany(
+                            item
+                          )}
+                        </strong>
 
-                    {descriptionOf(item) && (
-                      <p>{descriptionOf(item)}</p>
-                    )}
-
-                    {technologies.length > 0 && (
-                      <div className="experience-stack">
-                        {technologies.slice(0, 8).map((technology) => (
-                          <span key={technology}>{technology}</span>
-                        ))}
+                        {item?.isCurrent && (
+                          <span>
+                            CURRENT
+                          </span>
+                        )}
                       </div>
-                    )}
-                  </div>
 
-                  <aside className="experience-meta">
-                    {periodOf(item) && (
-                      <div>
-                        <FiCalendar />
-                        <span>{periodOf(item)}</span>
-                      </div>
-                    )}
+                      <h3>
+                        {getRole(
+                          item
+                        )}
+                      </h3>
 
-                    {locationOf(item) && (
-                      <div>
-                        <FiMapPin />
-                        <span>{locationOf(item)}</span>
-                      </div>
-                    )}
+                      {getDescription(
+                        item
+                      ) && (
+                        <p>
+                          {getDescription(
+                            item
+                          )}
+                        </p>
+                      )}
 
-                    {typeOf(item) && (
-                      <span className="experience-type">
-                        {typeOf(item)}
-                      </span>
-                    )}
+                      {technologies.length >
+                        0 && (
+                        <div className="experience-stack">
+                          {technologies
+                            .slice(
+                              0,
+                              8
+                            )
+                            .map(
+                              (
+                                technology
+                              ) => (
+                                <span
+                                  key={
+                                    technology
+                                  }
+                                >
+                                  {
+                                    technology
+                                  }
+                                </span>
+                              )
+                            )}
+                        </div>
+                      )}
+                    </div>
 
-                    {item?.companyUrl && (
-                      <a
-                        href={item.companyUrl}
-                        target="_blank"
-                        rel="noreferrer"
-                      >
-                        Company
-                        <FiArrowUpRight />
-                      </a>
-                    )}
-                  </aside>
-                </motion.article>
-              );
-            })}
+                    <aside className="experience-meta">
+                      {getPeriod(
+                        item
+                      ) && (
+                        <div>
+                          <FiCalendar />
+                          <span>
+                            {getPeriod(
+                              item
+                            )}
+                          </span>
+                        </div>
+                      )}
+
+                      {getLocation(
+                        item
+                      ) && (
+                        <div>
+                          <FiMapPin />
+                          <span>
+                            {getLocation(
+                              item
+                            )}
+                          </span>
+                        </div>
+                      )}
+
+                      {(item?.employmentType ||
+                        item?.type) && (
+                        <small>
+                          {item?.employmentType ||
+                            item?.type}
+                        </small>
+                      )}
+                    </aside>
+                  </motion.article>
+                );
+              }
+            )}
           </div>
         )}
       </div>

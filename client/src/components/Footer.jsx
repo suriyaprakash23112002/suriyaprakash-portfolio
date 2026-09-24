@@ -1,6 +1,5 @@
 import {
   FiArrowUp,
-  FiArrowUpRight,
   FiGithub,
   FiLinkedin,
   FiMail,
@@ -21,135 +20,72 @@ function Footer({ profile }) {
     profile?.linkedinUrl ||
     "https://www.linkedin.com/in/suriyaprakash-k-20821b352";
 
-  const scrollTo = (id) => {
-    document.getElementById(id)?.scrollIntoView({
-      behavior: "smooth",
-      block: "start",
-    });
-  };
-
   const currentYear =
     new Date().getFullYear();
+
+  const scrollToTop = () => {
+    window.scrollTo({
+      top: 0,
+      behavior: "smooth",
+    });
+  };
 
   return (
     <footer className="footer">
       <div className="footer-container">
-        <div className="footer-main">
-          <div className="footer-pitch">
-            <span>AVAILABLE FOR FREELANCE</span>
+        <div className="footer-left">
+          <strong>
+            {profile?.fullName ||
+              "Suriyaprakash"}
+          </strong>
 
-            <h2>
-              Need a website or
-              web application?
-            </h2>
-
-            <button
-              type="button"
-              onClick={() =>
-                scrollTo("contact")
-              }
-            >
-              Start a conversation
-              <FiArrowUpRight />
-            </button>
-          </div>
-
-          <div className="footer-links">
-            <div>
-              <span>NAVIGATION</span>
-
-              <button
-                type="button"
-                onClick={() =>
-                  scrollTo("about")
-                }
-              >
-                Services
-              </button>
-
-              <button
-                type="button"
-                onClick={() =>
-                  scrollTo("projects")
-                }
-              >
-                Work
-              </button>
-
-              <button
-                type="button"
-                onClick={() =>
-                  scrollTo("skills")
-                }
-              >
-                Stack
-              </button>
-
-              <button
-                type="button"
-                onClick={() =>
-                  scrollTo("contact")
-                }
-              >
-                Contact
-              </button>
-            </div>
-
-            <div>
-              <span>CONNECT</span>
-
-              <a
-                href={githubUrl}
-                target="_blank"
-                rel="noreferrer"
-              >
-                <FiGithub />
-                GitHub
-              </a>
-
-              <a
-                href={linkedinUrl}
-                target="_blank"
-                rel="noreferrer"
-              >
-                <FiLinkedin />
-                LinkedIn
-              </a>
-
-              <a href={"mailto:" + email}>
-                <FiMail />
-                Email
-              </a>
-            </div>
-          </div>
+          <span>
+            Freelance Full-Stack
+            Developer
+          </span>
         </div>
 
-        <div className="footer-bottom">
-          <div>
-            <strong>
-              {profile?.fullName ||
-                "Suriyaprakash"}
-            </strong>
+        <div className="footer-socials">
+          <a
+            href={githubUrl}
+            target="_blank"
+            rel="noreferrer"
+            aria-label="GitHub"
+          >
+            <FiGithub />
+            GitHub
+          </a>
 
-            <span>
-              Freelance Full-Stack
-              Developer
-            </span>
-          </div>
+          <a
+            href={linkedinUrl}
+            target="_blank"
+            rel="noreferrer"
+            aria-label="LinkedIn"
+          >
+            <FiLinkedin />
+            LinkedIn
+          </a>
 
-          <p>
-            © {currentYear} All rights
-            reserved.
-          </p>
+          <a
+            href={
+              "mailto:" +
+              email
+            }
+          >
+            <FiMail />
+            Email
+          </a>
+        </div>
+
+        <div className="footer-right">
+          <span>
+            © {currentYear}
+          </span>
 
           <button
             type="button"
-            className="footer-top"
-            onClick={() =>
-              window.scrollTo({
-                top: 0,
-                behavior: "smooth",
-              })
+            onClick={
+              scrollToTop
             }
           >
             Back to top

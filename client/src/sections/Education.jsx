@@ -1,15 +1,23 @@
 import { motion } from "framer-motion";
-import { FiAward, FiBookOpen, FiCalendar, FiMapPin } from "react-icons/fi";
+import {
+  FiAward,
+  FiBookOpen,
+  FiCalendar,
+  FiMapPin,
+} from "react-icons/fi";
+
 import "./Education.css";
 
-function Education({ education = [] }) {
+function Education({
+  education = [],
+}) {
   const items = education.filter(
     (item) =>
       item?.isActive !== false &&
       item?.isVisible !== false
   );
 
-  const institutionOf = (item) =>
+  const getInstitution = (item) =>
     item?.institution ||
     item?.institutionName ||
     item?.college ||
@@ -17,55 +25,83 @@ function Education({ education = [] }) {
     item?.university ||
     "Institution";
 
-  const degreeOf = (item) =>
+  const getDegree = (item) =>
     item?.degree ||
     item?.qualification ||
     item?.course ||
     item?.title ||
     "Qualification";
 
-  const fieldOf = (item) =>
+  const getField = (item) =>
     item?.fieldOfStudy ||
     item?.specialization ||
     item?.field ||
     "";
 
-  const cgpaOf = (item) =>
+  const getCgpa = (item) =>
     item?.cgpa ||
     item?.grade ||
     "";
 
-  const periodOf = (item) => {
-    const start = item?.startYear || "";
-    const end =
-      item?.isCurrent || item?.currentlyStudying
-        ? "Present"
-        : item?.endYear || "";
+  const getPeriod = (item) => {
+    const start =
+      item?.startYear || "";
 
-    return [start, end].filter(Boolean).join(" — ");
+    const end =
+      item?.isCurrent ||
+      item?.currentlyStudying
+        ? "Present"
+        : item?.endYear ||
+          "";
+
+    return [start, end]
+      .filter(Boolean)
+      .join(" — ");
   };
 
   return (
-    <section id="education" className="education-section">
+    <section
+      id="education"
+      className="education-section"
+    >
       <div className="education-container">
         <motion.div
-          className="education-heading"
-          initial={{ opacity: 0, y: 22 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true, amount: 0.2 }}
-          transition={{ duration: 0.55 }}
+          className="education-header"
+          initial={{
+            opacity: 0,
+            y: 24,
+          }}
+          whileInView={{
+            opacity: 1,
+            y: 0,
+          }}
+          viewport={{
+            once: true,
+            amount: 0.2,
+          }}
+          transition={{
+            duration: 0.56,
+          }}
         >
-          <span>06 — EDUCATION</span>
+          <span>
+            06 / EDUCATION
+          </span>
 
           <div className="education-heading-row">
             <h2>
-              The foundation
-              <em> behind the work.</em>
+              Academic
+              <span>
+                {" "}
+                foundation.
+              </span>
             </h2>
 
             <p>
-              Academic milestones that support the way I approach
-              software, systems and continuous learning.
+              Education supports the
+              technical foundation
+              behind the way I approach
+              development and problem
+              solving.
             </p>
           </div>
         </motion.div>
@@ -73,67 +109,135 @@ function Education({ education = [] }) {
         {items.length === 0 ? (
           <div className="education-empty">
             <FiBookOpen />
-            <span>Education will appear here.</span>
+            <span>
+              Education will appear
+              here.
+            </span>
           </div>
         ) : (
           <div className="education-grid">
-            {items.map((item, index) => (
-              <motion.article
-                className="education-card"
-                key={item?.id || institutionOf(item) + index}
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true, amount: 0.18 }}
-                transition={{ duration: 0.48, delay: index * 0.05 }}
-              >
-                <div className="education-card-top">
-                  <span>{String(index + 1).padStart(2, "0")}</span>
+            {items.map(
+              (
+                item,
+                index
+              ) => (
+                <motion.article
+                  className="education-card"
+                  key={
+                    item?.id ||
+                    getInstitution(
+                      item
+                    ) +
+                      "-" +
+                      index
+                  }
+                  initial={{
+                    opacity: 0,
+                    y: 20,
+                  }}
+                  whileInView={{
+                    opacity: 1,
+                    y: 0,
+                  }}
+                  viewport={{
+                    once: true,
+                    amount: 0.18,
+                  }}
+                  transition={{
+                    duration: 0.48,
+                    delay:
+                      index *
+                      0.04,
+                  }}
+                >
+                  <div className="education-card-top">
+                    <span>
+                      {String(
+                        index + 1
+                      ).padStart(
+                        2,
+                        "0"
+                      )}
+                    </span>
 
-                  <div className="education-card-period">
-                    <FiCalendar />
-                    {periodOf(item) || "Academic record"}
+                    {getPeriod(
+                      item
+                    ) && (
+                      <div>
+                        <FiCalendar />
+                        {getPeriod(
+                          item
+                        )}
+                      </div>
+                    )}
                   </div>
-                </div>
 
-                <div className="education-card-main">
-                  <small>QUALIFICATION</small>
-                  <h3>{degreeOf(item)}</h3>
+                  <h3>
+                    {getDegree(
+                      item
+                    )}
+                  </h3>
 
-                  {fieldOf(item) && (
-                    <p className="education-field">{fieldOf(item)}</p>
+                  {getField(
+                    item
+                  ) && (
+                    <p className="education-field">
+                      {getField(
+                        item
+                      )}
+                    </p>
                   )}
 
                   <div className="education-institution">
                     <FiBookOpen />
+
                     <div>
-                      <span>INSTITUTION</span>
-                      <strong>{institutionOf(item)}</strong>
+                      <small>
+                        INSTITUTION
+                      </small>
+
+                      <strong>
+                        {getInstitution(
+                          item
+                        )}
+                      </strong>
                     </div>
                   </div>
 
                   {item?.location && (
                     <div className="education-location">
                       <FiMapPin />
-                      <span>{item.location}</span>
+
+                      <span>
+                        {
+                          item.location
+                        }
+                      </span>
                     </div>
                   )}
 
-                  {item?.description && (
-                    <p className="education-description">{item.description}</p>
-                  )}
-                </div>
+                  {getCgpa(
+                    item
+                  ) && (
+                    <div className="education-cgpa">
+                      <FiAward />
 
-                {cgpaOf(item) && (
-                  <div className="education-cgpa">
-                    <FiAward />
-                    <div>
-                      <span>CGPA</span>
-                      <strong>{cgpaOf(item)}</strong>
+                      <div>
+                        <small>
+                          CGPA
+                        </small>
+
+                        <strong>
+                          {getCgpa(
+                            item
+                          )}
+                        </strong>
+                      </div>
                     </div>
-                  </div>
-                )}
-              </motion.article>
-            ))}
+                  )}
+                </motion.article>
+              )
+            )}
           </div>
         )}
       </div>

@@ -1,57 +1,75 @@
 .contact-section {
-  padding: 96px 36px 82px;
-  background:
-    radial-gradient(circle at 20% 70%, rgba(79,124,255,.08), transparent 28%),
-    #0b0b0c;
+  padding:
+    96px 30px
+    84px;
+  background: #fff;
+  border-top: 1px solid
+    #ecece6;
 }
 
 .contact-container {
-  width: min(1180px,100%);
+  width: min(
+    1160px,
+    100%
+  );
   display: grid;
-  grid-template-columns: minmax(0,1fr) minmax(360px,.72fr);
-  gap: 70px;
+  grid-template-columns:
+    minmax(0, 1fr)
+    minmax(
+      350px,
+      0.68fr
+    );
   align-items: center;
+  gap: clamp(
+    44px,
+    7vw,
+    86px
+  );
   margin: 0 auto;
 }
 
-.contact-intro > span {
-  color: #6f8eff;
-  font: 700 9px monospace;
-  letter-spacing: .14em;
+.contact-label {
+  color: #255cf4;
+  font-size: 9px;
+  font-weight: 800;
+  letter-spacing: 0.14em;
 }
 
-.contact-intro h2 {
+.contact-copy h2 {
   max-width: 720px;
-  margin: 14px 0 0;
-  color: #f4f3ef;
-  font-size: clamp(48px,5.5vw,76px);
-  line-height: .99;
-  letter-spacing: -.06em;
+  margin: 13px 0 0;
+  color: #171717;
+  font-size:
+    clamp(
+      48px,
+      5.6vw,
+      76px
+    );
+  line-height: 0.99;
+  letter-spacing: -0.06em;
 }
 
-.contact-intro h2 em {
-  display: block;
-  color: #77777d;
-  font-style: normal;
-  font-weight: 520;
+.contact-copy h2 span {
+  color: #888883;
+  font-weight: 540;
 }
 
-.contact-intro > p {
-  max-width: 620px;
-  margin: 22px 0 0;
-  color: #94949b;
+.contact-copy > p {
+  max-width: 610px;
+  margin: 20px 0 0;
+  color: #6f6f6a;
   font-size: 13px;
-  line-height: 1.78;
+  line-height: 1.75;
 }
 
-.contact-cta-row {
+.contact-actions {
   display: flex;
   flex-wrap: wrap;
   gap: 9px;
-  margin-top: 28px;
+  margin-top: 26px;
 }
 
-.contact-cta-row a {
+.contact-actions a {
   min-height: 46px;
   display: inline-flex;
   align-items: center;
@@ -59,84 +77,109 @@
   padding: 0 16px;
   border-radius: 999px;
   font-size: 10px;
-  font-weight: 700;
+  font-weight: 750;
   text-decoration: none;
-  transition: transform .2s ease, background .2s ease, border-color .2s ease;
+  transition:
+    transform 0.18s ease,
+    background 0.18s ease,
+    border-color 0.18s ease;
 }
 
-.contact-cta-row a:hover { transform: translateY(-2px); }
+.contact-actions a:hover {
+  transform:
+    translateY(-2px);
+}
 
 .contact-primary {
   color: #fff;
-  background: #4f7cff;
+  background: #171717;
 }
 
-.contact-primary:hover { background: #628bff; }
+.contact-primary:hover {
+  background: #255cf4;
+}
 
 .contact-secondary {
-  color: #d2d2d6;
-  border: 1px solid rgba(255,255,255,.1);
+  color: #343431;
+  background: #fff;
+  border: 1px solid
+    #d9d9d2;
 }
 
 .contact-secondary:hover {
-  background: rgba(255,255,255,.035);
-  border-color: rgba(255,255,255,.2);
+  border-color: #bdbdb6;
 }
 
-.contact-availability {
+.contact-status {
   display: flex;
   align-items: center;
   gap: 10px;
-  margin-top: 30px;
+  margin-top: 28px;
 }
 
-.contact-availability > span {
+.contact-status > span {
   width: 9px;
   height: 9px;
-  background: #4ade80;
+  background: #25b864;
   border-radius: 50%;
-  box-shadow: 0 0 14px rgba(74,222,128,.25);
+  box-shadow:
+    0 0 0 5px
+    rgba(
+      37,
+      184,
+      100,
+      0.08
+    );
 }
 
-.contact-availability small {
+.contact-status small {
   display: block;
-  color: #65656c;
-  font: 700 6px monospace;
-  letter-spacing: .12em;
+  color: #989893;
+  font-size: 6px;
+  font-weight: 800;
+  letter-spacing: 0.11em;
 }
 
-.contact-availability strong {
+.contact-status strong {
   display: block;
   margin-top: 3px;
-  color: #b9b9be;
+  color: #555551;
   font-size: 10px;
 }
 
-.contact-card {
+.contact-panel {
   padding: 18px;
-  background: #131315;
-  border: 1px solid rgba(255,255,255,.09);
-  border-radius: 22px;
-  box-shadow: 0 30px 70px rgba(0,0,0,.25);
+  background: #171717;
+  border-radius: 24px;
+  box-shadow:
+    0 28px 70px
+    rgba(
+      31,
+      31,
+      27,
+      0.14
+    );
 }
 
-.contact-card-head {
-  padding: 4px 4px 16px;
+.contact-panel-head {
+  padding:
+    5px 5px
+    16px;
 }
 
-.contact-card-head span {
+.contact-panel-head span {
   display: block;
-  color: #6f8eff;
-  font: 700 7px monospace;
-  letter-spacing: .12em;
+  color: #8fa7ff;
+  font-size: 7px;
+  font-weight: 800;
+  letter-spacing: 0.12em;
 }
 
-.contact-card-head strong {
+.contact-panel-head strong {
   display: block;
   margin-top: 7px;
-  color: #ededf0;
+  color: #f4f4f1;
   font-size: 18px;
-  letter-spacing: -.025em;
 }
 
 .contact-channels {
@@ -151,21 +194,39 @@
 .contact-channel > a {
   min-height: 68px;
   display: grid;
-  grid-template-columns: 38px minmax(0,1fr) 18px;
+  grid-template-columns:
+    38px
+    minmax(0, 1fr)
+    18px;
   align-items: center;
   gap: 10px;
   padding: 10px 12px;
   color: inherit;
-  background: #171719;
-  border: 1px solid rgba(255,255,255,.06);
-  border-radius: 13px;
+  background: #202124;
+  border: 1px solid
+    rgba(
+      255,
+      255,
+      255,
+      0.06
+    );
+  border-radius: 14px;
   text-decoration: none;
-  transition: background .2s ease, border-color .2s ease;
+  transition:
+    background 0.18s ease,
+    border-color 0.18s ease;
 }
 
-.contact-channel > a:hover {
-  background: #1a1a1d;
-  border-color: rgba(111,142,255,.16);
+.contact-channel
+  > a:hover {
+  background: #252629;
+  border-color:
+    rgba(
+      143,
+      167,
+      255,
+      0.18
+    );
 }
 
 .contact-channel-icon {
@@ -173,37 +234,48 @@
   height: 36px;
   display: grid;
   place-items: center;
-  color: #7895ff;
-  background: rgba(79,124,255,.07);
-  border-radius: 9px;
+  color: #8fa7ff;
+  background:
+    rgba(
+      143,
+      167,
+      255,
+      0.08
+    );
+  border-radius: 10px;
 }
 
 .contact-channel-copy {
   min-width: 0;
 }
 
-.contact-channel-copy span {
+.contact-channel-copy
+  span {
   display: block;
-  color: #68686f;
-  font: 700 6px monospace;
-  letter-spacing: .1em;
+  color: #7e7e83;
+  font-size: 6px;
+  font-weight: 800;
+  letter-spacing: 0.1em;
 }
 
-.contact-channel-copy strong {
+.contact-channel-copy
+  strong {
   display: block;
   overflow: hidden;
   margin-top: 4px;
-  color: #cfcfd3;
+  color: #d8d8da;
   font-size: 10px;
   white-space: nowrap;
   text-overflow: ellipsis;
 }
 
-.contact-channel > a > svg {
-  color: #66666d;
+.contact-channel
+  > a
+  > svg {
+  color: #77777c;
 }
 
-.contact-copy {
+.contact-copy-button {
   position: absolute;
   right: 40px;
   top: 50%;
@@ -211,69 +283,107 @@
   height: 28px;
   display: grid;
   place-items: center;
-  transform: translateY(-50%);
-  color: #77777e;
-  background: #202023;
-  border: 1px solid rgba(255,255,255,.07);
+  transform:
+    translateY(-50%);
+  color: #a0a0a4;
+  background: #2a2b2e;
+  border: 0;
   border-radius: 8px;
 }
 
-.contact-card-bottom {
+.contact-panel-bottom {
   display: flex;
   align-items: center;
-  justify-content: space-between;
+  justify-content:
+    space-between;
   gap: 12px;
-  margin-top: 9px;
-  padding: 13px 5px 2px;
-  color: #66666d;
-  font: 700 7px monospace;
-  letter-spacing: .08em;
+  margin-top: 8px;
+  padding:
+    13px 5px
+    3px;
+  color: #77777c;
+  font-size: 7px;
+  font-weight: 750;
+  letter-spacing: 0.08em;
 }
 
-.contact-card-bottom > div {
+.contact-panel-bottom
+  > div {
   display: flex;
   align-items: center;
   gap: 6px;
 }
 
-.contact-card-bottom svg { color: #6f8eff; }
+.contact-panel-bottom
+  svg {
+  color: #8fa7ff;
+}
 
 @media (max-width: 900px) {
-  .contact-section { padding: 74px 24px; }
-
-  .contact-container {
-    grid-template-columns: 1fr;
-    gap: 42px;
+  .contact-section {
+    padding:
+      76px 22px;
   }
 
-  .contact-card { max-width: 620px; }
+  .contact-container {
+    grid-template-columns:
+      1fr;
+    gap: 40px;
+  }
+
+  .contact-panel {
+    max-width: 620px;
+  }
 }
 
 @media (max-width: 620px) {
-  .contact-section { padding: 62px 18px; }
-
-  .contact-intro h2 {
-    font-size: clamp(40px,12vw,54px);
+  .contact-section {
+    padding:
+      62px 16px;
   }
 
-  .contact-intro > p { font-size: 12px; }
+  .contact-copy h2 {
+    font-size:
+      clamp(
+        40px,
+        12vw,
+        54px
+      );
+  }
 
-  .contact-cta-row {
+  .contact-copy > p {
+    font-size: 12px;
+  }
+
+  .contact-actions {
     display: grid;
-    grid-template-columns: 1fr;
+    grid-template-columns:
+      1fr;
   }
 
-  .contact-cta-row a { justify-content: center; }
+  .contact-actions a {
+    justify-content:
+      center;
+  }
 
-  .contact-card { padding: 12px; border-radius: 17px; }
+  .contact-panel {
+    padding: 12px;
+    border-radius: 18px;
+  }
 
-  .contact-card-bottom {
+  .contact-panel-bottom {
     align-items: flex-start;
     flex-direction: column;
   }
 }
 
-@media (prefers-reduced-motion: reduce) {
-  .contact-cta-row a,
-  .contact-channel > a { transition: none; }
+@media (
+  prefers-reduced-motion:
+  reduce
+) {
+  .contact-actions a,
+  .contact-channel
+    > a {
+    transition: none;
+  }
 }
