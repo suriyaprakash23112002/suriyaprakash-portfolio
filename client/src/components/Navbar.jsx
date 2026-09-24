@@ -1,156 +1,211 @@
-import { useEffect, useState } from "react";
 import {
-  FiGithub,
-  FiLinkedin,
+  useEffect,
+  useState,
+} from "react";
+
+import {
   FiArrowUpRight,
+  FiGithub,
   FiMenu,
   FiX,
 } from "react-icons/fi";
 
 import profileImage from "../assets/sample.png";
+
 import "./Navbar.css";
 
 function Navbar({ profile }) {
-  const [menuOpen, setMenuOpen] = useState(false);
-  const [scrolled, setScrolled] = useState(false);
+  const [menuOpen, setMenuOpen] =
+    useState(false);
+
+  const [scrolled, setScrolled] =
+    useState(false);
 
   useEffect(() => {
-    const handleScroll = () => {
-      setScrolled(window.scrollY > 24);
+    const onScroll = () => {
+      setScrolled(
+        window.scrollY > 24
+      );
     };
 
-    handleScroll();
+    onScroll();
 
-    window.addEventListener("scroll", handleScroll, {
-      passive: true,
-    });
+    window.addEventListener(
+      "scroll",
+      onScroll,
+      { passive: true }
+    );
 
     return () => {
-      window.removeEventListener("scroll", handleScroll);
+      window.removeEventListener(
+        "scroll",
+        onScroll
+      );
     };
   }, []);
 
   const navItems = [
-    { label: "About", id: "about" },
-    { label: "Skills", id: "skills" },
-    { label: "Projects", id: "projects" },
-    { label: "Experience", id: "experience" },
-    { label: "Education", id: "education" },
+    {
+      label: "Services",
+      id: "about",
+    },
+    {
+      label: "Work",
+      id: "projects",
+    },
+    {
+      label: "Stack",
+      id: "skills",
+    },
+    {
+      label: "Experience",
+      id: "experience",
+    },
+    {
+      label: "Contact",
+      id: "contact",
+    },
   ];
 
-  const scrollToSection = (id) => {
-    const section = document.getElementById(id);
-
-    if (section) {
-      section.scrollIntoView({
+  const scrollTo = (id) => {
+    document
+      .getElementById(id)
+      ?.scrollIntoView({
         behavior: "smooth",
         block: "start",
       });
-    }
 
     setMenuOpen(false);
   };
 
   return (
     <header
-      className={`navbar ${scrolled ? "navbar-scrolled" : ""}`}
+      className={`navbar ${
+        scrolled
+          ? "navbar-scrolled"
+          : ""
+      }`}
     >
       <div className="navbar-container">
-        {/* LEFT BRAND */}
-        <div
+        <button
+          type="button"
           className="navbar-brand"
-          onClick={() => scrollToSection("home")}
+          onClick={() =>
+            scrollTo("home")
+          }
+          data-cursor
         >
-          <div className="navbar-brand-image-wrap">
+          <span className="navbar-brand-avatar">
             <img
-              src={profile?.profileImageUrl || profileImage}
-              alt={profile?.fullName || "Suriyaprakash"}
-              className="navbar-brand-image"
+              src={
+                profile?.profileImageUrl ||
+                profileImage
+              }
+              alt={
+                profile?.fullName ||
+                "Suriyaprakash"
+              }
             />
-          </div>
+          </span>
 
-          <div className="navbar-brand-text">
-            <h3>{profile?.fullName || "Suriyaprakash"}</h3>
-            <span>{profile?.headline || "FULL-STACK DEVELOPER"}</span>
-          </div>
-        </div>
+          <span className="navbar-brand-copy">
+            <strong>
+              {profile?.fullName ||
+                "Suriyaprakash"}
+            </strong>
 
-        {/* CENTER MENU */}
-        <nav className="navbar-menu desktop-menu">
-          {navItems.map((item) => (
-            <button
-              key={item.id}
-              className="navbar-link"
-              onClick={() => scrollToSection(item.id)}
-            >
-              {item.label}
-            </button>
-          ))}
+            <small>
+              FREELANCE FULL-STACK
+            </small>
+          </span>
+        </button>
+
+        <nav className="navbar-links">
+          {navItems.map(
+            (item) => (
+              <button
+                type="button"
+                key={item.id}
+                onClick={() =>
+                  scrollTo(item.id)
+                }
+              >
+                {item.label}
+              </button>
+            )
+          )}
         </nav>
 
-        {/* RIGHT ACTIONS */}
         <div className="navbar-actions">
-          <a
-            href={profile?.githubUrl || "https://github.com/suriyaprakash23112002"}
-            target="_blank"
-            rel="noreferrer"
-            className="navbar-icon-btn"
-            aria-label="GitHub"
-          >
-            <FiGithub />
-          </a>
-
-          <a
-            href={profile?.linkedinUrl || "https://www.linkedin.com/in/suriyaprakash-k-20821b352"}
-            target="_blank"
-            rel="noreferrer"
-            className="navbar-icon-btn"
-            aria-label="LinkedIn"
-          >
-            <FiLinkedin />
-          </a>
+          {profile?.githubUrl && (
+            <a
+              href={
+                profile.githubUrl
+              }
+              target="_blank"
+              rel="noreferrer"
+              className="navbar-github"
+              aria-label="GitHub"
+            >
+              <FiGithub />
+            </a>
+          )}
 
           <button
-            className="navbar-contact-btn"
-            onClick={() => scrollToSection("contact")}
+            type="button"
+            className="navbar-cta"
+            onClick={() =>
+              scrollTo("contact")
+            }
           >
-            Contact
+            Start a project
             <FiArrowUpRight />
           </button>
 
           <button
-            className="navbar-mobile-toggle"
-            onClick={() => setMenuOpen(!menuOpen)}
-            aria-label="Toggle menu"
+            type="button"
+            className="navbar-menu-toggle"
+            onClick={() =>
+              setMenuOpen(
+                (value) => !value
+              )
+            }
+            aria-label="Toggle navigation"
+            aria-expanded={menuOpen}
           >
-            {menuOpen ? <FiX /> : <FiMenu />}
+            {menuOpen ? (
+              <FiX />
+            ) : (
+              <FiMenu />
+            )}
           </button>
         </div>
       </div>
 
-      {/* MOBILE MENU */}
       <div
-        className={`navbar-mobile-menu ${
-          menuOpen ? "navbar-mobile-menu-open" : ""
+        className={`navbar-mobile ${
+          menuOpen
+            ? "navbar-mobile-open"
+            : ""
         }`}
       >
-        {navItems.map((item) => (
-          <button
-            key={item.id}
-            className="navbar-mobile-link"
-            onClick={() => scrollToSection(item.id)}
-          >
-            {item.label}
-          </button>
-        ))}
+        {navItems.map(
+          (item) => (
+            <button
+              type="button"
+              key={item.id}
+              onClick={() =>
+                scrollTo(item.id)
+              }
+            >
+              <span>
+                {item.label}
+              </span>
 
-        <button
-          className="navbar-mobile-contact"
-          onClick={() => scrollToSection("contact")}
-        >
-          Contact
-          <FiArrowUpRight />
-        </button>
+              <FiArrowUpRight />
+            </button>
+          )
+        )}
       </div>
     </header>
   );
