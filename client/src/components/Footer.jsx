@@ -1,23 +1,14 @@
 import {
   FiArrowUp,
+  FiArrowUpRight,
   FiGithub,
   FiLinkedin,
   FiMail,
-  FiCode,
-  FiFileText,
 } from "react-icons/fi";
-
-import profileImage from "../assets/sample.png";
 
 import "./Footer.css";
 
-function Footer({
-  profile,
-}) {
-  /* =====================================================
-     DATA
-  ===================================================== */
-
+function Footer({ profile }) {
   const email =
     profile?.email ||
     "suriyaprakashkumaran567@gmail.com";
@@ -30,219 +21,138 @@ function Footer({
     profile?.linkedinUrl ||
     "https://www.linkedin.com/in/suriyaprakash-k-20821b352";
 
-  const footerText =
-    "Designed and developed by Suriyaprakash";
+  const scrollTo = (id) => {
+    document.getElementById(id)?.scrollIntoView({
+      behavior: "smooth",
+      block: "start",
+    });
+  };
 
   const currentYear =
     new Date().getFullYear();
 
-  /* =====================================================
-     NAVIGATION
-  ===================================================== */
-
-  const navItems = [
-    {
-      label: "About",
-      id: "about",
-    },
-    {
-      label: "Skills",
-      id: "skills",
-    },
-    {
-      label: "Projects",
-      id: "projects",
-    },
-    {
-      label: "Experience",
-      id: "experience",
-    },
-    {
-      label: "Education",
-      id: "education",
-    },
-    {
-      label: "Contact",
-      id: "contact",
-    },
-  ];
-
-  const scrollToSection = (
-    id
-  ) => {
-    const element =
-      document.getElementById(id);
-
-    if (element) {
-      element.scrollIntoView({
-        behavior: "smooth",
-        block: "start",
-      });
-    }
-  };
-
-  const scrollToTop = () => {
-    window.scrollTo({
-      top: 0,
-      behavior: "smooth",
-    });
-  };
-
   return (
     <footer className="footer">
-      <div className="footer-glow" />
-
       <div className="footer-container">
-        {/* =================================================
-            TOP
-        ================================================= */}
+        <div className="footer-main">
+          <div className="footer-pitch">
+            <span>AVAILABLE FOR FREELANCE</span>
 
-        <div className="footer-top">
-          {/* BRAND */}
+            <h2>
+              Need a website or
+              web application?
+            </h2>
 
-          <div className="footer-brand">
             <button
               type="button"
-              className="footer-profile-button"
-              onClick={scrollToTop}
-              aria-label="Back to top"
+              onClick={() =>
+                scrollTo("contact")
+              }
             >
-              <span className="footer-profile-ring" />
-
-              <img
-                src={profile?.profileImageUrl || profileImage}
-                alt={profile?.fullName || "Suriyaprakash"}
-                className="footer-profile-image"
-              />
+              Start a conversation
+              <FiArrowUpRight />
             </button>
-
-            <div className="footer-brand-copy">
-              <strong>
-                {profile?.fullName || "Suriyaprakash"}
-              </strong>
-
-              <span>
-                {profile?.headline || "FULL-STACK DEVELOPER"}
-              </span>
-            </div>
           </div>
 
-          {/* NAVIGATION */}
+          <div className="footer-links">
+            <div>
+              <span>NAVIGATION</span>
 
-          <nav className="footer-navigation">
-            {navItems.map(
-              (item) => (
-                <button
-                  type="button"
-                  key={item.id}
-                  onClick={() =>
-                    scrollToSection(
-                      item.id
-                    )
-                  }
-                >
-                  {item.label}
-                </button>
-              )
-            )}
-          </nav>
+              <button
+                type="button"
+                onClick={() =>
+                  scrollTo("about")
+                }
+              >
+                Services
+              </button>
 
-          {/* SOCIAL */}
+              <button
+                type="button"
+                onClick={() =>
+                  scrollTo("projects")
+                }
+              >
+                Work
+              </button>
 
-          <div className="footer-socials">
-            {githubUrl && (
+              <button
+                type="button"
+                onClick={() =>
+                  scrollTo("skills")
+                }
+              >
+                Stack
+              </button>
+
+              <button
+                type="button"
+                onClick={() =>
+                  scrollTo("contact")
+                }
+              >
+                Contact
+              </button>
+            </div>
+
+            <div>
+              <span>CONNECT</span>
+
               <a
                 href={githubUrl}
                 target="_blank"
                 rel="noreferrer"
-                aria-label="GitHub"
               >
                 <FiGithub />
+                GitHub
               </a>
-            )}
 
-            {linkedinUrl && (
               <a
                 href={linkedinUrl}
                 target="_blank"
                 rel="noreferrer"
-                aria-label="LinkedIn"
               >
                 <FiLinkedin />
+                LinkedIn
               </a>
-            )}
 
-            {email && (
-              <a
-                href={`mailto:${email}`}
-                aria-label="Email"
-              >
+              <a href={"mailto:" + email}>
                 <FiMail />
+                Email
               </a>
-            )}
-
-            {profile?.resumeUrl && (
-              <a
-                href={profile.resumeUrl}
-                target="_blank"
-                rel="noreferrer"
-                aria-label="Resume"
-                title="Resume"
-              >
-                <FiFileText />
-              </a>
-            )}
+            </div>
           </div>
         </div>
 
-        {/* =================================================
-            DIVIDER
-        ================================================= */}
-
-        <div className="footer-divider">
-          <span />
-
-          <FiCode />
-
-          <span />
-        </div>
-
-        {/* =================================================
-            BOTTOM
-        ================================================= */}
-
         <div className="footer-bottom">
-          <div className="footer-copyright">
-            <span>
-              © {currentYear}
-            </span>
-
+          <div>
             <strong>
-              {profile?.fullName || "Suriyaprakash"}
+              {profile?.fullName ||
+                "Suriyaprakash"}
             </strong>
 
             <span>
-              All rights reserved.
+              Freelance Full-Stack
+              Developer
             </span>
           </div>
 
-          <div className="footer-built">
-            <span>
-              {footerText}
-            </span>
-          </div>
+          <p>
+            © {currentYear} All rights
+            reserved.
+          </p>
 
           <button
             type="button"
-            className="footer-top-button"
-            onClick={
-              scrollToTop
+            className="footer-top"
+            onClick={() =>
+              window.scrollTo({
+                top: 0,
+                behavior: "smooth",
+              })
             }
           >
-            <span>
-              BACK TO TOP
-            </span>
-
+            Back to top
             <FiArrowUp />
           </button>
         </div>
